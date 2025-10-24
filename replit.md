@@ -4,6 +4,13 @@
 A modern, professional website for Bellari Concept - a construction and renovation company based in Marrakech, Morocco. This project features full multilingual support (French/English) with real company content, professional images, and a complete Content Management System.
 
 ## Recent Changes
+- **October 24, 2025**: New Expertise Section & Deployment Tools
+  - ✅ **Expertise Section**: Added dynamic styled section between hero and services (fully editable from admin)
+  - ✅ **Bilingual Content**: Expertise section available in French and English with admin management
+  - ✅ **Deployment Script**: Complete deploy.sh with DB setup, env config, venv creation, and initialization
+  - ✅ **Migration Tools**: add_expertise_section.py for updating existing installations
+  - ✅ **Documentation**: Comprehensive deployment guide (README_DEPLOYMENT.md) and update guide (UPDATE.md)
+
 - **October 24, 2025**: UI Enhancement & Bilingual Admin Panel
   - ✅ **Fully Rounded Buttons**: Changed all buttons from rounded-lg to rounded-full for maximum roundness
   - ✅ **Bilingual Admin Interface**: Complete French/English admin panel with language persistence
@@ -68,6 +75,7 @@ A modern, professional website for Bellari Concept - a construction and renovati
 - **SEO Support**: Meta description field with character count and recommendations
 - **Fully Rounded Buttons**: All buttons use rounded-full class
 - **Color-coded Badges**: Visual indicators for active/inactive sections and language
+- **Section Management**: Create, edit, delete sections including the new expertise section type
 
 ### Color Scheme
 - Primary: #1A1A1A (charcoal black)
@@ -88,9 +96,11 @@ A modern, professional website for Bellari Concept - a construction and renovati
 - ✅ Mobile-responsive design
 - ✅ Modern, professional UI with smooth transitions
 - ✅ SEO-friendly meta tags with recommendations
-- ✅ Section-based content management
+- ✅ Section-based content management with dynamic section types (hero, expertise, intro, features, service, etc.)
 - ✅ Bilingual admin panel (French/English)
 - ✅ Fully rounded buttons (rounded-full)
+- ✅ Complete deployment automation with deploy.sh
+- ✅ Migration scripts for existing installations
 
 ## Admin Access
 - URL: `/admin/login`
@@ -98,8 +108,13 @@ A modern, professional website for Bellari Concept - a construction and renovati
 - **IMPORTANT**: Change default password immediately after first login
 
 ## Database Initialization
-Run `python init_database.py` for initial setup (one-time only).
+Run `python init_data.py` for initial setup (one-time only).
+For adding expertise section to existing installations, use `python add_expertise_section.py`.
 The `/admin/init-db` route is protected and disabled by default for security.
+
+## Deployment
+See `README_DEPLOYMENT.md` for comprehensive deployment instructions.
+Quick start: `./deploy.sh` (interactive deployment script)
 
 ## Environment Variables
 - `DATABASE_URL` - PostgreSQL connection string (auto-configured)
