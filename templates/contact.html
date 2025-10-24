@@ -1,90 +1,181 @@
 {% extends "base.html" %}
 
-{% block title %}{{ page.title if page else 'Contact Us - Bellari Concept' }}{% endblock %}
-{% block meta_description %}{{ page.meta_description if page else 'Get in touch with our design team' }}{% endblock %}
+{% block title %}{{ page.title if page else 'Contact - Bellari Concept' }}{% endblock %}
+{% block meta_description %}{{ page.meta_description if page else 'Contactez-nous pour vos projets de construction à Marrakech' }}{% endblock %}
 
 {% block content %}
-<section class="relative h-96 flex items-center justify-center bg-gradient-to-br from-primary to-textDark">
-    <div class="text-center px-4 animate-fade-in">
-        <h1 class="font-display text-5xl md:text-6xl font-bold text-white mb-4">
-            Get In Touch
+<!-- Hero Section -->
+<section class="relative h-screen flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 z-0">
+        <img src="{{ url_for('static', filename='images/modern_construction__e4781d44.jpg') }}" 
+             alt="Contact" 
+             class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/70 to-primary/50"></div>
+    </div>
+    
+    <div class="relative z-10 text-center px-4 max-w-5xl mx-auto animate-fade-in">
+        <h1 class="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-2xl">
+            {% if lang == 'fr' %}Contactez-Nous{% else %}Get In Touch{% endif %}
         </h1>
-        <p class="text-xl text-accent font-display">
-            Let's Create Something Beautiful Together
+        <p class="text-2xl md:text-3xl text-accent font-display drop-shadow-lg mb-8">
+            {% if lang == 'fr' %}
+                Créons Ensemble Quelque Chose de Magnifique
+            {% else %}
+                Let's Create Something Beautiful Together
+            {% endif %}
         </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="tel:+212635502461" class="inline-block bg-accent text-white px-10 py-4 text-sm font-bold tracking-wider hover:bg-accent/90 transition-all duration-300 shadow-2xl hover:shadow-accent/50 transform hover:-translate-y-1 rounded-sm">
+                {% if lang == 'fr' %}APPELEZ-NOUS{% else %}CALL US{% endif %}
+            </a>
+            <a href="mailto:bellari.groupe@gmail.com" class="inline-block bg-white/10 backdrop-blur-sm border-2 border-white text-white px-10 py-4 text-sm font-bold tracking-wider hover:bg-white hover:text-primary transition-all duration-300 shadow-2xl transform hover:-translate-y-1 rounded-sm">
+                {% if lang == 'fr' %}ENVOYEZ UN EMAIL{% else %}SEND EMAIL{% endif %}
+            </a>
+        </div>
+    </div>
+    
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce z-10">
+        <svg class="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+        </svg>
     </div>
 </section>
 
+<!-- Contact Information & Form -->
 <section class="section-spacing bg-white">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
-            <div>
-                <h2 class="font-display text-3xl font-bold text-primary mb-6">Contact Information</h2>
-                <div class="w-20 h-1 bg-accent mb-8"></div>
+            <!-- Contact Info -->
+            <div class="space-y-10">
+                <div>
+                    <h2 class="font-display text-4xl font-bold text-primary mb-6">
+                        {% if lang == 'fr' %}Informations de Contact{% else %}Contact Information{% endif %}
+                    </h2>
+                    <div class="w-24 h-1.5 bg-accent mb-8"></div>
+                    <p class="text-lg text-textDark mb-8">
+                        {% if lang == 'fr' %}
+                            Nous sommes là pour répondre à toutes vos questions et discuter de vos projets.
+                        {% else %}
+                            We're here to answer all your questions and discuss your projects.
+                        {% endif %}
+                    </p>
+                </div>
                 
-                {% for section in sections %}
-                    {% if section.section_type == 'contact' and section.content %}
-                        {% set contact_lines = section.content.split('\n') %}
-                        <div class="space-y-6">
-                            {% for line in contact_lines %}
-                                {% if line.strip() %}
-                                <div class="flex items-start">
-                                    <svg class="w-6 h-6 text-accent mr-3 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                    <p class="text-lg text-textDark">{{ line.strip() }}</p>
-                                </div>
-                                {% endif %}
-                            {% endfor %}
+                <div class="space-y-6">
+                    <div class="flex items-start group transform hover:translate-x-2 transition-transform duration-300">
+                        <div class="flex-shrink-0 w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center group-hover:bg-accent transition-colors duration-300">
+                            <svg class="w-6 h-6 text-accent group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                            </svg>
                         </div>
-                    {% endif %}
-                {% endfor %}
-                
-                <div class="mt-12">
-                    <h3 class="font-semibold text-xl mb-4">Office Hours</h3>
-                    <p class="text-textDark">Monday - Friday: 9:00 AM - 6:00 PM</p>
-                    <p class="text-textDark">Saturday: 10:00 AM - 4:00 PM</p>
-                    <p class="text-textDark">Sunday: Closed</p>
+                        <div class="ml-4">
+                            <h3 class="font-semibold text-lg text-primary mb-1">
+                                {% if lang == 'fr' %}Téléphone{% else %}Phone{% endif %}
+                            </h3>
+                            <p class="text-textDark">+212 6 35 50 24 61</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start group transform hover:translate-x-2 transition-transform duration-300">
+                        <div class="flex-shrink-0 w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center group-hover:bg-accent transition-colors duration-300">
+                            <svg class="w-6 h-6 text-accent group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="font-semibold text-lg text-primary mb-1">Email</h3>
+                            <p class="text-textDark">bellari.groupe@gmail.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start group transform hover:translate-x-2 transition-transform duration-300">
+                        <div class="flex-shrink-0 w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center group-hover:bg-accent transition-colors duration-300">
+                            <svg class="w-6 h-6 text-accent group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="font-semibold text-lg text-primary mb-1">
+                                {% if lang == 'fr' %}Localisation{% else %}Location{% endif %}
+                            </h3>
+                            <p class="text-textDark">
+                                {% if lang == 'fr' %}Marrakech, Maroc{% else %}Marrakech, Morocco{% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start group transform hover:translate-x-2 transition-transform duration-300">
+                        <div class="flex-shrink-0 w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center group-hover:bg-accent transition-colors duration-300">
+                            <svg class="w-6 h-6 text-accent group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="font-semibold text-lg text-primary mb-1">
+                                {% if lang == 'fr' %}Heures d'Ouverture{% else %}Business Hours{% endif %}
+                            </h3>
+                            <p class="text-textDark">
+                                {% if lang == 'fr' %}
+                                    Lundi - Vendredi: 8:00 - 18:00<br>
+                                    Samedi: 9:00 - 13:00
+                                {% else %}
+                                    Monday - Friday: 8:00 AM - 6:00 PM<br>
+                                    Saturday: 9:00 AM - 1:00 PM
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
             
-            <div class="bg-secondary p-8 md:p-12">
-                <h2 class="font-display text-3xl font-bold text-primary mb-6">Send Us a Message</h2>
+            <!-- Contact Form -->
+            <div class="bg-gradient-to-br from-secondary to-white p-8 md:p-12 rounded-2xl shadow-2xl">
+                <h2 class="font-display text-3xl font-bold text-primary mb-6">
+                    {% if lang == 'fr' %}Envoyez-Nous un Message{% else %}Send Us a Message{% endif %}
+                </h2>
                 <form class="space-y-6">
                     <div>
-                        <label class="block text-sm font-semibold text-textDark mb-2">Name *</label>
-                        <input type="text" required class="w-full px-4 py-3 border border-subtle focus:border-accent focus:outline-none transition-colors" placeholder="Your name">
+                        <label class="block text-sm font-semibold text-textDark mb-2">
+                            {% if lang == 'fr' %}Nom *{% else %}Name *{% endif %}
+                        </label>
+                        <input type="text" required class="w-full px-4 py-3 border border-subtle rounded-lg focus:border-accent focus:ring-2 focus:ring-accent/20 focus:outline-none transition-all" placeholder="{% if lang == 'fr' %}Votre nom{% else %}Your name{% endif %}">
                     </div>
                     
                     <div>
                         <label class="block text-sm font-semibold text-textDark mb-2">Email *</label>
-                        <input type="email" required class="w-full px-4 py-3 border border-subtle focus:border-accent focus:outline-none transition-colors" placeholder="your@email.com">
+                        <input type="email" required class="w-full px-4 py-3 border border-subtle rounded-lg focus:border-accent focus:ring-2 focus:ring-accent/20 focus:outline-none transition-all" placeholder="{% if lang == 'fr' %}votre@email.com{% else %}your@email.com{% endif %}">
                     </div>
                     
                     <div>
-                        <label class="block text-sm font-semibold text-textDark mb-2">Phone</label>
-                        <input type="tel" class="w-full px-4 py-3 border border-subtle focus:border-accent focus:outline-none transition-colors" placeholder="(555) 123-4567">
+                        <label class="block text-sm font-semibold text-textDark mb-2">
+                            {% if lang == 'fr' %}Téléphone{% else %}Phone{% endif %}
+                        </label>
+                        <input type="tel" class="w-full px-4 py-3 border border-subtle rounded-lg focus:border-accent focus:ring-2 focus:ring-accent/20 focus:outline-none transition-all" placeholder="+212 6 00 00 00 00">
                     </div>
                     
                     <div>
-                        <label class="block text-sm font-semibold text-textDark mb-2">Project Type</label>
-                        <select class="w-full px-4 py-3 border border-subtle focus:border-accent focus:outline-none transition-colors">
-                            <option>Select a service</option>
-                            <option>Residential Design</option>
-                            <option>Commercial Design</option>
-                            <option>Renovation</option>
-                            <option>Consultation</option>
-                            <option>Other</option>
+                        <label class="block text-sm font-semibold text-textDark mb-2">
+                            {% if lang == 'fr' %}Type de Projet{% else %}Project Type{% endif %}
+                        </label>
+                        <select class="w-full px-4 py-3 border border-subtle rounded-lg focus:border-accent focus:ring-2 focus:ring-accent/20 focus:outline-none transition-all">
+                            <option>{% if lang == 'fr' %}Sélectionnez un service{% else %}Select a service{% endif %}</option>
+                            <option>{% if lang == 'fr' %}Construction{% else %}Construction{% endif %}</option>
+                            <option>{% if lang == 'fr' %}Électricité{% else %}Electrical{% endif %}</option>
+                            <option>{% if lang == 'fr' %}Plomberie{% else %}Plumbing{% endif %}</option>
+                            <option>{% if lang == 'fr' %}Peinture{% else %}Painting{% endif %}</option>
+                            <option>{% if lang == 'fr' %}Climatisation{% else %}Air Conditioning{% endif %}</option>
+                            <option>{% if lang == 'fr' %}Entretien Piscine{% else %}Pool Maintenance{% endif %}</option>
                         </select>
                     </div>
                     
                     <div>
                         <label class="block text-sm font-semibold text-textDark mb-2">Message *</label>
-                        <textarea required rows="5" class="w-full px-4 py-3 border border-subtle focus:border-accent focus:outline-none transition-colors resize-none" placeholder="Tell us about your project..."></textarea>
+                        <textarea required rows="5" class="w-full px-4 py-3 border border-subtle rounded-lg focus:border-accent focus:ring-2 focus:ring-accent/20 focus:outline-none transition-all resize-none" placeholder="{% if lang == 'fr' %}Parlez-nous de votre projet...{% else %}Tell us about your project...{% endif %}"></textarea>
                     </div>
                     
-                    <button type="submit" class="w-full bg-accent text-white py-4 text-sm font-semibold tracking-wide hover:bg-primary transition-colors duration-300">
-                        SEND MESSAGE
+                    <button type="submit" class="w-full bg-accent text-white py-4 text-sm font-bold tracking-wider hover:bg-primary transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 rounded-lg">
+                        {% if lang == 'fr' %}ENVOYER LE MESSAGE{% else %}SEND MESSAGE{% endif %}
                     </button>
                 </form>
             </div>
@@ -92,12 +183,27 @@
     </div>
 </section>
 
-<section class="section-spacing bg-primary text-white">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="font-display text-4xl font-bold mb-6">Ready to Begin?</h2>
-        <p class="text-xl text-gray-300 mb-8">Schedule a consultation with our design team today</p>
-        <a href="tel:+15551234567" class="inline-block bg-accent text-white px-10 py-4 text-sm font-semibold tracking-wide hover:bg-white hover:text-primary transition-all duration-300 shadow-lg">
-            CALL US NOW
+<!-- CTA Final -->
+<section class="section-spacing bg-gradient-to-br from-primary via-primary/95 to-textDark text-white relative overflow-hidden">
+    <div class="absolute inset-0">
+        <img src="{{ url_for('static', filename='images/hvac_air_conditionin_8336dff9.jpg') }}" 
+             alt="Background" 
+             class="w-full h-full object-cover opacity-10">
+    </div>
+    
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <h2 class="font-display text-4xl font-bold mb-6">
+            {% if lang == 'fr' %}Prêt à Commencer ?{% else %}Ready to Begin?{% endif %}
+        </h2>
+        <p class="text-xl text-white/80 mb-8">
+            {% if lang == 'fr' %}
+                Planifiez une consultation avec notre équipe dès aujourd'hui
+            {% else %}
+                Schedule a consultation with our team today
+            {% endif %}
+        </p>
+        <a href="tel:+212635502461" class="inline-block bg-accent text-white px-10 py-4 text-sm font-bold tracking-wider hover:bg-white hover:text-accent transition-all duration-300 shadow-2xl transform hover:-translate-y-1 rounded-lg">
+            {% if lang == 'fr' %}APPELEZ MAINTENANT{% else %}CALL NOW{% endif %}
         </a>
     </div>
 </section>

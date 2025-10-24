@@ -1,72 +1,157 @@
 {% extends "base.html" %}
 
-{% block title %}{{ page.title if page else 'About Us - Bellari Concept' }}{% endblock %}
-{% block meta_description %}{{ page.meta_description if page else 'Learn about our design philosophy and expertise' }}{% endblock %}
+{% block title %}{{ page.title if page else 'À Propos - Bellari Concept' }}{% endblock %}
+{% block meta_description %}{{ page.meta_description if page else 'Découvrez Bellari Concept, votre partenaire construction à Marrakech' }}{% endblock %}
 
 {% block content %}
 {% for section in sections %}
     {% if section.section_type == 'hero' %}
-    <section class="relative h-96 flex items-center justify-center bg-gradient-to-br from-primary to-textDark">
-        <div class="text-center px-4 animate-fade-in">
-            <h1 class="font-display text-5xl md:text-6xl font-bold text-white mb-4">
-                {{ section.heading or 'About Bellari Concept' }}
+    <!-- Hero Section avec Image -->
+    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="{{ url_for('static', filename='images/painter_painting_wal_be02294b.jpg') }}" 
+                 alt="Bellari Concept" 
+                 class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/70 to-primary/50"></div>
+        </div>
+        
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto animate-fade-in">
+            <h1 class="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-2xl">
+                {{ section.heading or ('À Propos de Bellari Concept' if lang == 'fr' else 'About Bellari Concept') }}
             </h1>
-            <p class="text-xl text-accent font-display">
-                {{ section.subheading or 'Design Excellence Since 2010' }}
+            <p class="text-2xl md:text-3xl text-accent font-display drop-shadow-lg">
+                {{ section.subheading or ('Excellence depuis 2010' if lang == 'fr' else 'Excellence Since 2010') }}
             </p>
         </div>
-    </section>
-    
-    {% elif section.section_type == 'text' %}
-    <section class="section-spacing {% if loop.index % 2 == 0 %}bg-secondary{% else %}bg-white{% endif %}">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="font-display text-3xl md:text-4xl font-bold text-primary mb-6">
-                {{ section.heading }}
-            </h2>
-            <div class="w-20 h-1 bg-accent mb-8"></div>
-            <p class="text-lg text-textDark leading-relaxed">
-                {{ section.content }}
-            </p>
+        
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce z-10">
+            <svg class="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
         </div>
     </section>
     {% endif %}
 {% endfor %}
 
-<section class="section-spacing bg-primary text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="font-display text-4xl md:text-5xl font-bold mb-12 text-center">Our Values</h2>
+<!-- Notre Histoire et Approche -->
+{% for section in sections %}
+    {% if section.section_type == 'text' %}
+    <section class="section-spacing {% if loop.index % 2 == 0 %}bg-gradient-to-br from-secondary to-white{% else %}bg-white{% endif %} relative overflow-hidden">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="{% if loop.index % 2 == 0 %}order-2{% endif %}">
+                    <h2 class="font-display text-4xl md:text-5xl font-bold text-primary mb-6">
+                        {{ section.heading }}
+                    </h2>
+                    <div class="w-24 h-1.5 bg-accent mb-8"></div>
+                    <p class="text-lg text-textDark leading-relaxed mb-6">
+                        {{ section.content }}
+                    </p>
+                </div>
+                <div class="{% if loop.index % 2 == 0 %}order-1{% endif %} relative group">
+                    <div class="relative overflow-hidden rounded-xl shadow-2xl transform group-hover:scale-105 transition-all duration-500">
+                        <img src="{{ url_for('static', filename='images/modern_construction__a427a1cf.jpg' if loop.index == 1 else 'images/professional_electri_984ae0e8.jpg') }}" 
+                             alt="{{ section.heading }}" 
+                             class="w-full h-96 object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent group-hover:from-accent/60 transition-all duration-500"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+{% endfor %}
+
+<!-- Nos Valeurs -->
+<section class="section-spacing bg-gradient-to-br from-primary via-primary/95 to-textDark text-white relative overflow-hidden">
+    <div class="absolute inset-0">
+        <img src="{{ url_for('static', filename='images/plumber_fixing_pipes_d4c8be18.jpg') }}" 
+             alt="Background" 
+             class="w-full h-full object-cover opacity-10">
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center mb-16">
+            <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">
+                {% if lang == 'fr' %}Nos Valeurs{% else %}Our Values{% endif %}
+            </h2>
+            <div class="w-24 h-1.5 bg-accent mx-auto"></div>
+        </div>
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div class="text-center">
-                <div class="w-16 h-16 bg-accent mx-auto mb-4 flex items-center justify-center rounded-full">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="text-center group transform hover:-translate-y-2 transition-all duration-300">
+                <div class="w-20 h-20 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-accent group-hover:scale-110 transition-all duration-300">
+                    <svg class="w-10 h-10 text-accent group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                 </div>
-                <h3 class="font-semibold text-xl mb-3">Excellence</h3>
-                <p class="text-gray-300">Uncompromising quality in every detail</p>
+                <h3 class="font-display text-2xl font-bold mb-3">
+                    {% if lang == 'fr' %}Excellence{% else %}Excellence{% endif %}
+                </h3>
+                <p class="text-white/80">
+                    {% if lang == 'fr' %}
+                        Qualité irréprochable dans chaque détail
+                    {% else %}
+                        Uncompromising quality in every detail
+                    {% endif %}
+                </p>
             </div>
             
-            <div class="text-center">
-                <div class="w-16 h-16 bg-accent mx-auto mb-4 flex items-center justify-center rounded-full">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="text-center group transform hover:-translate-y-2 transition-all duration-300">
+                <div class="w-20 h-20 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-accent group-hover:scale-110 transition-all duration-300">
+                    <svg class="w-10 h-10 text-accent group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                     </svg>
                 </div>
-                <h3 class="font-semibold text-xl mb-3">Innovation</h3>
-                <p class="text-gray-300">Blending tradition with modern trends</p>
+                <h3 class="font-display text-2xl font-bold mb-3">
+                    {% if lang == 'fr' %}Innovation{% else %}Innovation{% endif %}
+                </h3>
+                <p class="text-white/80">
+                    {% if lang == 'fr' %}
+                        Techniques modernes et durables
+                    {% else %}
+                        Modern and sustainable techniques
+                    {% endif %}
+                </p>
             </div>
             
-            <div class="text-center">
-                <div class="w-16 h-16 bg-accent mx-auto mb-4 flex items-center justify-center rounded-full">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="text-center group transform hover:-translate-y-2 transition-all duration-300">
+                <div class="w-20 h-20 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-accent group-hover:scale-110 transition-all duration-300">
+                    <svg class="w-10 h-10 text-accent group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                     </svg>
                 </div>
-                <h3 class="font-semibold text-xl mb-3">Passion</h3>
-                <p class="text-gray-300">Dedicated to creating inspiring spaces</p>
+                <h3 class="font-display text-2xl font-bold mb-3">
+                    {% if lang == 'fr' %}Passion{% else %}Passion{% endif %}
+                </h3>
+                <p class="text-white/80">
+                    {% if lang == 'fr' %}
+                        Dévoués à créer des espaces inspirants
+                    {% else %}
+                        Dedicated to creating inspiring spaces
+                    {% endif %}
+                </p>
             </div>
         </div>
+    </div>
+</section>
+
+<!-- CTA Final -->
+<section class="section-spacing bg-gradient-to-r from-accent via-accent/90 to-accent text-white relative overflow-hidden">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+            {% if lang == 'fr' %}Travaillons Ensemble{% else %}Let's Work Together{% endif %}
+        </h2>
+        <p class="text-xl md:text-2xl mb-10 text-white/90">
+            {% if lang == 'fr' %}
+                Transformons votre vision en réalité
+            {% else %}
+                Transform your vision into reality
+            {% endif %}
+        </p>
+        <a href="/contact" class="inline-block bg-primary text-white px-12 py-5 text-sm font-bold tracking-wider hover:bg-primary/90 transition-all duration-300 shadow-2xl transform hover:-translate-y-1 rounded-sm">
+            {% if lang == 'fr' %}CONTACTEZ-NOUS{% else %}CONTACT US{% endif %}
+        </a>
     </div>
 </section>
 {% endblock %}

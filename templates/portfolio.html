@@ -1,73 +1,196 @@
 {% extends "base.html" %}
 
 {% block title %}{{ page.title if page else 'Portfolio - Bellari Concept' }}{% endblock %}
-{% block meta_description %}{{ page.meta_description if page else 'View our stunning interior design projects' }}{% endblock %}
+{% block meta_description %}{{ page.meta_description if page else 'Découvrez nos projets de construction et rénovation à Marrakech' }}{% endblock %}
 
 {% block content %}
-<section class="relative h-96 flex items-center justify-center bg-gradient-to-br from-primary to-textDark">
-    <div class="text-center px-4 animate-fade-in">
-        <h1 class="font-display text-5xl md:text-6xl font-bold text-white mb-4">
-            Our Portfolio
+<!-- Hero Section -->
+<section class="relative h-screen flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 z-0">
+        <img src="{{ url_for('static', filename='images/swimming_pool_mainte_0698f0ec.jpg') }}" 
+             alt="Portfolio" 
+             class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/70 to-primary/50"></div>
+    </div>
+    
+    <div class="relative z-10 text-center px-4 max-w-5xl mx-auto animate-fade-in">
+        <h1 class="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 drop-shadow-2xl">
+            {% if lang == 'fr' %}Notre Portfolio{% else %}Our Portfolio{% endif %}
         </h1>
-        <p class="text-xl text-accent font-display">
-            A Collection of Our Finest Work
+        <p class="text-2xl md:text-3xl text-accent font-display drop-shadow-lg">
+            {% if lang == 'fr' %}
+                Une Collection de Nos Meilleurs Projets
+            {% else %}
+                A Collection of Our Finest Projects
+            {% endif %}
         </p>
+    </div>
+    
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce z-10">
+        <svg class="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+        </svg>
     </div>
 </section>
 
+<!-- Gallery de Projets -->
 <section class="section-spacing bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div class="group relative overflow-hidden bg-secondary aspect-square">
-                <div class="absolute inset-0 bg-gradient-to-br from-primary/80 to-accent/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <div class="text-white text-center p-6">
-                        <h3 class="font-display text-2xl font-bold mb-2">Modern Residence</h3>
-                        <p class="text-sm">Contemporary luxury living</p>
+        <div class="text-center mb-16">
+            <h2 class="font-display text-4xl md:text-5xl font-bold text-primary mb-4">
+                {% if lang == 'fr' %}Nos Réalisations{% else %}Our Achievements{% endif %}
+            </h2>
+            <div class="w-24 h-1.5 bg-accent mx-auto mb-6"></div>
+            <p class="text-xl text-textDark max-w-3xl mx-auto">
+                {% if lang == 'fr' %}
+                    Découvrez quelques-uns de nos projets de construction, rénovation et services techniques réalisés à Marrakech
+                {% else %}
+                    Discover some of our construction, renovation and technical services projects completed in Marrakech
+                {% endif %}
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Projet 1 -->
+            <div class="group relative overflow-hidden rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+                <div class="relative h-80 overflow-hidden">
+                    <img src="{{ url_for('static', filename='images/modern_construction__a427a1cf.jpg') }}" 
+                         alt="Construction moderne" 
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/60 to-transparent group-hover:from-accent/90 group-hover:via-accent/60 transition-all duration-500"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white transform translate-y-0 group-hover:translate-y-0 transition-transform duration-300">
+                        <h3 class="font-display text-2xl font-bold mb-2">
+                            {% if lang == 'fr' %}Construction Résidentielle{% else %}Residential Construction{% endif %}
+                        </h3>
+                        <p class="text-sm text-white/90 mb-3">
+                            {% if lang == 'fr' %}Villa moderne à Marrakech{% else %}Modern villa in Marrakech{% endif %}
+                        </p>
+                        <div class="flex items-center text-accent group-hover:text-white transition-colors">
+                            <span class="text-sm font-semibold">{% if lang == 'fr' %}Voir plus{% else %}See more{% endif %}</span>
+                            <svg class="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <div class="group relative overflow-hidden bg-secondary aspect-square">
-                <div class="absolute inset-0 bg-gradient-to-br from-primary/80 to-accent/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <div class="text-white text-center p-6">
-                        <h3 class="font-display text-2xl font-bold mb-2">Executive Office</h3>
-                        <p class="text-sm">Professional workspace design</p>
+            <!-- Projet 2 -->
+            <div class="group relative overflow-hidden rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+                <div class="relative h-80 overflow-hidden">
+                    <img src="{{ url_for('static', filename='images/professional_electri_984ae0e8.jpg') }}" 
+                         alt="Installation électrique" 
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/60 to-transparent group-hover:from-accent/90 group-hover:via-accent/60 transition-all duration-500"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <h3 class="font-display text-2xl font-bold mb-2">
+                            {% if lang == 'fr' %}Installation Électrique{% else %}Electrical Installation{% endif %}
+                        </h3>
+                        <p class="text-sm text-white/90 mb-3">
+                            {% if lang == 'fr' %}Immeuble commercial{% else %}Commercial building{% endif %}
+                        </p>
+                        <div class="flex items-center text-accent group-hover:text-white transition-colors">
+                            <span class="text-sm font-semibold">{% if lang == 'fr' %}Voir plus{% else %}See more{% endif %}</span>
+                            <svg class="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <div class="group relative overflow-hidden bg-secondary aspect-square">
-                <div class="absolute inset-0 bg-gradient-to-br from-primary/80 to-accent/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <div class="text-white text-center p-6">
-                        <h3 class="font-display text-2xl font-bold mb-2">Boutique Hotel</h3>
-                        <p class="text-sm">Luxury hospitality interiors</p>
+            <!-- Projet 3 -->
+            <div class="group relative overflow-hidden rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+                <div class="relative h-80 overflow-hidden">
+                    <img src="{{ url_for('static', filename='images/plumber_fixing_pipes_d4c8be18.jpg') }}" 
+                         alt="Plomberie" 
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/60 to-transparent group-hover:from-accent/90 group-hover:via-accent/60 transition-all duration-500"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <h3 class="font-display text-2xl font-bold mb-2">
+                            {% if lang == 'fr' %}Rénovation Plomberie{% else %}Plumbing Renovation{% endif %}
+                        </h3>
+                        <p class="text-sm text-white/90 mb-3">
+                            {% if lang == 'fr' %}Complexe résidentiel{% else %}Residential complex{% endif %}
+                        </p>
+                        <div class="flex items-center text-accent group-hover:text-white transition-colors">
+                            <span class="text-sm font-semibold">{% if lang == 'fr' %}Voir plus{% else %}See more{% endif %}</span>
+                            <svg class="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <div class="group relative overflow-hidden bg-secondary aspect-square">
-                <div class="absolute inset-0 bg-gradient-to-br from-primary/80 to-accent/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <div class="text-white text-center p-6">
-                        <h3 class="font-display text-2xl font-bold mb-2">Penthouse Suite</h3>
-                        <p class="text-sm">Elevated urban living</p>
+            <!-- Projet 4 -->
+            <div class="group relative overflow-hidden rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+                <div class="relative h-80 overflow-hidden">
+                    <img src="{{ url_for('static', filename='images/painter_painting_wal_be02294b.jpg') }}" 
+                         alt="Peinture" 
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/60 to-transparent group-hover:from-accent/90 group-hover:via-accent/60 transition-all duration-500"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <h3 class="font-display text-2xl font-bold mb-2">
+                            {% if lang == 'fr' %}Peinture Extérieure{% else %}Exterior Painting{% endif %}
+                        </h3>
+                        <p class="text-sm text-white/90 mb-3">
+                            {% if lang == 'fr' %}Façade de villa{% else %}Villa facade{% endif %}
+                        </p>
+                        <div class="flex items-center text-accent group-hover:text-white transition-colors">
+                            <span class="text-sm font-semibold">{% if lang == 'fr' %}Voir plus{% else %}See more{% endif %}</span>
+                            <svg class="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <div class="group relative overflow-hidden bg-secondary aspect-square">
-                <div class="absolute inset-0 bg-gradient-to-br from-primary/80 to-accent/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <div class="text-white text-center p-6">
-                        <h3 class="font-display text-2xl font-bold mb-2">Restaurant Design</h3>
-                        <p class="text-sm">Culinary atmosphere creation</p>
+            <!-- Projet 5 -->
+            <div class="group relative overflow-hidden rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+                <div class="relative h-80 overflow-hidden">
+                    <img src="{{ url_for('static', filename='images/hvac_air_conditionin_8336dff9.jpg') }}" 
+                         alt="Climatisation" 
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/60 to-transparent group-hover:from-accent/90 group-hover:via-accent/60 transition-all duration-500"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <h3 class="font-display text-2xl font-bold mb-2">
+                            {% if lang == 'fr' %}Système de Climatisation{% else %}AC System{% endif %}
+                        </h3>
+                        <p class="text-sm text-white/90 mb-3">
+                            {% if lang == 'fr' %}Hôtel boutique{% else %}Boutique hotel{% endif %}
+                        </p>
+                        <div class="flex items-center text-accent group-hover:text-white transition-colors">
+                            <span class="text-sm font-semibold">{% if lang == 'fr' %}Voir plus{% else %}See more{% endif %}</span>
+                            <svg class="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <div class="group relative overflow-hidden bg-secondary aspect-square">
-                <div class="absolute inset-0 bg-gradient-to-br from-primary/80 to-accent/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <div class="text-white text-center p-6">
-                        <h3 class="font-display text-2xl font-bold mb-2">Coastal Villa</h3>
-                        <p class="text-sm">Seaside elegance</p>
+            <!-- Projet 6 -->
+            <div class="group relative overflow-hidden rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+                <div class="relative h-80 overflow-hidden">
+                    <img src="{{ url_for('static', filename='images/swimming_pool_mainte_0698f0ec.jpg') }}" 
+                         alt="Piscine" 
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/60 to-transparent group-hover:from-accent/90 group-hover:via-accent/60 transition-all duration-500"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <h3 class="font-display text-2xl font-bold mb-2">
+                            {% if lang == 'fr' %}Entretien Piscine{% else %}Pool Maintenance{% endif %}
+                        </h3>
+                        <p class="text-sm text-white/90 mb-3">
+                            {% if lang == 'fr' %}Résidence privée{% else %}Private residence{% endif %}
+                        </p>
+                        <div class="flex items-center text-accent group-hover:text-white transition-colors">
+                            <span class="text-sm font-semibold">{% if lang == 'fr' %}Voir plus{% else %}See more{% endif %}</span>
+                            <svg class="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -75,12 +198,21 @@
     </div>
 </section>
 
-<section class="section-spacing bg-secondary">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="font-display text-4xl md:text-5xl font-bold text-primary mb-6">Interested in Working Together?</h2>
-        <p class="text-xl text-textDark mb-8">Let's create your next stunning space</p>
-        <a href="/contact" class="inline-block bg-accent text-white px-10 py-4 text-sm font-semibold tracking-wide hover:bg-primary transition-all duration-300 shadow-lg">
-            START A CONVERSATION
+<!-- CTA -->
+<section class="section-spacing bg-gradient-to-r from-accent via-accent/90 to-accent text-white relative overflow-hidden">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+            {% if lang == 'fr' %}Intéressé par Notre Travail ?{% else %}Interested in Our Work?{% endif %}
+        </h2>
+        <p class="text-xl md:text-2xl mb-10 text-white/90">
+            {% if lang == 'fr' %}
+                Créons ensemble votre prochain projet exceptionnel
+            {% else %}
+                Let's create your next exceptional project together
+            {% endif %}
+        </p>
+        <a href="/contact" class="inline-block bg-primary text-white px-12 py-5 text-sm font-bold tracking-wider hover:bg-primary/90 transition-all duration-300 shadow-2xl transform hover:-translate-y-1 rounded-sm">
+            {% if lang == 'fr' %}DÉMARRER UNE CONVERSATION{% else %}START A CONVERSATION{% endif %}
         </a>
     </div>
 </section>
