@@ -1,64 +1,102 @@
 {% extends "admin/base.html" %}
 
-{% block title %}Edit {{ page.title }}{% endblock %}
-{% block page_title %}Edit: {{ page.title }}{% endblock %}
+{% block title %}{% if lang == 'fr' %}Modifier{{ else }}Edit{% endif %} {{ page.title }}{% endblock %}
+{% block page_title %}{% if lang == 'fr' %}Modifier{% else %}Edit{% endif %}: {{ page.title }}{% endblock %}
 
 {% block content %}
-<div class="mb-6">
-    <a href="/admin/pages" class="text-accent hover:text-primary font-semibold">← Back to Pages</a>
+<style>
+.image-preview {
+    max-width: 200px;
+    max-height: 150px;
+    border-radius: 8px;
+}
+.resolution-badge {
+    background: #10b981;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+}
+</style>
+
+<div class="mb-6 flex justify-between items-center">
+    <a href="/admin/pages" class="text-accent hover:text-primary font-semibold">← {% if lang == 'fr' %}Retour aux pages{% else %}Back to Pages{% endif %}</a>
+    <div class="flex gap-2">
+        <button onclick="setLang('fr')" class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 {% if lang == 'fr' %}bg-accent text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}">
+            FR
+        </button>
+        <button onclick="setLang('en')" class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 {% if lang == 'en' %}bg-accent text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}">
+            EN
+        </button>
+    </div>
 </div>
 
 <div class="bg-white rounded-lg shadow p-6 mb-8">
-    <h3 class="text-xl font-bold text-primary mb-6">Page Settings</h3>
+    <h3 class="text-xl font-bold text-primary mb-6">{% if lang == 'fr' %}Paramètres de la Page & SEO{% else %}Page Settings & SEO{% endif %}</h3>
     <form method="POST" action="/admin/page/{{ page.id }}/update" class="space-y-4">
         <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2">Page Title</label>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                {% if lang == 'fr' %}Titre de la page{% else %}Page Title{% endif %}
+            </label>
             <input type="text" name="title" value="{{ page.title }}" required 
-                   class="w-full px-4 py-2 border border-gray-300 rounded focus:border-accent focus:outline-none">
+                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-accent focus:outline-none">
         </div>
         
         <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2">Meta Description</label>
-            <textarea name="meta_description" rows="2" 
-                      class="w-full px-4 py-2 border border-gray-300 rounded focus:border-accent focus:outline-none">{{ page.meta_description }}</textarea>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                Meta Description (SEO)
+                <span class="text-xs text-gray-500 ml-2">{% if lang == 'fr' %}Recommandé: 150-160 caractères{% else %}Recommended: 150-160 characters{% endif %}</span>
+            </label>
+            <textarea name="meta_description" rows="2" maxlength="160"
+                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-accent focus:outline-none">{{ page.meta_description }}</textarea>
+            <p class="text-xs text-gray-500 mt-1">
+                {% if lang == 'fr' %}Cette description apparaît dans les résultats de recherche Google{% else %}This description appears in Google search results{% endif %}
+            </p>
         </div>
         
         <div class="flex items-center">
             <input type="checkbox" name="is_active" id="page_active" {{ 'checked' if page.is_active }} 
                    class="w-4 h-4 text-accent border-gray-300 rounded focus:ring-accent">
-            <label for="page_active" class="ml-2 text-sm font-semibold text-gray-700">Page Active</label>
+            <label for="page_active" class="ml-2 text-sm font-semibold text-gray-700">
+                {% if lang == 'fr' %}Page active{% else %}Page Active{% endif %}
+            </label>
         </div>
         
-        <button type="submit" class="bg-accent text-white px-6 py-2 rounded hover:bg-primary transition-colors">
-            Update Page Settings
+        <button type="submit" class="bg-accent text-white px-6 py-3 rounded-full hover:bg-primary transition-colors font-semibold">
+            {% if lang == 'fr' %}Mettre à jour{% else %}Update Page Settings{% endif %}
         </button>
     </form>
 </div>
 
-<div class="bg-white rounded-lg shadow p-6">
+<div class="bg-white rounded-lg shadow p-6 mb-8">
     <div class="flex justify-between items-center mb-6">
-        <h3 class="text-xl font-bold text-primary">Page Sections</h3>
+        <h3 class="text-xl font-bold text-primary">
+            {% if lang == 'fr' %}Sections de la page{% else %}Page Sections{% endif %}
+        </h3>
         <div class="flex gap-3">
-            <select id="languageFilter" onchange="filterSections()" class="px-4 py-2 border border-gray-300 rounded text-sm">
-                <option value="all">All Languages</option>
+            <select id="languageFilter" onchange="filterSections()" class="px-4 py-2 border border-gray-300 rounded-lg text-sm">
+                <option value="all">{% if lang == 'fr' %}Toutes les langues{% else %}All Languages{% endif %}</option>
                 <option value="fr">Français</option>
                 <option value="en">English</option>
             </select>
-            <button onclick="showAddSection()" class="bg-accent text-white px-4 py-2 rounded hover:bg-primary transition-colors text-sm">
-                + Add Section
+            <button onclick="showAddSection()" class="bg-accent text-white px-4 py-2 rounded-full hover:bg-primary transition-colors text-sm font-semibold">
+                + {% if lang == 'fr' %}Ajouter une section{% else %}Add Section{% endif %}
             </button>
         </div>
     </div>
     
-    <div id="addSectionForm" class="hidden mb-6 p-4 bg-gray-50 rounded border border-gray-200">
-        <h4 class="font-semibold mb-4">Add New Section</h4>
-        <form method="POST" action="/admin/section/create" class="space-y-3">
+    <div id="addSectionForm" class="hidden mb-6 p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg border-2 border-blue-200">
+        <h4 class="font-bold text-lg mb-4 text-blue-900">{% if lang == 'fr' %}Nouvelle section{% else %}Add New Section{% endif %}</h4>
+        <form method="POST" action="/admin/section/create" class="space-y-4">
             <input type="hidden" name="page_id" value="{{ page.id }}">
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Section Type</label>
-                    <select name="section_type" class="w-full px-3 py-2 border border-gray-300 rounded text-sm">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        {% if lang == 'fr' %}Type de section{% else %}Section Type{% endif %}
+                    </label>
+                    <select name="section_type" class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:border-accent focus:outline-none">
                         <option value="text">Text</option>
                         <option value="hero">Hero</option>
                         <option value="service">Service</option>
@@ -68,8 +106,10 @@
                 </div>
                 
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Language</label>
-                    <select name="language_code" class="w-full px-3 py-2 border border-gray-300 rounded text-sm">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        {% if lang == 'fr' %}Langue{% else %}Language{% endif %}
+                    </label>
+                    <select name="language_code" class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:border-accent focus:outline-none">
                         <option value="fr">Français</option>
                         <option value="en">English</option>
                     </select>
@@ -77,21 +117,25 @@
             </div>
             
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Heading</label>
-                <input type="text" name="heading" class="w-full px-3 py-2 border border-gray-300 rounded text-sm">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                    {% if lang == 'fr' %}Titre{% else %}Heading{% endif %}
+                </label>
+                <input type="text" name="heading" class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:border-accent focus:outline-none">
             </div>
             
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Content</label>
-                <textarea name="content" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded text-sm"></textarea>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                    {% if lang == 'fr' %}Contenu{% else %}Content{% endif %}
+                </label>
+                <textarea name="content" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:border-accent focus:outline-none"></textarea>
             </div>
             
             <div class="flex gap-2">
-                <button type="submit" class="bg-accent text-white px-4 py-2 rounded hover:bg-primary transition-colors text-sm">
-                    Create Section
+                <button type="submit" class="bg-accent text-white px-6 py-3 rounded-full hover:bg-primary transition-colors text-sm font-semibold">
+                    {% if lang == 'fr' %}Créer la section{% else %}Create Section{% endif %}
                 </button>
-                <button type="button" onclick="hideAddSection()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 transition-colors text-sm">
-                    Cancel
+                <button type="button" onclick="hideAddSection()" class="bg-gray-300 text-gray-700 px-6 py-3 rounded-full hover:bg-gray-400 transition-colors text-sm font-semibold">
+                    {% if lang == 'fr' %}Annuler{% else %}Cancel{% endif %}
                 </button>
             </div>
         </form>
@@ -99,80 +143,117 @@
     
     <div class="space-y-6">
         {% for section in sections %}
-        <div class="section-item border border-gray-200 rounded p-4 {{ 'opacity-50' if not section.is_active }}" data-language="{{ section.language_code }}">
+        <div class="section-item border-2 {{ 'border-green-300 bg-green-50' if section.is_active else 'border-gray-200 bg-gray-50 opacity-60' }} rounded-lg p-6" data-language="{{ section.language_code }}">
             <div class="flex justify-between items-start mb-4">
-                <div>
-                    <span class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs font-semibold">{{ section.section_type }}</span>
-                    <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-semibold ml-2">{{ section.language_code.upper() }}</span>
-                    <span class="ml-2 {{ 'text-green-600' if section.is_active else 'text-gray-500' }} text-xs">{{ 'Active' if section.is_active else 'Inactive' }}</span>
+                <div class="flex gap-2">
+                    <span class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase">{{ section.section_type }}</span>
+                    <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold">{{ section.language_code.upper() }}</span>
+                    <span class="px-3 py-1 rounded-full text-xs font-bold {{ 'bg-green-500 text-white' if section.is_active else 'bg-gray-400 text-white' }}">
+                        {{ '✓ Active' if section.is_active else '✗ Inactive' }}
+                    </span>
                 </div>
-                <form method="POST" action="/admin/section/{{ section.id }}/delete" onsubmit="return confirm('Delete this section?')">
-                    <button type="submit" class="text-red-600 hover:text-red-800 text-sm">Delete</button>
+                <form method="POST" action="/admin/section/{{ section.id }}/delete" onsubmit="return confirm('{% if lang == 'fr' %}Supprimer cette section ?{% else %}Delete this section?{% endif %}')">
+                    <button type="submit" class="text-red-600 hover:text-red-800 text-sm font-semibold">🗑️ {% if lang == 'fr' %}Supprimer{% else %}Delete{% endif %}</button>
                 </form>
             </div>
             
-            <form method="POST" action="/admin/section/{{ section.id }}/update" class="space-y-3">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <form method="POST" action="/admin/section/{{ section.id }}/update" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Heading</label>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            {% if lang == 'fr' %}Titre principal{% else %}Heading{% endif %}
+                        </label>
                         <input type="text" name="heading" value="{{ section.heading or '' }}" 
-                               class="w-full px-3 py-2 border border-gray-300 rounded text-sm">
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:border-accent focus:outline-none">
                     </div>
                     
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Subheading</label>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            {% if lang == 'fr' %}Sous-titre{% else %}Subheading{% endif %}
+                        </label>
                         <input type="text" name="subheading" value="{{ section.subheading or '' }}" 
-                               class="w-full px-3 py-2 border border-gray-300 rounded text-sm">
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:border-accent focus:outline-none">
                     </div>
                 </div>
                 
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Content</label>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        {% if lang == 'fr' %}Contenu{% else %}Content{% endif %}
+                    </label>
                     <textarea name="content" rows="4" 
-                              class="w-full px-3 py-2 border border-gray-300 rounded text-sm">{{ section.content or '' }}</textarea>
+                              class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:border-accent focus:outline-none">{{ section.content or '' }}</textarea>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Button Text</label>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            {% if lang == 'fr' %}Texte du bouton{% else %}Button Text{% endif %}
+                        </label>
                         <input type="text" name="button_text" value="{{ section.button_text or '' }}" 
-                               class="w-full px-3 py-2 border border-gray-300 rounded text-sm">
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:border-accent focus:outline-none">
                     </div>
                     
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Button Link</label>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            {% if lang == 'fr' %}Lien du bouton{% else %}Button Link{% endif %}
+                        </label>
                         <input type="text" name="button_link" value="{{ section.button_link or '' }}" 
-                               class="w-full px-3 py-2 border border-gray-300 rounded text-sm">
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:border-accent focus:outline-none"
+                               placeholder="/contact">
                     </div>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Image URL (principale)</label>
-                        <input type="text" name="image_url" value="{{ section.image_url or '' }}" 
-                               class="w-full px-3 py-2 border border-gray-300 rounded text-sm" 
-                               placeholder="/static/images/filename.jpg">
-                        <p class="text-xs text-gray-500 mt-1">Exemple: /static/images/modern_construction__a427a1cf.jpg</p>
+                <div class="bg-blue-50 border-2 border-blue-200 rounded-lg p-4 mb-4">
+                    <h5 class="font-bold text-sm text-blue-900 mb-3">📸 {% if lang == 'fr' %}Gestion des images{% else %}Image Management{% endif %}</h5>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                {% if lang == 'fr' %}Image principale{% else %}Main Image{% endif %}
+                            </label>
+                            <input type="text" name="image_url" value="{{ section.image_url or '' }}" 
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:border-accent focus:outline-none" 
+                                   placeholder="/static/images/filename.jpg">
+                            {% if section.image_url %}
+                            <div class="mt-2">
+                                <img src="{{ section.image_url }}" alt="Preview" class="image-preview" onerror="this.style.display='none'" onload="showResolution(this, 'res1_{{ section.id }}')">
+                                <p id="res1_{{ section.id }}" class="text-xs mt-1"></p>
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                {% if lang == 'fr' %}Image d'arrière-plan{% else %}Background Image{% endif %}
+                            </label>
+                            <input type="text" name="background_image" value="{{ section.background_image or '' }}" 
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:border-accent focus:outline-none" 
+                                   placeholder="/static/images/background.jpg">
+                            {% if section.background_image %}
+                            <div class="mt-2">
+                                <img src="{{ section.background_image }}" alt="Preview" class="image-preview" onerror="this.style.display='none'" onload="showResolution(this, 'res2_{{ section.id }}')">
+                                <p id="res2_{{ section.id }}" class="text-xs mt-1"></p>
+                            </div>
+                            {% endif %}
+                        </div>
                     </div>
                     
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Background Image (arrière-plan)</label>
-                        <input type="text" name="background_image" value="{{ section.background_image or '' }}" 
-                               class="w-full px-3 py-2 border border-gray-300 rounded text-sm" 
-                               placeholder="/static/images/background.jpg">
-                        <p class="text-xs text-gray-500 mt-1">Image en arrière-plan avec opacité</p>
-                    </div>
+                    <p class="text-xs text-blue-700 font-medium">
+                        💡 {% if lang == 'fr' %}Résolution recommandée: 1920x1080px pour les images hero, 800x600px pour les cartes de service{% else %}Recommended resolution: 1920x1080px for hero images, 800x600px for service cards{% endif %}
+                    </p>
                 </div>
                 
-                <div class="flex items-center justify-between">
+                <div class="flex items-center justify-between pt-4 border-t border-gray-200">
                     <div class="flex items-center">
                         <input type="checkbox" name="is_active" id="section_{{ section.id }}_active" {{ 'checked' if section.is_active }} 
                                class="w-4 h-4 text-accent border-gray-300 rounded">
-                        <label for="section_{{ section.id }}_active" class="ml-2 text-sm font-semibold text-gray-700">Section Active</label>
+                        <label for="section_{{ section.id }}_active" class="ml-2 text-sm font-semibold text-gray-700">
+                            {% if lang == 'fr' %}Section active{% else %}Section Active{% endif %}
+                        </label>
                     </div>
                     
-                    <button type="submit" class="bg-accent text-white px-4 py-2 rounded hover:bg-primary transition-colors text-sm">
-                        Update Section
+                    <button type="submit" class="bg-accent text-white px-6 py-3 rounded-full hover:bg-primary transition-colors text-sm font-semibold">
+                        {% if lang == 'fr' %}💾 Sauvegarder{% else %}💾 Update Section{% endif %}
                     </button>
                 </div>
             </form>
@@ -181,26 +262,49 @@
     </div>
 </div>
 
-<div class="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
-    <h3 class="text-lg font-bold text-blue-800 mb-3">📝 Guide d'Utilisation</h3>
-    <div class="text-sm text-blue-700 space-y-2">
-        <p><strong>Images principales:</strong> Utilisez le champ "Image URL" pour les images de contenu visibles (ex: photos de services)</p>
-        <p><strong>Images d'arrière-plan:</strong> Utilisez le champ "Background Image" pour les images en fond avec opacité</p>
-        <p><strong>Gestion des langues:</strong> Créez deux sections identiques (même type, même ordre) avec des contenus FR et EN</p>
-        <p><strong>Chemins d'images disponibles:</strong></p>
-        <ul class="list-disc list-inside ml-4 mt-2">
-            <li>/static/images/modern_construction__a427a1cf.jpg</li>
-            <li>/static/images/modern_construction__e4781d44.jpg</li>
-            <li>/static/images/professional_electri_984ae0e8.jpg</li>
-            <li>/static/images/plumber_fixing_pipes_d4c8be18.jpg</li>
-            <li>/static/images/painter_painting_wal_be02294b.jpg</li>
-            <li>/static/images/hvac_air_conditionin_8336dff9.jpg</li>
-            <li>/static/images/swimming_pool_mainte_0698f0ec.jpg</li>
-        </ul>
+<div class="mt-8 bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-300 rounded-lg p-6">
+    <h3 class="text-lg font-bold text-blue-900 mb-4">📚 {% if lang == 'fr' %}Guide d'utilisation{% else %}Usage Guide{% endif %}</h3>
+    <div class="text-sm text-blue-800 space-y-3">
+        <div class="bg-white rounded-lg p-3">
+            <p class="font-bold mb-1">{% if lang == 'fr' %}🖼️ Images principales{% else %}🖼️ Main Images{% endif %}:</p>
+            <p>{% if lang == 'fr' %}Pour les images de contenu visibles (photos de services, produits){% else %}For visible content images (service photos, products){% endif %}</p>
+        </div>
+        
+        <div class="bg-white rounded-lg p-3">
+            <p class="font-bold mb-1">{% if lang == 'fr' %}🎨 Images d'arrière-plan{% else %}🎨 Background Images{% endif %}:</p>
+            <p>{% if lang == 'fr' %}Pour les images en fond avec opacité et gradients{% else %}For background images with opacity and gradients{% endif %}</p>
+        </div>
+        
+        <div class="bg-white rounded-lg p-3">
+            <p class="font-bold mb-1">{% if lang == 'fr' %}🌍 Gestion multilingue{% else %}🌍 Multilingual Management{% endif %}:</p>
+            <p>{% if lang == 'fr' %}Créez deux sections identiques (même type, même ordre) avec contenus FR et EN séparés{% else %}Create two identical sections (same type, same order) with separate FR and EN content{% endif %}</p>
+        </div>
+        
+        <div class="bg-white rounded-lg p-3">
+            <p class="font-bold mb-1">{% if lang == 'fr' %}📁 Images disponibles{% else %}📁 Available Images{% endif %}:</p>
+            <ul class="list-disc list-inside ml-4 mt-2 space-y-1">
+                <li>/static/images/modern_construction__a427a1cf.jpg</li>
+                <li>/static/images/modern_construction__e4781d44.jpg</li>
+                <li>/static/images/professional_electri_984ae0e8.jpg</li>
+                <li>/static/images/plumber_fixing_pipes_d4c8be18.jpg</li>
+                <li>/static/images/painter_painting_wal_be02294b.jpg</li>
+                <li>/static/images/hvac_air_conditionin_8336dff9.jpg</li>
+                <li>/static/images/swimming_pool_mainte_0698f0ec.jpg</li>
+            </ul>
+        </div>
     </div>
 </div>
 
 <script>
+let currentLang = '{{ lang or "fr" }}';
+
+function setLang(lang) {
+    currentLang = lang;
+    const url = new URL(window.location);
+    url.searchParams.set('lang', lang);
+    window.location = url.toString();
+}
+
 function showAddSection() {
     document.getElementById('addSectionForm').classList.remove('hidden');
 }
@@ -220,6 +324,13 @@ function filterSections() {
             section.style.display = 'none';
         }
     });
+}
+
+function showResolution(img, targetId) {
+    const target = document.getElementById(targetId);
+    if (target && img.naturalWidth && img.naturalHeight) {
+        target.innerHTML = `<span class="resolution-badge">${img.naturalWidth} × ${img.naturalHeight}px</span>`;
+    }
 }
 </script>
 {% endblock %}

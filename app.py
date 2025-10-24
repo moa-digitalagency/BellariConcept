@@ -172,20 +172,23 @@ def admin_logout():
 def admin_dashboard():
     pages = Page.query.all()
     images = Image.query.order_by(Image.uploaded_at.desc()).limit(10).all()
-    return render_template('admin/dashboard.html', pages=pages, images=images)
+    lang = request.args.get('lang', 'fr')
+    return render_template('admin/dashboard.html', pages=pages, images=images, lang=lang)
 
 @app.route('/admin/pages')
 @login_required
 def admin_pages():
     pages = Page.query.all()
-    return render_template('admin/pages.html', pages=pages)
+    lang = request.args.get('lang', 'fr')
+    return render_template('admin/pages.html', pages=pages, lang=lang)
 
 @app.route('/admin/page/<int:page_id>')
 @login_required
 def admin_edit_page(page_id):
     page = Page.query.get_or_404(page_id)
     sections = Section.query.filter_by(page_id=page_id).order_by(Section.order_index).all()
-    return render_template('admin/edit_page.html', page=page, sections=sections)
+    lang = request.args.get('lang', 'fr')
+    return render_template('admin/edit_page.html', page=page, sections=sections, lang=lang)
 
 @app.route('/admin/page/<int:page_id>/update', methods=['POST'])
 @login_required
