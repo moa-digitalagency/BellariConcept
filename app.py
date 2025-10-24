@@ -198,8 +198,9 @@ def admin_update_page(page_id):
     page.meta_description = request.form.get('meta_description')
     page.is_active = 'is_active' in request.form
     db.session.commit()
+    lang = request.form.get('lang', request.args.get('lang', 'fr'))
     flash('Page updated successfully', 'success')
-    return redirect(url_for('admin_edit_page', page_id=page_id))
+    return redirect(url_for('admin_edit_page', page_id=page_id, lang=lang))
 
 @app.route('/admin/section/<int:section_id>/update', methods=['POST'])
 @login_required
@@ -214,8 +215,9 @@ def admin_update_section(section_id):
     section.background_image = request.form.get('background_image')
     section.is_active = 'is_active' in request.form
     db.session.commit()
+    lang = request.form.get('lang', request.args.get('lang', 'fr'))
     flash('Section updated successfully', 'success')
-    return redirect(url_for('admin_edit_page', page_id=section.page_id))
+    return redirect(url_for('admin_edit_page', page_id=section.page_id, lang=lang))
 
 @app.route('/admin/section/create', methods=['POST'])
 @login_required
@@ -231,8 +233,9 @@ def admin_create_section():
     )
     db.session.add(section)
     db.session.commit()
+    lang = request.form.get('lang', request.args.get('lang', 'fr'))
     flash('Section created successfully', 'success')
-    return redirect(url_for('admin_edit_page', page_id=page_id))
+    return redirect(url_for('admin_edit_page', page_id=page_id, lang=lang))
 
 @app.route('/admin/section/<int:section_id>/delete', methods=['POST'])
 @login_required
@@ -241,8 +244,9 @@ def admin_delete_section(section_id):
     page_id = section.page_id
     db.session.delete(section)
     db.session.commit()
+    lang = request.form.get('lang', request.args.get('lang', 'fr'))
     flash('Section deleted successfully', 'success')
-    return redirect(url_for('admin_edit_page', page_id=page_id))
+    return redirect(url_for('admin_edit_page', page_id=page_id, lang=lang))
 
 @app.route('/admin/images')
 @login_required
