@@ -10,6 +10,7 @@ A modern, professional website for Bellari Concept with a complete Content Manag
   - Built modern frontend with Tailwind CSS
   - Added admin authentication system
   - Created 5 main pages: Home, About, Services, Portfolio, Contact
+  - **Security improvements**: Protected database initialization, persistent SECRET_KEY, admin-only access controls
 
 ## Tech Stack
 - **Frontend**: HTML, Tailwind CSS (CDN), Vanilla JavaScript
@@ -59,14 +60,16 @@ A modern, professional website for Bellari Concept with a complete Content Manag
 ## Admin Access
 - URL: `/admin/login`
 - Default credentials: username=`admin`, password=`admin123`
-- **IMPORTANT**: Change default password in production
+- **IMPORTANT**: Change default password immediately after first login
 
 ## Database Initialization
-Visit `/init-db` to initialize the database with default data and admin user.
+Run `python init_database.py` for initial setup (one-time only).
+The `/admin/init-db` route is protected and disabled by default for security.
 
 ## Environment Variables
 - `DATABASE_URL` - PostgreSQL connection string (auto-configured)
-- `SECRET_KEY` - Flask secret key (auto-generated)
+- `SECRET_KEY` - Flask secret key (set for persistent sessions)
+- `ADMIN_INIT_ALLOWED` - Enable/disable database initialization endpoint (default: false)
 
 ## User Preferences
 None specified yet.

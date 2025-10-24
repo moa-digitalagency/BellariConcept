@@ -9,11 +9,12 @@ from PIL import Image as PILImage
 import secrets
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = secrets.token_hex(16)
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', secrets.token_hex(16))
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+app.config['ADMIN_INIT_ALLOWED'] = os.getenv('ADMIN_INIT_ALLOWED', 'false').lower() == 'true'
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 
@@ -281,12 +282,18 @@ def admin_delete_image(image_id):
     flash('Image deleted successfully', 'success')
     return redirect(url_for('admin_images'))
 
-@app.route('/init-db')
+@app.route('/admin/init-db')
+@login_required
 def init_db():
+    if not app.config['ADMIN_INIT_ALLOWED']:
+        flash('Database initialization is disabled for security reasons', 'error')
+        return redirect(url_for('admin_dashboard'))
+    
     with app.app_context():
         db.create_all()
         
         if not User.query.first():
+            flash('WARNING: Using default admin credentials. CHANGE PASSWORD IMMEDIATELY!', 'error')
             admin = User(
                 username='admin',
                 password_hash=generate_password_hash('admin123')
@@ -415,7 +422,8 @@ def init_db():
                         db.session.add(section)
         
         db.session.commit()
-        return 'Database initialized! Default admin credentials: username=admin, password=admin123'
+        flash('Database initialized successfully!', 'success')
+        return redirect(url_for('admin_dashboard'))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
