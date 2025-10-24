@@ -60,8 +60,8 @@
     <nav class="fixed w-full bg-white/95 backdrop-blur-sm z-50 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
-                <a href="/" class="font-display text-2xl md:text-3xl font-bold text-primary tracking-tight">
-                    BELLARI <span class="text-accent">CONCEPT</span>
+                <a href="/" class="flex items-center">
+                    <img src="{{ url_for('static', filename='logo.png') }}" alt="Bellari Concept" class="h-12 md:h-14">
                 </a>
                 
                 <button id="mobile-menu-button" class="md:hidden text-primary focus:outline-none">
@@ -71,25 +71,52 @@
                 </button>
                 
                 <div class="hidden md:flex space-x-8">
-                    <a href="/" class="text-sm font-medium tracking-wide hover:text-accent transition-colors duration-300 {% if request.path == '/' %}text-accent{% endif %}">HOME</a>
-                    <a href="/about" class="text-sm font-medium tracking-wide hover:text-accent transition-colors duration-300 {% if request.path == '/about' %}text-accent{% endif %}">ABOUT</a>
-                    <a href="/services" class="text-sm font-medium tracking-wide hover:text-accent transition-colors duration-300 {% if request.path == '/services' %}text-accent{% endif %}">SERVICES</a>
-                    <a href="/portfolio" class="text-sm font-medium tracking-wide hover:text-accent transition-colors duration-300 {% if request.path == '/portfolio' %}text-accent{% endif %}">PORTFOLIO</a>
-                    <a href="/contact" class="text-sm font-medium tracking-wide hover:text-accent transition-colors duration-300 {% if request.path == '/contact' %}text-accent{% endif %}">CONTACT</a>
+                    {% if lang == 'fr' %}
+                        <a href="/" class="text-sm font-medium tracking-wide hover:text-accent transition-colors duration-300 {% if request.path == '/' %}text-accent{% endif %}">ACCUEIL</a>
+                        <a href="/about" class="text-sm font-medium tracking-wide hover:text-accent transition-colors duration-300 {% if request.path == '/about' %}text-accent{% endif %}">À PROPOS</a>
+                        <a href="/services" class="text-sm font-medium tracking-wide hover:text-accent transition-colors duration-300 {% if request.path == '/services' %}text-accent{% endif %}">SERVICES</a>
+                        <a href="/portfolio" class="text-sm font-medium tracking-wide hover:text-accent transition-colors duration-300 {% if request.path == '/portfolio' %}text-accent{% endif %}">PORTFOLIO</a>
+                        <a href="/contact" class="text-sm font-medium tracking-wide hover:text-accent transition-colors duration-300 {% if request.path == '/contact' %}text-accent{% endif %}">CONTACT</a>
+                    {% else %}
+                        <a href="/" class="text-sm font-medium tracking-wide hover:text-accent transition-colors duration-300 {% if request.path == '/' %}text-accent{% endif %}">HOME</a>
+                        <a href="/about" class="text-sm font-medium tracking-wide hover:text-accent transition-colors duration-300 {% if request.path == '/about' %}text-accent{% endif %}">ABOUT</a>
+                        <a href="/services" class="text-sm font-medium tracking-wide hover:text-accent transition-colors duration-300 {% if request.path == '/services' %}text-accent{% endif %}">SERVICES</a>
+                        <a href="/portfolio" class="text-sm font-medium tracking-wide hover:text-accent transition-colors duration-300 {% if request.path == '/portfolio' %}text-accent{% endif %}">PORTFOLIO</a>
+                        <a href="/contact" class="text-sm font-medium tracking-wide hover:text-accent transition-colors duration-300 {% if request.path == '/contact' %}text-accent{% endif %}">CONTACT</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
         
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
             <div class="px-4 pt-2 pb-4 space-y-3">
-                <a href="/" class="block py-2 text-sm font-medium tracking-wide hover:text-accent transition-colors {% if request.path == '/' %}text-accent{% endif %}">HOME</a>
-                <a href="/about" class="block py-2 text-sm font-medium tracking-wide hover:text-accent transition-colors {% if request.path == '/about' %}text-accent{% endif %}">ABOUT</a>
-                <a href="/services" class="block py-2 text-sm font-medium tracking-wide hover:text-accent transition-colors {% if request.path == '/services' %}text-accent{% endif %}">SERVICES</a>
-                <a href="/portfolio" class="block py-2 text-sm font-medium tracking-wide hover:text-accent transition-colors {% if request.path == '/portfolio' %}text-accent{% endif %}">PORTFOLIO</a>
-                <a href="/contact" class="block py-2 text-sm font-medium tracking-wide hover:text-accent transition-colors {% if request.path == '/contact' %}text-accent{% endif %}">CONTACT</a>
+                {% if lang == 'fr' %}
+                    <a href="/" class="block py-2 text-sm font-medium tracking-wide hover:text-accent transition-colors {% if request.path == '/' %}text-accent{% endif %}">ACCUEIL</a>
+                    <a href="/about" class="block py-2 text-sm font-medium tracking-wide hover:text-accent transition-colors {% if request.path == '/about' %}text-accent{% endif %}">À PROPOS</a>
+                    <a href="/services" class="block py-2 text-sm font-medium tracking-wide hover:text-accent transition-colors {% if request.path == '/services' %}text-accent{% endif %}">SERVICES</a>
+                    <a href="/portfolio" class="block py-2 text-sm font-medium tracking-wide hover:text-accent transition-colors {% if request.path == '/portfolio' %}text-accent{% endif %}">PORTFOLIO</a>
+                    <a href="/contact" class="block py-2 text-sm font-medium tracking-wide hover:text-accent transition-colors {% if request.path == '/contact' %}text-accent{% endif %}">CONTACT</a>
+                {% else %}
+                    <a href="/" class="block py-2 text-sm font-medium tracking-wide hover:text-accent transition-colors {% if request.path == '/' %}text-accent{% endif %}">HOME</a>
+                    <a href="/about" class="block py-2 text-sm font-medium tracking-wide hover:text-accent transition-colors {% if request.path == '/about' %}text-accent{% endif %}">ABOUT</a>
+                    <a href="/services" class="block py-2 text-sm font-medium tracking-wide hover:text-accent transition-colors {% if request.path == '/services' %}text-accent{% endif %}">SERVICES</a>
+                    <a href="/portfolio" class="block py-2 text-sm font-medium tracking-wide hover:text-accent transition-colors {% if request.path == '/portfolio' %}text-accent{% endif %}">PORTFOLIO</a>
+                    <a href="/contact" class="block py-2 text-sm font-medium tracking-wide hover:text-accent transition-colors {% if request.path == '/contact' %}text-accent{% endif %}">CONTACT</a>
+                {% endif %}
             </div>
         </div>
     </nav>
+    
+    <div class="fixed bottom-6 left-6 z-50">
+        <div class="bg-white shadow-lg rounded-full p-2 flex gap-2 border border-gray-200">
+            <a href="/set_language/fr" class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 {% if lang == 'fr' %}bg-accent text-white{% else %}text-gray-600 hover:bg-gray-100{% endif %}">
+                FR
+            </a>
+            <a href="/set_language/en" class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 {% if lang == 'en' %}bg-accent text-white{% else %}text-gray-600 hover:bg-gray-100{% endif %}">
+                EN
+            </a>
+        </div>
+    </div>
 
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -111,33 +138,56 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
                 <div>
-                    <h3 class="font-display text-2xl font-bold mb-4">BELLARI <span class="text-accent">CONCEPT</span></h3>
-                    <p class="text-gray-300 text-sm leading-relaxed">Creating timeless spaces that inspire and endure through sophisticated design and meticulous craftsmanship.</p>
+                    <img src="{{ url_for('static', filename='logo.png') }}" alt="Bellari Concept" class="h-16 mb-4 brightness-0 invert">
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        {% if lang == 'fr' %}
+                            Votre partenaire de choix à Marrakech pour tous vos projets de construction et de rénovation.
+                        {% else %}
+                            Your partner of choice in Marrakech for all your construction and renovation projects.
+                        {% endif %}
+                    </p>
                 </div>
                 
                 <div>
-                    <h4 class="font-semibold text-lg mb-4 tracking-wide">QUICK LINKS</h4>
+                    <h4 class="font-semibold text-lg mb-4 tracking-wide">
+                        {% if lang == 'fr' %}LIENS RAPIDES{% else %}QUICK LINKS{% endif %}
+                    </h4>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="/" class="text-gray-300 hover:text-accent transition-colors">Home</a></li>
-                        <li><a href="/about" class="text-gray-300 hover:text-accent transition-colors">About Us</a></li>
-                        <li><a href="/services" class="text-gray-300 hover:text-accent transition-colors">Services</a></li>
-                        <li><a href="/portfolio" class="text-gray-300 hover:text-accent transition-colors">Portfolio</a></li>
-                        <li><a href="/contact" class="text-gray-300 hover:text-accent transition-colors">Contact</a></li>
+                        {% if lang == 'fr' %}
+                            <li><a href="/" class="text-gray-300 hover:text-accent transition-colors">Accueil</a></li>
+                            <li><a href="/about" class="text-gray-300 hover:text-accent transition-colors">À Propos</a></li>
+                            <li><a href="/services" class="text-gray-300 hover:text-accent transition-colors">Services</a></li>
+                            <li><a href="/portfolio" class="text-gray-300 hover:text-accent transition-colors">Portfolio</a></li>
+                            <li><a href="/contact" class="text-gray-300 hover:text-accent transition-colors">Contact</a></li>
+                        {% else %}
+                            <li><a href="/" class="text-gray-300 hover:text-accent transition-colors">Home</a></li>
+                            <li><a href="/about" class="text-gray-300 hover:text-accent transition-colors">About Us</a></li>
+                            <li><a href="/services" class="text-gray-300 hover:text-accent transition-colors">Services</a></li>
+                            <li><a href="/portfolio" class="text-gray-300 hover:text-accent transition-colors">Portfolio</a></li>
+                            <li><a href="/contact" class="text-gray-300 hover:text-accent transition-colors">Contact</a></li>
+                        {% endif %}
                     </ul>
                 </div>
                 
                 <div>
                     <h4 class="font-semibold text-lg mb-4 tracking-wide">CONTACT</h4>
                     <ul class="space-y-2 text-sm text-gray-300">
-                        <li>Email: info@bellariconcept.com</li>
-                        <li>Phone: +1 (555) 123-4567</li>
-                        <li>123 Design Avenue, Suite 100<br>New York, NY 10001</li>
+                        <li>Email: bellari.groupe@gmail.com</li>
+                        {% if lang == 'fr' %}
+                            <li>Téléphone: +212 6 35 50 24 61</li>
+                            <li>Heures: 8:00 – 18:00</li>
+                            <li>Localisation: Marrakech, Maroc</li>
+                        {% else %}
+                            <li>Phone: +212 6 35 50 24 61</li>
+                            <li>Hours: 8:00 – 18:00</li>
+                            <li>Location: Marrakech, Morocco</li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
             
             <div class="border-t border-gray-700 mt-12 pt-8 text-center text-sm text-gray-400">
-                <p>&copy; 2024 Bellari Concept. All rights reserved.</p>
+                <p>&copy; 2025 Bellari Concept. {% if lang == 'fr' %}Tous droits réservés{% else %}All rights reserved{% endif %}.</p>
             </div>
         </div>
     </footer>
