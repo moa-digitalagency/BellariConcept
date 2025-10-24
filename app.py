@@ -58,6 +58,7 @@ class Section(db.Model):
     button_text = db.Column(db.String(100))
     button_link = db.Column(db.String(200))
     image_url = db.Column(db.String(300))
+    background_image = db.Column(db.String(300))
     background_color = db.Column(db.String(20))
     is_active = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
@@ -207,6 +208,7 @@ def admin_update_section(section_id):
     section.button_text = request.form.get('button_text')
     section.button_link = request.form.get('button_link')
     section.image_url = request.form.get('image_url')
+    section.background_image = request.form.get('background_image')
     section.is_active = 'is_active' in request.form
     db.session.commit()
     flash('Section updated successfully', 'success')
@@ -219,6 +221,7 @@ def admin_create_section():
     section = Section(
         page_id=page_id,
         section_type=request.form.get('section_type', 'text'),
+        language_code=request.form.get('language_code', 'fr'),
         heading=request.form.get('heading'),
         content=request.form.get('content'),
         order_index=Section.query.filter_by(page_id=page_id).count()
