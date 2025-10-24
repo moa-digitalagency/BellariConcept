@@ -354,6 +354,8 @@
     </div>
 </section>
 
+{% for section in sections %}
+    {% if section.section_type == 'why_us' %}
 <!-- Section Pourquoi Nous Choisir avec Stats -->
 <section class="section-spacing bg-gradient-to-br from-primary via-primary/95 to-textDark text-white relative overflow-hidden">
     <!-- Background Image with low opacity -->
@@ -369,9 +371,15 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center mb-16">
             <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">
-                {% if lang == 'fr' %}Pourquoi Bellari Concept ?{% else %}Why Bellari Concept?{% endif %}
+                {{ section.heading }}
             </h2>
             <div class="w-24 h-1.5 bg-accent mx-auto"></div>
+            {% if section.subheading %}
+            <p class="text-xl text-white/90 mt-4">{{ section.subheading }}</p>
+            {% endif %}
+            {% if section.content %}
+            <p class="text-lg text-white/80 mt-4 max-w-3xl mx-auto">{{ section.content }}</p>
+            {% endif %}
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
@@ -459,7 +467,11 @@
         </div>
     </div>
 </section>
+    {% endif %}
+{% endfor %}
 
+{% for section in sections %}
+    {% if section.section_type == 'cta' %}
 <!-- Call to Action Final -->
 <section class="section-spacing bg-gradient-to-r from-accent via-accent/90 to-accent text-white relative overflow-hidden">
     <div class="absolute inset-0 opacity-20">
@@ -468,18 +480,10 @@
     
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-            {% if lang == 'fr' %}
-                Prêt à Démarrer Votre Projet ?
-            {% else %}
-                Ready to Start Your Project?
-            {% endif %}
+            {{ section.heading }}
         </h2>
         <p class="text-xl md:text-2xl mb-10 text-white/90">
-            {% if lang == 'fr' %}
-                Contactez-nous dès aujourd'hui pour un devis gratuit et personnalisé
-            {% else %}
-                Contact us today for a free personalized quote
-            {% endif %}
+            {{ section.subheading }}
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="/contact" class="inline-block bg-primary text-white px-12 py-5 text-sm font-bold tracking-wider hover:bg-primary/90 transition-all duration-300 shadow-2xl transform hover:-translate-y-1 rounded-full">
@@ -489,10 +493,8 @@
                 {% if lang == 'fr' %}APPELEZ-NOUS{% else %}CALL US{% endif %}
             </a>
         </div>
-        <p class="mt-8 text-white/80">
-            <span class="font-semibold">{% if lang == 'fr' %}Téléphone:{% else %}Phone:{% endif %}</span> +212 6 35 50 24 61<br>
-            <span class="font-semibold">Email:</span> bellari.groupe@gmail.com
-        </p>
     </div>
 </section>
+    {% endif %}
+{% endfor %}
 {% endblock %}
