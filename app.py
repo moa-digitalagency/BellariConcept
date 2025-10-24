@@ -12,6 +12,10 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("SESSION_SECRET")
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+    "pool_recycle": 300,
+    "pool_pre_ping": True,
+}
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 app.config['ADMIN_INIT_ALLOWED'] = os.getenv('ADMIN_INIT_ALLOWED', 'false').lower() == 'true'
