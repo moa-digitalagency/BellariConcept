@@ -34,6 +34,22 @@ login_manager.login_view = 'admin_login'
 def get_language():
     return session.get('language', app.config['DEFAULT_LANGUAGE'])
 
+@app.context_processor
+def inject_site_settings():
+    settings_dict = {}
+    for setting in SiteSettings.query.all():
+        settings_dict[setting.key] = setting.value
+    
+    logo_url = settings_dict.get('site_logo', '/static/logo.png')
+    return {
+        'site_settings': settings_dict,
+        'site_logo': logo_url,
+        'site_name': settings_dict.get(f'site_name_{get_language()}', 'Bellari Concept'),
+        'meta_keywords': settings_dict.get('default_meta_keywords', ''),
+        'og_image': settings_dict.get('default_og_image', ''),
+        'google_analytics_id': settings_dict.get('google_analytics_id', '')
+    }
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
@@ -566,6 +582,79 @@ def init_db():
         db.session.commit()
         flash('Database initialized successfully!', 'success')
         return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/settings', methods=['GET', 'POST'])
+@login_required
+def admin_settings():
+    if request.method == 'POST':
+        settings_to_update = [
+            ('site_logo', request.form.get('site_logo')),
+            ('site_name_fr', request.form.get('site_name_fr')),
+            ('site_name_en', request.form.get('site_name_en')),
+            ('default_meta_keywords', request.form.get('default_meta_keywords')),
+            ('default_og_image', request.form.get('default_og_image')),
+            ('google_analytics_id', request.form.get('google_analytics_id')),
+            ('facebook_url', request.form.get('facebook_url')),
+            ('instagram_url', request.form.get('instagram_url')),
+            ('linkedin_url', request.form.get('linkedin_url'))
+        ]
+        
+        for key, value in settings_to_update:
+            if value is not None:
+                setting = SiteSettings.query.filter_by(key=key).first()
+                if setting:
+                    setting.value = value
+                else:
+                    setting = SiteSettings(key=key, value=value)
+                    db.session.add(setting)
+        
+        db.session.commit()
+        flash('Settings updated successfully', 'success')
+        return redirect(url_for('admin_settings'))
+    
+    settings_dict = {}
+    for setting in SiteSettings.query.all():
+        settings_dict[setting.key] = setting.value
+    
+    images = Image.query.order_by(Image.uploaded_at.desc()).all()
+    return render_template('admin/settings.html', settings=settings_dict, images=images)
+
+@app.route('/admin/upload-logo', methods=['POST'])
+@login_required
+def admin_upload_logo():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file provided'}), 400
+    
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No file selected'}), 400
+    
+    if file and allowed_file(file.filename):
+        filename = 'logo.' + file.filename.rsplit('.', 1)[1].lower()
+        filepath = os.path.join('static', filename)
+        file.save(filepath)
+        
+        setting = SiteSettings.query.filter_by(key='site_logo').first()
+        if setting:
+            setting.value = f'/static/{filename}'
+        else:
+            setting = SiteSettings(key='site_logo', value=f'/static/{filename}')
+            db.session.add(setting)
+        
+        db.session.commit()
+        
+        return jsonify({
+            'success': True,
+            'logo_url': f'/static/{filename}'
+        })
+    
+    return jsonify({'error': 'Invalid file type'}), 400
+
+def get_setting(key, default=''):
+    setting = SiteSettings.query.filter_by(key=key).first()
+    return setting.value if setting else default
+
+app.jinja_env.globals.update(get_setting=get_setting)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

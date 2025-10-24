@@ -3,8 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Bellari Concept{% endblock %}</title>
+    <title>{% block title %}{{ site_name }}{% endblock %}</title>
     <meta name="description" content="{% block meta_description %}Luxury Interior Design & Architecture{% endblock %}">
+    {% if meta_keywords %}<meta name="keywords" content="{{ meta_keywords }}">{% endif %}
+    {% if og_image %}
+    <meta property="og:image" content="{{ og_image }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    {% endif %}
+    <meta property="og:title" content="{% block og_title %}{{ site_name }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Luxury Interior Design & Architecture{% endblock %}">
+    <meta property="og:type" content="website">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -61,7 +70,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <a href="/" class="flex items-center">
-                    <img src="{{ url_for('static', filename='logo.png') }}" alt="Bellari Concept" class="h-12 md:h-14">
+                    <img src="{{ site_logo }}" alt="{{ site_name }}" class="h-12 md:h-14">
                 </a>
                 
                 <button id="mobile-menu-button" class="md:hidden text-primary focus:outline-none">
@@ -138,7 +147,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
                 <div>
-                    <img src="{{ url_for('static', filename='logo.png') }}" alt="Bellari Concept" class="h-16 mb-4 brightness-0 invert">
+                    <img src="{{ site_logo }}" alt="{{ site_name }}" class="h-16 mb-4 brightness-0 invert">
                     <p class="text-gray-300 text-sm leading-relaxed">
                         {% if lang == 'fr' %}
                             Votre partenaire de choix à Marrakech pour tous vos projets de construction et de rénovation.
