@@ -86,6 +86,42 @@ def init_database():
                         'heading': 'Our Expertise',
                         'content': 'Residential Design • Commercial Spaces • Luxury Renovations • Custom Furniture • Art Curation • Project Management',
                         'order_index': 2
+                    },
+                    {
+                        'page_id': home_page.id,
+                        'section_type': 'why_us',
+                        'language_code': 'fr',
+                        'heading': 'Pourquoi Bellari Concept ?',
+                        'subheading': 'Qualité Garantie • Respect des Délais • Équipe Expérimentée',
+                        'content': 'Des matériaux de première qualité et un savoir-faire professionnel. Vos projets livrés dans les temps convenus avec des professionnels qualifiés et passionnés.',
+                        'order_index': 3
+                    },
+                    {
+                        'page_id': home_page.id,
+                        'section_type': 'why_us',
+                        'language_code': 'en',
+                        'heading': 'Why Bellari Concept?',
+                        'subheading': 'Guaranteed Quality • On-Time Delivery • Experienced Team',
+                        'content': 'Premium materials and professional craftsmanship. Your projects delivered on agreed timelines with qualified and passionate professionals.',
+                        'order_index': 3
+                    },
+                    {
+                        'page_id': home_page.id,
+                        'section_type': 'cta',
+                        'language_code': 'fr',
+                        'heading': 'Prêt à Démarrer Votre Projet ?',
+                        'subheading': 'Contactez-nous dès aujourd\'hui pour un devis gratuit et personnalisé',
+                        'content': '',
+                        'order_index': 4
+                    },
+                    {
+                        'page_id': home_page.id,
+                        'section_type': 'cta',
+                        'language_code': 'en',
+                        'heading': 'Ready to Start Your Project?',
+                        'subheading': 'Contact us today for a free personalized quote',
+                        'content': '',
+                        'order_index': 4
                     }
                 ]
                 
