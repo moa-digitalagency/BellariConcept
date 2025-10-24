@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Bellari Concept{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}Luxury Interior Design & Architecture{% endblock %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1A1A1A',
+                        secondary: '#F8F8F8',
+                        accent: '#D4AF37',
+                        textDark: '#333333',
+                        subtle: '#E5E5E5'
+                    },
+                    fontFamily: {
+                        display: ['Playfair Display', 'serif'],
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .section-spacing {
+            padding-top: 5rem;
+            padding-bottom: 5rem;
+        }
+        
+        @media (min-width: 768px) {
+            .section-spacing {
+                padding-top: 7rem;
+                padding-bottom: 7rem;
+            }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="font-sans text-textDark bg-white">
+    <nav class="fixed w-full bg-white/95 backdrop-blur-sm z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="/" class="font-display text-2xl md:text-3xl font-bold text-primary tracking-tight">
+                    BELLARI <span class="text-accent">CONCEPT</span>
+                </a>
+                
+                <button id="mobile-menu-button" class="md:hidden text-primary focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+                
+                <div class="hidden md:flex space-x-8">
+                    <a href="/" class="text-sm font-medium tracking-wide hover:text-accent transition-colors duration-300 {% if request.path == '/' %}text-accent{% endif %}">HOME</a>
+                    <a href="/about" class="text-sm font-medium tracking-wide hover:text-accent transition-colors duration-300 {% if request.path == '/about' %}text-accent{% endif %}">ABOUT</a>
+                    <a href="/services" class="text-sm font-medium tracking-wide hover:text-accent transition-colors duration-300 {% if request.path == '/services' %}text-accent{% endif %}">SERVICES</a>
+                    <a href="/portfolio" class="text-sm font-medium tracking-wide hover:text-accent transition-colors duration-300 {% if request.path == '/portfolio' %}text-accent{% endif %}">PORTFOLIO</a>
+                    <a href="/contact" class="text-sm font-medium tracking-wide hover:text-accent transition-colors duration-300 {% if request.path == '/contact' %}text-accent{% endif %}">CONTACT</a>
+                </div>
+            </div>
+        </div>
+        
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-4 pt-2 pb-4 space-y-3">
+                <a href="/" class="block py-2 text-sm font-medium tracking-wide hover:text-accent transition-colors {% if request.path == '/' %}text-accent{% endif %}">HOME</a>
+                <a href="/about" class="block py-2 text-sm font-medium tracking-wide hover:text-accent transition-colors {% if request.path == '/about' %}text-accent{% endif %}">ABOUT</a>
+                <a href="/services" class="block py-2 text-sm font-medium tracking-wide hover:text-accent transition-colors {% if request.path == '/services' %}text-accent{% endif %}">SERVICES</a>
+                <a href="/portfolio" class="block py-2 text-sm font-medium tracking-wide hover:text-accent transition-colors {% if request.path == '/portfolio' %}text-accent{% endif %}">PORTFOLIO</a>
+                <a href="/contact" class="block py-2 text-sm font-medium tracking-wide hover:text-accent transition-colors {% if request.path == '/contact' %}text-accent{% endif %}">CONTACT</a>
+            </div>
+        </div>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="fixed top-24 right-4 z-50 space-y-2">
+                {% for category, message in messages %}
+                <div class="bg-{{ 'green' if category == 'success' else 'red' }}-50 border border-{{ 'green' if category == 'success' else 'red' }}-200 text-{{ 'green' if category == 'success' else 'red' }}-800 px-4 py-3 rounded shadow-lg max-w-md">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <main class="pt-20">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="bg-primary text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div>
+                    <h3 class="font-display text-2xl font-bold mb-4">BELLARI <span class="text-accent">CONCEPT</span></h3>
+                    <p class="text-gray-300 text-sm leading-relaxed">Creating timeless spaces that inspire and endure through sophisticated design and meticulous craftsmanship.</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-lg mb-4 tracking-wide">QUICK LINKS</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="/" class="text-gray-300 hover:text-accent transition-colors">Home</a></li>
+                        <li><a href="/about" class="text-gray-300 hover:text-accent transition-colors">About Us</a></li>
+                        <li><a href="/services" class="text-gray-300 hover:text-accent transition-colors">Services</a></li>
+                        <li><a href="/portfolio" class="text-gray-300 hover:text-accent transition-colors">Portfolio</a></li>
+                        <li><a href="/contact" class="text-gray-300 hover:text-accent transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-lg mb-4 tracking-wide">CONTACT</h4>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li>Email: info@bellariconcept.com</li>
+                        <li>Phone: +1 (555) 123-4567</li>
+                        <li>123 Design Avenue, Suite 100<br>New York, NY 10001</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-12 pt-8 text-center text-sm text-gray-400">
+                <p>&copy; 2024 Bellari Concept. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title if page else 'Bellari Concept - Luxury Interior Design' }}{% endblock %}
+{% block meta_description %}{{ page.meta_description if page else 'Transform your space with Bellari Concept luxury interior design services' }}{% endblock %}
+
+{% block content %}
+{% for section in sections %}
+    {% if section.section_type == 'hero' %}
+    <section class="relative h-screen flex items-center justify-center bg-gradient-to-br from-secondary via-white to-subtle overflow-hidden">
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0U1RTVFNSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-40"></div>
+        
+        <div class="relative z-10 text-center px-4 animate-fade-in">
+            <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-bold text-primary mb-6 tracking-tight">
+                {{ section.heading or 'BELLARI CONCEPT' }}
+            </h1>
+            <p class="text-xl md:text-2xl text-accent font-display mb-4">
+                {{ section.subheading or 'Luxury Interior Design & Architecture' }}
+            </p>
+            <p class="text-lg md:text-xl text-textDark max-w-2xl mx-auto mb-8 font-light">
+                {{ section.content or 'Transform your space into a masterpiece of elegance and functionality' }}
+            </p>
+            {% if section.button_text %}
+            <a href="{{ section.button_link or '#' }}" class="inline-block bg-accent text-white px-8 py-4 text-sm font-semibold tracking-wide hover:bg-primary transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                {{ section.button_text }}
+            </a>
+            {% endif %}
+        </div>
+        
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+        </div>
+    </section>
+    
+    {% elif section.section_type == 'intro' %}
+    <section class="section-spacing bg-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="font-display text-4xl md:text-5xl font-bold text-primary mb-6">
+                    {{ section.heading or 'Creating Timeless Spaces' }}
+                </h2>
+                <div class="w-20 h-1 bg-accent mx-auto mb-8"></div>
+                <p class="text-lg md:text-xl text-textDark leading-relaxed">
+                    {{ section.content or 'Our expertise in luxury design brings your vision to life' }}
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    {% elif section.section_type == 'features' %}
+    <section class="section-spacing bg-secondary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="font-display text-4xl md:text-5xl font-bold text-primary mb-12 text-center">
+                {{ section.heading or 'Our Expertise' }}
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% set features = section.content.split('•') if section.content else [] %}
+                {% for feature in features %}
+                    {% if feature.strip() %}
+                    <div class="bg-white p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <div class="w-12 h-12 bg-accent mb-4 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-xl mb-2">{{ feature.strip() }}</h3>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+{% endfor %}
+
+<section class="section-spacing bg-primary text-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Ready to Transform Your Space?</h2>
+        <p class="text-xl text-gray-300 mb-8">Let's create something extraordinary together</p>
+        <a href="/contact" class="inline-block bg-accent text-white px-10 py-4 text-sm font-semibold tracking-wide hover:bg-white hover:text-primary transition-all duration-300 shadow-lg">
+            START YOUR PROJECT
+        </a>
+    </div>
+</section>
+{% endblock %}

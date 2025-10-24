@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title if page else 'Our Services - Bellari Concept' }}{% endblock %}
+{% block meta_description %}{{ page.meta_description if page else 'Explore our comprehensive interior design services' }}{% endblock %}
+
+{% block content %}
+{% for section in sections %}
+    {% if section.section_type == 'hero' %}
+    <section class="relative h-96 flex items-center justify-center bg-gradient-to-br from-primary to-textDark">
+        <div class="text-center px-4 animate-fade-in">
+            <h1 class="font-display text-5xl md:text-6xl font-bold text-white mb-4">
+                {{ section.heading or 'Our Services' }}
+            </h1>
+            <p class="text-xl text-accent font-display">
+                {{ section.subheading or 'Comprehensive Design Solutions' }}
+            </p>
+        </div>
+    </section>
+    {% endif %}
+{% endfor %}
+
+<section class="section-spacing bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {% for section in sections %}
+                {% if section.section_type == 'service' %}
+                <div class="bg-secondary p-8 hover:shadow-xl transition-all duration-300 group">
+                    <div class="w-14 h-14 bg-accent mb-6 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-display text-2xl font-bold text-primary mb-4">{{ section.heading }}</h3>
+                    <p class="text-textDark leading-relaxed">{{ section.content }}</p>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section-spacing bg-secondary">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="font-display text-4xl md:text-5xl font-bold text-primary mb-6">Our Process</h2>
+        <div class="w-20 h-1 bg-accent mx-auto mb-12"></div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <div class="w-16 h-16 bg-accent text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">1</div>
+                <h4 class="font-semibold text-lg mb-2">Consultation</h4>
+                <p class="text-sm text-textDark">Understanding your vision and needs</p>
+            </div>
+            
+            <div>
+                <div class="w-16 h-16 bg-accent text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">2</div>
+                <h4 class="font-semibold text-lg mb-2">Design</h4>
+                <p class="text-sm text-textDark">Creating detailed concepts and plans</p>
+            </div>
+            
+            <div>
+                <div class="w-16 h-16 bg-accent text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">3</div>
+                <h4 class="font-semibold text-lg mb-2">Development</h4>
+                <p class="text-sm text-textDark">Refining details and selections</p>
+            </div>
+            
+            <div>
+                <div class="w-16 h-16 bg-accent text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">4</div>
+                <h4 class="font-semibold text-lg mb-2">Implementation</h4>
+                <p class="text-sm text-textDark">Bringing your space to life</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-spacing bg-primary text-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Let's Discuss Your Project</h2>
+        <p class="text-xl text-gray-300 mb-8">We're ready to help you create your dream space</p>
+        <a href="/contact" class="inline-block bg-accent text-white px-10 py-4 text-sm font-semibold tracking-wide hover:bg-white hover:text-primary transition-all duration-300 shadow-lg">
+            GET IN TOUCH
+        </a>
+    </div>
+</section>
+{% endblock %}

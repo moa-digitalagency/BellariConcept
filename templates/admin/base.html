@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Panel{% endblock %} - Bellari Concept</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1A1A1A',
+                        accent: '#D4AF37',
+                        secondary: '#F8F8F8'
+                    },
+                    fontFamily: {
+                        display: ['Playfair Display', 'serif'],
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="flex h-screen overflow-hidden">
+        <aside class="w-64 bg-primary text-white flex-shrink-0">
+            <div class="p-6">
+                <h1 class="font-display text-2xl font-bold mb-1">
+                    BELLARI <span class="text-accent">CONCEPT</span>
+                </h1>
+                <p class="text-sm text-gray-400">Admin Panel</p>
+            </div>
+            
+            <nav class="mt-6">
+                <a href="/admin" class="block px-6 py-3 hover:bg-accent transition-colors {% if request.path == '/admin' %}bg-accent{% endif %}">
+                    Dashboard
+                </a>
+                <a href="/admin/pages" class="block px-6 py-3 hover:bg-accent transition-colors {% if '/admin/page' in request.path %}bg-accent{% endif %}">
+                    Pages & Content
+                </a>
+                <a href="/admin/images" class="block px-6 py-3 hover:bg-accent transition-colors {% if request.path == '/admin/images' %}bg-accent{% endif %}">
+                    Image Gallery
+                </a>
+                <a href="/" target="_blank" class="block px-6 py-3 hover:bg-accent transition-colors">
+                    View Website →
+                </a>
+                <a href="/admin/logout" class="block px-6 py-3 hover:bg-red-600 transition-colors mt-6">
+                    Logout
+                </a>
+            </nav>
+        </aside>
+        
+        <main class="flex-1 overflow-y-auto">
+            <div class="bg-white shadow-sm px-8 py-4 border-b">
+                <h2 class="text-2xl font-bold text-primary">{% block page_title %}Dashboard{% endblock %}</h2>
+            </div>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="px-8 pt-4 space-y-2">
+                        {% for category, message in messages %}
+                        <div class="bg-{{ 'green' if category == 'success' else 'red' }}-50 border border-{{ 'green' if category == 'success' else 'red' }}-200 text-{{ 'green' if category == 'success' else 'red' }}-800 px-4 py-3 rounded">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            
+            <div class="p-8">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+</body>
+</html>

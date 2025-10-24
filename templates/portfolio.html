@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title if page else 'Portfolio - Bellari Concept' }}{% endblock %}
+{% block meta_description %}{{ page.meta_description if page else 'View our stunning interior design projects' }}{% endblock %}
+
+{% block content %}
+<section class="relative h-96 flex items-center justify-center bg-gradient-to-br from-primary to-textDark">
+    <div class="text-center px-4 animate-fade-in">
+        <h1 class="font-display text-5xl md:text-6xl font-bold text-white mb-4">
+            Our Portfolio
+        </h1>
+        <p class="text-xl text-accent font-display">
+            A Collection of Our Finest Work
+        </p>
+    </div>
+</section>
+
+<section class="section-spacing bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="group relative overflow-hidden bg-secondary aspect-square">
+                <div class="absolute inset-0 bg-gradient-to-br from-primary/80 to-accent/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <div class="text-white text-center p-6">
+                        <h3 class="font-display text-2xl font-bold mb-2">Modern Residence</h3>
+                        <p class="text-sm">Contemporary luxury living</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="group relative overflow-hidden bg-secondary aspect-square">
+                <div class="absolute inset-0 bg-gradient-to-br from-primary/80 to-accent/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <div class="text-white text-center p-6">
+                        <h3 class="font-display text-2xl font-bold mb-2">Executive Office</h3>
+                        <p class="text-sm">Professional workspace design</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="group relative overflow-hidden bg-secondary aspect-square">
+                <div class="absolute inset-0 bg-gradient-to-br from-primary/80 to-accent/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <div class="text-white text-center p-6">
+                        <h3 class="font-display text-2xl font-bold mb-2">Boutique Hotel</h3>
+                        <p class="text-sm">Luxury hospitality interiors</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="group relative overflow-hidden bg-secondary aspect-square">
+                <div class="absolute inset-0 bg-gradient-to-br from-primary/80 to-accent/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <div class="text-white text-center p-6">
+                        <h3 class="font-display text-2xl font-bold mb-2">Penthouse Suite</h3>
+                        <p class="text-sm">Elevated urban living</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="group relative overflow-hidden bg-secondary aspect-square">
+                <div class="absolute inset-0 bg-gradient-to-br from-primary/80 to-accent/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <div class="text-white text-center p-6">
+                        <h3 class="font-display text-2xl font-bold mb-2">Restaurant Design</h3>
+                        <p class="text-sm">Culinary atmosphere creation</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="group relative overflow-hidden bg-secondary aspect-square">
+                <div class="absolute inset-0 bg-gradient-to-br from-primary/80 to-accent/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <div class="text-white text-center p-6">
+                        <h3 class="font-display text-2xl font-bold mb-2">Coastal Villa</h3>
+                        <p class="text-sm">Seaside elegance</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-spacing bg-secondary">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="font-display text-4xl md:text-5xl font-bold text-primary mb-6">Interested in Working Together?</h2>
+        <p class="text-xl text-textDark mb-8">Let's create your next stunning space</p>
+        <a href="/contact" class="inline-block bg-accent text-white px-10 py-4 text-sm font-semibold tracking-wide hover:bg-primary transition-all duration-300 shadow-lg">
+            START A CONVERSATION
+        </a>
+    </div>
+</section>
+{% endblock %}
