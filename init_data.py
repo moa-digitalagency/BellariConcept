@@ -38,10 +38,8 @@ def init_database():
                         'section_type': 'hero',
                         'language_code': 'fr',
                         'heading': 'BELLARI CONCEPT',
-                        'subheading': 'Design d\'Intérieur & Architecture de Luxe',
-                        'content': 'Transformez votre espace en un chef-d\'œuvre d\'élégance et de fonctionnalité',
-                        'button_text': 'Découvrir nos réalisations',
-                        'button_link': '/portfolio',
+                        'subheading': 'Construction & Rénovation à Marrakech',
+                        'content': 'Votre partenaire de confiance pour tous vos projets de construction, rénovation et services techniques à Marrakech',
                         'order_index': 0
                     },
                     {
@@ -49,10 +47,8 @@ def init_database():
                         'section_type': 'hero',
                         'language_code': 'en',
                         'heading': 'BELLARI CONCEPT',
-                        'subheading': 'Luxury Interior Design & Architecture',
-                        'content': 'Transform your space into a masterpiece of elegance and functionality',
-                        'button_text': 'Explore Our Work',
-                        'button_link': '/portfolio',
+                        'subheading': 'Construction & Renovation in Marrakech',
+                        'content': 'Your trusted partner for all construction, renovation and technical services projects in Marrakech',
                         'order_index': 0
                     },
                     {

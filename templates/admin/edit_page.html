@@ -211,60 +211,6 @@
                                       class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:border-accent focus:outline-none">{{ section.content or '' }}</textarea>
                         </div>
                         
-                        <div class="grid grid-cols-2 gap-2">
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-700 mb-1">
-                                    {% if lang == 'fr' %}Texte bouton{% else %}Button Text{% endif %}
-                                </label>
-                                <input type="text" name="button_text" value="{{ section.button_text or '' }}" 
-                                       class="w-full px-2 py-1 border border-gray-300 rounded text-xs focus:border-accent focus:outline-none">
-                            </div>
-                            
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-700 mb-1">
-                                    {% if lang == 'fr' %}Lien bouton{% else %}Button Link{% endif %}
-                                </label>
-                                <input type="text" name="button_link" value="{{ section.button_link or '' }}" 
-                                       class="w-full px-2 py-1 border border-gray-300 rounded text-xs focus:border-accent focus:outline-none">
-                            </div>
-                        </div>
-                        
-                        <div class="bg-white/70 rounded p-3 space-y-2">
-                            <h6 class="font-bold text-xs mb-2">📸 Images</h6>
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-700 mb-1">
-                                    {% if lang == 'fr' %}Image principale{% else %}Main Image{% endif %}
-                                </label>
-                                <div class="flex gap-2">
-                                    <input type="text" name="image_url" id="image_url_{{ section.id }}" value="{{ section.image_url or '' }}" 
-                                           class="flex-1 px-2 py-1 border border-gray-300 rounded text-xs focus:border-accent focus:outline-none" 
-                                           placeholder="/static/images/...">
-                                    <button type="button" onclick="openImagePicker('image_url_{{ section.id }}')" 
-                                            class="bg-blue-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-600 transition-colors whitespace-nowrap">
-                                        📁 {% if lang == 'fr' %}Choisir{% else %}Choose{% endif %}
-                                    </button>
-                                </div>
-                                {% if section.image_url %}
-                                <img src="{{ section.image_url }}" alt="Preview" class="mt-2 max-w-full h-20 rounded" onerror="this.style.display='none'">
-                                {% endif %}
-                            </div>
-                            
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-700 mb-1">
-                                    {% if lang == 'fr' %}Image d'arrière-plan{% else %}Background Image{% endif %}
-                                </label>
-                                <div class="flex gap-2">
-                                    <input type="text" name="background_image" id="bg_image_{{ section.id }}" value="{{ section.background_image or '' }}" 
-                                           class="flex-1 px-2 py-1 border border-gray-300 rounded text-xs focus:border-accent focus:outline-none" 
-                                           placeholder="/static/images/...">
-                                    <button type="button" onclick="openImagePicker('bg_image_{{ section.id }}')" 
-                                            class="bg-blue-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-600 transition-colors whitespace-nowrap">
-                                        📁 {% if lang == 'fr' %}Choisir{% else %}Choose{% endif %}
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        
                         <div class="flex items-center justify-between pt-3 border-t">
                             <div class="flex items-center">
                                 <input type="checkbox" name="is_active" id="section_{{ section.id }}_active" {{ 'checked' if section.is_active }} 
