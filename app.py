@@ -190,9 +190,48 @@ def admin_pages():
 @login_required
 def admin_edit_page(page_id):
     page = Page.query.get_or_404(page_id)
-    sections = Section.query.filter_by(page_id=page_id).order_by(Section.order_index).all()
+    all_sections = Section.query.filter_by(page_id=page_id).order_by(Section.order_index).all()
+    images = Image.query.order_by(Image.uploaded_at.desc()).all()
     lang = request.args.get('lang', 'fr')
-    return render_template('admin/edit_page.html', page=page, sections=sections, lang=lang)
+    
+    paired = set()
+    section_groups = []
+    
+    for i, section in enumerate(all_sections):
+        if section.id in paired:
+            continue
+            
+        pair = {'fr': None, 'en': None}
+        pair[section.language_code] = section
+        paired.add(section.id)
+        
+        other_lang = 'en' if section.language_code == 'fr' else 'fr'
+        best_match = None
+        best_score = float('inf')
+        
+        for j, other_section in enumerate(all_sections[i+1:], start=i+1):
+            if (other_section.id in paired or 
+                other_section.language_code != other_lang or
+                other_section.section_type != section.section_type):
+                continue
+            
+            distance = abs(other_section.order_index - section.order_index)
+            
+            if distance < best_score:
+                best_score = distance
+                best_match = other_section
+                
+            if distance == 0:
+                break
+        
+        if best_match:
+            pair[other_lang] = best_match
+            paired.add(best_match.id)
+        
+        order_idx = section.order_index
+        section_groups.append(((order_idx, section.section_type), pair))
+    
+    return render_template('admin/edit_page.html', page=page, section_groups=section_groups, images=images, lang=lang)
 
 @app.route('/admin/page/<int:page_id>/update', methods=['POST'])
 @login_required
@@ -227,18 +266,56 @@ def admin_update_section(section_id):
 @login_required
 def admin_create_section():
     page_id = request.form.get('page_id')
+    order_index = request.form.get('order_index')
+    if order_index is None:
+        order_index = Section.query.filter_by(page_id=page_id).count()
     section = Section(
         page_id=page_id,
         section_type=request.form.get('section_type', 'text'),
         language_code=request.form.get('language_code', 'fr'),
         heading=request.form.get('heading'),
+        subheading=request.form.get('subheading'),
         content=request.form.get('content'),
-        order_index=Section.query.filter_by(page_id=page_id).count()
+        order_index=int(order_index)
     )
     db.session.add(section)
     db.session.commit()
     lang = request.form.get('lang', request.args.get('lang', 'fr'))
     flash('Section created successfully', 'success')
+    return redirect(url_for('admin_edit_page', page_id=page_id, lang=lang))
+
+@app.route('/admin/section/create_both', methods=['POST'])
+@login_required
+def admin_create_section_both():
+    page_id = request.form.get('page_id')
+    section_type = request.form.get('section_type', 'text')
+    order_index = Section.query.filter_by(page_id=page_id).count()
+    
+    section_fr = Section(
+        page_id=page_id,
+        section_type=section_type,
+        language_code='fr',
+        heading=request.form.get('heading_fr'),
+        subheading=request.form.get('subheading_fr'),
+        content=request.form.get('content_fr'),
+        order_index=order_index
+    )
+    db.session.add(section_fr)
+    
+    section_en = Section(
+        page_id=page_id,
+        section_type=section_type,
+        language_code='en',
+        heading=request.form.get('heading_en'),
+        subheading=request.form.get('subheading_en'),
+        content=request.form.get('content_en'),
+        order_index=order_index
+    )
+    db.session.add(section_en)
+    
+    db.session.commit()
+    lang = request.form.get('lang', request.args.get('lang', 'fr'))
+    flash('Sections created successfully for both languages', 'success')
     return redirect(url_for('admin_edit_page', page_id=page_id, lang=lang))
 
 @app.route('/admin/section/<int:section_id>/delete', methods=['POST'])
@@ -312,6 +389,40 @@ def admin_delete_image(image_id):
     db.session.commit()
     flash('Image deleted successfully', 'success')
     return redirect(url_for('admin_images'))
+
+@app.route('/admin/normalize-sections')
+@login_required
+def normalize_sections():
+    pages = Page.query.all()
+    for page in pages:
+        sections_by_type_lang = {}
+        for section in Section.query.filter_by(page_id=page.id).order_by(Section.order_index).all():
+            key = (section.section_type, section.language_code)
+            if key not in sections_by_type_lang:
+                sections_by_type_lang[key] = []
+            sections_by_type_lang[key].append(section)
+        
+        new_order = 0
+        section_types_seen = set()
+        for section_type in set(st for st, _ in sections_by_type_lang.keys()):
+            if section_type in section_types_seen:
+                continue
+            section_types_seen.add(section_type)
+            
+            fr_sections = sections_by_type_lang.get((section_type, 'fr'), [])
+            en_sections = sections_by_type_lang.get((section_type, 'en'), [])
+            
+            max_pairs = max(len(fr_sections), len(en_sections))
+            for i in range(max_pairs):
+                if i < len(fr_sections):
+                    fr_sections[i].order_index = new_order
+                if i < len(en_sections):
+                    en_sections[i].order_index = new_order
+                new_order += 1
+    
+    db.session.commit()
+    flash('Sections normalized successfully! All FR/EN pairs now share the same order_index.', 'success')
+    return redirect(url_for('admin_dashboard'))
 
 @app.route('/admin/init-db')
 @login_required
