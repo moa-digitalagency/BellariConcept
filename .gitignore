@@ -5,6 +5,19 @@ build/
 dist/
 wheels/
 *.egg-info
+.pythonlibs/
+instance/
+*.log
 
 # Virtual environments
 .venv
+
+# Environment variables
+.env
+
+# OS files
+.DS_Store
+
+# Flask uploads
+static/uploads/*
+!static/uploads/.gitkeep
