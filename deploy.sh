@@ -33,17 +33,34 @@ echo "[2/8] Setting up environment variables..."
 
 if [ ! -f .env ]; then
     echo "Creating .env file from template..."
+    echo "Please provide the following information:"
+    echo ""
+    read -p "Database host [localhost]: " db_host
+    db_host=${db_host:-localhost}
+    
+    read -p "Database port [5432]: " db_port
+    db_port=${db_port:-5432}
+    
+    read -p "Database name [bellari_concept]: " db_name
+    db_name=${db_name:-bellari_concept}
+    
+    read -p "Database user: " db_user
+    read -s -p "Database password: " db_password
+    echo ""
+    
+    SESSION_SECRET=$(openssl rand -hex 32)
+    
     cat > .env << EOF
 # Database Configuration
-DATABASE_URL=postgresql://user:password@localhost:5432/bellari_concept
-PGHOST=localhost
-PGPORT=5432
-PGUSER=user
-PGPASSWORD=password
-PGDATABASE=bellari_concept
+DATABASE_URL=postgresql://${db_user}:${db_password}@${db_host}:${db_port}/${db_name}
+PGHOST=${db_host}
+PGPORT=${db_port}
+PGUSER=${db_user}
+PGPASSWORD=${db_password}
+PGDATABASE=${db_name}
 
 # Flask Configuration
-SESSION_SECRET=$(openssl rand -hex 32)
+SESSION_SECRET=${SESSION_SECRET}
 FLASK_ENV=production
 FLASK_DEBUG=False
 
@@ -54,15 +71,18 @@ ADMIN_INIT_ALLOWED=false
 PORT=5000
 HOST=0.0.0.0
 EOF
-    echo "✓ .env file created. Please update with your actual database credentials."
-    echo "⚠️  WARNING: Update DATABASE_URL and database credentials in .env before continuing!"
-    read -p "Press enter to continue after updating .env..."
+    echo "✓ .env file created with your configuration"
 else
     echo "✓ .env file already exists"
 fi
 
-source .env
-echo "✓ Environment variables loaded"
+if [ -f .env ]; then
+    source .env
+    echo "✓ Environment variables loaded"
+else
+    echo "❌ .env file not found"
+    exit 1
+fi
 
 echo ""
 echo "[3/8] Creating virtual environment..."
