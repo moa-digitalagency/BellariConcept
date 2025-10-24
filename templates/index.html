@@ -1,87 +1,372 @@
 {% extends "base.html" %}
 
-{% block title %}{{ page.title if page else 'Bellari Concept - Luxury Interior Design' }}{% endblock %}
-{% block meta_description %}{{ page.meta_description if page else 'Transform your space with Bellari Concept luxury interior design services' }}{% endblock %}
+{% block title %}{{ page.title if page else 'Bellari Concept - Construction & Rénovation Marrakech' }}{% endblock %}
+{% block meta_description %}{{ page.meta_description if page else 'Votre partenaire de choix à Marrakech pour tous vos projets de construction et de rénovation' }}{% endblock %}
 
 {% block content %}
 {% for section in sections %}
     {% if section.section_type == 'hero' %}
-    <section class="relative h-screen flex items-center justify-center bg-gradient-to-br from-secondary via-white to-subtle overflow-hidden">
-        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0U1RTVFNSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-40"></div>
-        
-        <div class="relative z-10 text-center px-4 animate-fade-in">
-            <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-bold text-primary mb-6 tracking-tight">
-                {{ section.heading or 'BELLARI CONCEPT' }}
-            </h1>
-            <p class="text-xl md:text-2xl text-accent font-display mb-4">
-                {{ section.subheading or 'Luxury Interior Design & Architecture' }}
-            </p>
-            <p class="text-lg md:text-xl text-textDark max-w-2xl mx-auto mb-8 font-light">
-                {{ section.content or 'Transform your space into a masterpiece of elegance and functionality' }}
-            </p>
-            {% if section.button_text %}
-            <a href="{{ section.button_link or '#' }}" class="inline-block bg-accent text-white px-8 py-4 text-sm font-semibold tracking-wide hover:bg-primary transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                {{ section.button_text }}
-            </a>
-            {% endif %}
+    <!-- Hero Section avec Image de Fond -->
+    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+        <!-- Background Image avec Parallax -->
+        <div class="absolute inset-0 z-0">
+            <img src="{{ url_for('static', filename='images/modern_construction__a427a1cf.jpg') }}" 
+                 alt="Bellari Concept Construction" 
+                 class="w-full h-full object-cover scale-110 transition-transform duration-[20s] ease-out hover:scale-100">
+            <div class="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/70 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent"></div>
         </div>
         
-        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-            <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <!-- Animated Background Elements -->
+        <div class="absolute inset-0 overflow-hidden z-0">
+            <div class="absolute w-96 h-96 bg-accent/10 rounded-full blur-3xl -top-48 -left-48 animate-pulse"></div>
+            <div class="absolute w-96 h-96 bg-accent/10 rounded-full blur-3xl -bottom-48 -right-48 animate-pulse" style="animation-delay: 2s;"></div>
+        </div>
+        
+        <!-- Content -->
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
+            <div class="animate-fade-in">
+                <div class="mb-6 inline-block">
+                    <img src="{{ url_for('static', filename='logo.png') }}" alt="Bellari Concept Logo" class="h-24 md:h-32 drop-shadow-2xl">
+                </div>
+                <h1 class="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 tracking-tight drop-shadow-2xl">
+                    {{ section.heading or 'BELLARI CONCEPT' }}
+                </h1>
+                <p class="text-2xl md:text-3xl lg:text-4xl text-accent font-display mb-6 drop-shadow-lg">
+                    {% if lang == 'fr' %}
+                        Construction & Rénovation à Marrakech
+                    {% else %}
+                        Construction & Renovation in Marrakech
+                    {% endif %}
+                </p>
+                <p class="text-lg md:text-xl text-white/90 max-w-3xl mx-auto mb-10 leading-relaxed drop-shadow-lg">
+                    {% if lang == 'fr' %}
+                        Votre partenaire de confiance pour tous vos projets de construction, rénovation et services techniques à Marrakech
+                    {% else %}
+                        Your trusted partner for all construction, renovation and technical services projects in Marrakech
+                    {% endif %}
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="/services" class="inline-block bg-accent text-white px-10 py-4 text-sm font-bold tracking-wider hover:bg-accent/90 transition-all duration-300 shadow-2xl hover:shadow-accent/50 transform hover:-translate-y-1 rounded-sm">
+                        {% if lang == 'fr' %}NOS SERVICES{% else %}OUR SERVICES{% endif %}
+                    </a>
+                    <a href="/contact" class="inline-block bg-white/10 backdrop-blur-sm border-2 border-white text-white px-10 py-4 text-sm font-bold tracking-wider hover:bg-white hover:text-primary transition-all duration-300 shadow-2xl transform hover:-translate-y-1 rounded-sm">
+                        {% if lang == 'fr' %}CONTACTEZ-NOUS{% else %}CONTACT US{% endif %}
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce z-10">
+            <svg class="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
             </svg>
-        </div>
-    </section>
-    
-    {% elif section.section_type == 'intro' %}
-    <section class="section-spacing bg-white">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="max-w-3xl mx-auto text-center">
-                <h2 class="font-display text-4xl md:text-5xl font-bold text-primary mb-6">
-                    {{ section.heading or 'Creating Timeless Spaces' }}
-                </h2>
-                <div class="w-20 h-1 bg-accent mx-auto mb-8"></div>
-                <p class="text-lg md:text-xl text-textDark leading-relaxed">
-                    {{ section.content or 'Our expertise in luxury design brings your vision to life' }}
-                </p>
-            </div>
-        </div>
-    </section>
-    
-    {% elif section.section_type == 'features' %}
-    <section class="section-spacing bg-secondary">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="font-display text-4xl md:text-5xl font-bold text-primary mb-12 text-center">
-                {{ section.heading or 'Our Expertise' }}
-            </h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {% set features = section.content.split('•') if section.content else [] %}
-                {% for feature in features %}
-                    {% if feature.strip() %}
-                    <div class="bg-white p-8 shadow-lg hover:shadow-xl transition-shadow duration-300">
-                        <div class="w-12 h-12 bg-accent mb-4 flex items-center justify-center">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                        </div>
-                        <h3 class="font-semibold text-xl mb-2">{{ feature.strip() }}</h3>
-                    </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
         </div>
     </section>
     {% endif %}
 {% endfor %}
 
-<section class="section-spacing bg-primary text-white">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Ready to Transform Your Space?</h2>
-        <p class="text-xl text-gray-300 mb-8">Let's create something extraordinary together</p>
-        <a href="/contact" class="inline-block bg-accent text-white px-10 py-4 text-sm font-semibold tracking-wide hover:bg-white hover:text-primary transition-all duration-300 shadow-lg">
-            START YOUR PROJECT
-        </a>
+<!-- Services Visuels avec Images -->
+<section class="section-spacing bg-white relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-secondary/50 to-white z-0"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center mb-16">
+            <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-primary mb-4">
+                {% if lang == 'fr' %}Nos Services{% else %}Our Services{% endif %}
+            </h2>
+            <div class="w-24 h-1.5 bg-accent mx-auto mb-6"></div>
+            <p class="text-xl text-textDark max-w-3xl mx-auto">
+                {% if lang == 'fr' %}
+                    Des solutions complètes pour tous vos besoins en construction et rénovation
+                {% else %}
+                    Complete solutions for all your construction and renovation needs
+                {% endif %}
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Construction -->
+            <a href="/services" class="group relative overflow-hidden rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+                <div class="relative h-80">
+                    <img src="{{ url_for('static', filename='images/modern_construction__a427a1cf.jpg') }}" 
+                         alt="Construction" 
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/60 to-transparent group-hover:from-accent/90 group-hover:via-accent/60 transition-all duration-500"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <h3 class="font-display text-2xl font-bold mb-2">
+                            {% if lang == 'fr' %}Construction{% else %}Construction{% endif %}
+                        </h3>
+                        <p class="text-sm text-white/90 group-hover:text-white transition-colors">
+                            {% if lang == 'fr' %}Projets résidentiels et commerciaux{% else %}Residential and commercial projects{% endif %}
+                        </p>
+                        <div class="mt-3 flex items-center text-accent group-hover:text-white transition-colors">
+                            <span class="text-sm font-semibold">{% if lang == 'fr' %}En savoir plus{% else %}Learn more{% endif %}</span>
+                            <svg class="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- Électricité -->
+            <a href="/services" class="group relative overflow-hidden rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+                <div class="relative h-80">
+                    <img src="{{ url_for('static', filename='images/professional_electri_984ae0e8.jpg') }}" 
+                         alt="Électricité" 
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/60 to-transparent group-hover:from-accent/90 group-hover:via-accent/60 transition-all duration-500"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <h3 class="font-display text-2xl font-bold mb-2">
+                            {% if lang == 'fr' %}Électricité{% else %}Electrical{% endif %}
+                        </h3>
+                        <p class="text-sm text-white/90 group-hover:text-white transition-colors">
+                            {% if lang == 'fr' %}Installations certifiées{% else %}Certified installations{% endif %}
+                        </p>
+                        <div class="mt-3 flex items-center text-accent group-hover:text-white transition-colors">
+                            <span class="text-sm font-semibold">{% if lang == 'fr' %}En savoir plus{% else %}Learn more{% endif %}</span>
+                            <svg class="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- Plomberie -->
+            <a href="/services" class="group relative overflow-hidden rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+                <div class="relative h-80">
+                    <img src="{{ url_for('static', filename='images/plumber_fixing_pipes_d4c8be18.jpg') }}" 
+                         alt="Plomberie" 
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/60 to-transparent group-hover:from-accent/90 group-hover:via-accent/60 transition-all duration-500"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <h3 class="font-display text-2xl font-bold mb-2">
+                            {% if lang == 'fr' %}Plomberie{% else %}Plumbing{% endif %}
+                        </h3>
+                        <p class="text-sm text-white/90 group-hover:text-white transition-colors">
+                            {% if lang == 'fr' %}Installation et maintenance{% else %}Installation and maintenance{% endif %}
+                        </p>
+                        <div class="mt-3 flex items-center text-accent group-hover:text-white transition-colors">
+                            <span class="text-sm font-semibold">{% if lang == 'fr' %}En savoir plus{% else %}Learn more{% endif %}</span>
+                            <svg class="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- Peinture -->
+            <a href="/services" class="group relative overflow-hidden rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+                <div class="relative h-80">
+                    <img src="{{ url_for('static', filename='images/painter_painting_wal_be02294b.jpg') }}" 
+                         alt="Peinture" 
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/60 to-transparent group-hover:from-accent/90 group-hover:via-accent/60 transition-all duration-500"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <h3 class="font-display text-2xl font-bold mb-2">
+                            {% if lang == 'fr' %}Peinture{% else %}Painting{% endif %}
+                        </h3>
+                        <p class="text-sm text-white/90 group-hover:text-white transition-colors">
+                            {% if lang == 'fr' %}Finitions professionnelles{% else %}Professional finishes{% endif %}
+                        </p>
+                        <div class="mt-3 flex items-center text-accent group-hover:text-white transition-colors">
+                            <span class="text-sm font-semibold">{% if lang == 'fr' %}En savoir plus{% else %}Learn more{% endif %}</span>
+                            <svg class="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- Climatisation -->
+            <a href="/services" class="group relative overflow-hidden rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+                <div class="relative h-80">
+                    <img src="{{ url_for('static', filename='images/hvac_air_conditionin_8336dff9.jpg') }}" 
+                         alt="Climatisation" 
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/60 to-transparent group-hover:from-accent/90 group-hover:via-accent/60 transition-all duration-500"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <h3 class="font-display text-2xl font-bold mb-2">
+                            {% if lang == 'fr' %}Climatisation{% else %}Air Conditioning{% endif %}
+                        </h3>
+                        <p class="text-sm text-white/90 group-hover:text-white transition-colors">
+                            {% if lang == 'fr' %}Confort optimal{% else %}Optimal comfort{% endif %}
+                        </p>
+                        <div class="mt-3 flex items-center text-accent group-hover:text-white transition-colors">
+                            <span class="text-sm font-semibold">{% if lang == 'fr' %}En savoir plus{% else %}Learn more{% endif %}</span>
+                            <svg class="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- Entretien Piscine -->
+            <a href="/services" class="group relative overflow-hidden rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+                <div class="relative h-80">
+                    <img src="{{ url_for('static', filename='images/swimming_pool_mainte_0698f0ec.jpg') }}" 
+                         alt="Entretien Piscine" 
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/60 to-transparent group-hover:from-accent/90 group-hover:via-accent/60 transition-all duration-500"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <h3 class="font-display text-2xl font-bold mb-2">
+                            {% if lang == 'fr' %}Entretien Piscine{% else %}Pool Maintenance{% endif %}
+                        </h3>
+                        <p class="text-sm text-white/90 group-hover:text-white transition-colors">
+                            {% if lang == 'fr' %}Service toute l'année{% else %}Year-round service{% endif %}
+                        </p>
+                        <div class="mt-3 flex items-center text-accent group-hover:text-white transition-colors">
+                            <span class="text-sm font-semibold">{% if lang == 'fr' %}En savoir plus{% else %}Learn more{% endif %}</span>
+                            <svg class="w-5 h-5 ml-2 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Section Pourquoi Nous Choisir avec Stats -->
+<section class="section-spacing bg-gradient-to-br from-primary via-primary/95 to-textDark text-white relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center mb-16">
+            <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">
+                {% if lang == 'fr' %}Pourquoi Bellari Concept ?{% else %}Why Bellari Concept?{% endif %}
+            </h2>
+            <div class="w-24 h-1.5 bg-accent mx-auto"></div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            <div class="text-center group">
+                <div class="w-20 h-20 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-accent transition-all duration-300 group-hover:scale-110">
+                    <svg class="w-10 h-10 text-accent group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="font-display text-2xl font-bold mb-3">
+                    {% if lang == 'fr' %}Qualité Garantie{% else %}Guaranteed Quality{% endif %}
+                </h3>
+                <p class="text-white/80">
+                    {% if lang == 'fr' %}
+                        Des matériaux de première qualité et un savoir-faire professionnel
+                    {% else %}
+                        Premium materials and professional craftsmanship
+                    {% endif %}
+                </p>
+            </div>
+            
+            <div class="text-center group">
+                <div class="w-20 h-20 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-accent transition-all duration-300 group-hover:scale-110">
+                    <svg class="w-10 h-10 text-accent group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="font-display text-2xl font-bold mb-3">
+                    {% if lang == 'fr' %}Respect des Délais{% else %}On-Time Delivery{% endif %}
+                </h3>
+                <p class="text-white/80">
+                    {% if lang == 'fr' %}
+                        Vos projets livrés dans les temps convenus
+                    {% else %}
+                        Your projects delivered on agreed timelines
+                    {% endif %}
+                </p>
+            </div>
+            
+            <div class="text-center group">
+                <div class="w-20 h-20 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-accent transition-all duration-300 group-hover:scale-110">
+                    <svg class="w-10 h-10 text-accent group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="font-display text-2xl font-bold mb-3">
+                    {% if lang == 'fr' %}Équipe Expérimentée{% else %}Experienced Team{% endif %}
+                </h3>
+                <p class="text-white/80">
+                    {% if lang == 'fr' %}
+                        Des professionnels qualifiés et passionnés
+                    {% else %}
+                        Qualified and passionate professionals
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        
+        <!-- Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 border-t border-white/20 pt-12">
+            <div class="text-center">
+                <div class="font-display text-4xl md:text-5xl font-bold text-accent mb-2">15+</div>
+                <div class="text-sm text-white/80 uppercase tracking-wide">
+                    {% if lang == 'fr' %}Années d'expérience{% else %}Years of experience{% endif %}
+                </div>
+            </div>
+            <div class="text-center">
+                <div class="font-display text-4xl md:text-5xl font-bold text-accent mb-2">500+</div>
+                <div class="text-sm text-white/80 uppercase tracking-wide">
+                    {% if lang == 'fr' %}Projets réalisés{% else %}Completed projects{% endif %}
+                </div>
+            </div>
+            <div class="text-center">
+                <div class="font-display text-4xl md:text-5xl font-bold text-accent mb-2">100%</div>
+                <div class="text-sm text-white/80 uppercase tracking-wide">
+                    {% if lang == 'fr' %}Clients satisfaits{% else %}Satisfied clients{% endif %}
+                </div>
+            </div>
+            <div class="text-center">
+                <div class="font-display text-4xl md:text-5xl font-bold text-accent mb-2">24/7</div>
+                <div class="text-sm text-white/80 uppercase tracking-wide">
+                    {% if lang == 'fr' %}Support client{% else %}Customer support{% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Final -->
+<section class="section-spacing bg-gradient-to-r from-accent via-accent/90 to-accent text-white relative overflow-hidden">
+    <div class="absolute inset-0 opacity-20">
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')]"></div>
+    </div>
+    
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+            {% if lang == 'fr' %}
+                Prêt à Démarrer Votre Projet ?
+            {% else %}
+                Ready to Start Your Project?
+            {% endif %}
+        </h2>
+        <p class="text-xl md:text-2xl mb-10 text-white/90">
+            {% if lang == 'fr' %}
+                Contactez-nous dès aujourd'hui pour un devis gratuit et personnalisé
+            {% else %}
+                Contact us today for a free personalized quote
+            {% endif %}
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/contact" class="inline-block bg-primary text-white px-12 py-5 text-sm font-bold tracking-wider hover:bg-primary/90 transition-all duration-300 shadow-2xl transform hover:-translate-y-1 rounded-sm">
+                {% if lang == 'fr' %}DEMANDER UN DEVIS{% else %}REQUEST A QUOTE{% endif %}
+            </a>
+            <a href="tel:+212635502461" class="inline-block bg-white/10 backdrop-blur-sm border-2 border-white text-white px-12 py-5 text-sm font-bold tracking-wider hover:bg-white hover:text-accent transition-all duration-300 shadow-2xl transform hover:-translate-y-1 rounded-sm">
+                {% if lang == 'fr' %}APPELEZ-NOUS{% else %}CALL US{% endif %}
+            </a>
+        </div>
+        <p class="mt-8 text-white/80">
+            <span class="font-semibold">{% if lang == 'fr' %}Téléphone:{% else %}Phone:{% endif %}</span> +212 6 35 50 24 61<br>
+            <span class="font-semibold">Email:</span> bellari.groupe@gmail.com
+        </p>
     </div>
 </section>
 {% endblock %}
