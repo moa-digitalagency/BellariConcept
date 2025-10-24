@@ -4,6 +4,13 @@
 A modern, professional website for Bellari Concept - a construction and renovation company based in Marrakech, Morocco. This project features full multilingual support (French/English) with real company content, professional images, and a complete Content Management System.
 
 ## Recent Changes
+- **October 24, 2025**: UI Enhancement & Bilingual Admin Panel
+  - ✅ **Fully Rounded Buttons**: Changed all buttons from rounded-lg to rounded-full for maximum roundness
+  - ✅ **Bilingual Admin Interface**: Complete French/English admin panel with language persistence
+  - ✅ **Image Preview with Resolution**: Admin can now see image preview with width x height display
+  - ✅ **SEO Meta Descriptions**: Added meta_description field to Page model with character limit and recommendations
+  - ✅ **Language Persistence Fix**: Language selection now persists across all admin operations (create, update, delete)
+
 - **October 24, 2025**: Major update with real content and multilingual support
   - ✅ **Multilingual Support**: Added French (default) and English language switching
   - ✅ **Real Content**: Integrated actual Bellari Concept content from bellariconcept.com
@@ -40,7 +47,7 @@ A modern, professional website for Bellari Concept - a construction and renovati
 
 ### Database Models
 1. **User** - Admin authentication
-2. **Page** - Website pages (slug, title, meta description)
+2. **Page** - Website pages (slug, title, **meta_description**)
 3. **Section** - Page content sections (heading, content, images, buttons, **language_code**)
 4. **Image** - Uploaded image metadata
 5. **SiteSettings** - Global site settings (future use)
@@ -52,6 +59,15 @@ A modern, professional website for Bellari Concept - a construction and renovati
 - **Content**: All page sections available in both languages
 - **Navigation**: Language-aware menu items (ACCUEIL/HOME, À PROPOS/ABOUT, etc.)
 - **Switching**: `/set_language/fr` or `/set_language/en` routes
+- **Admin Panel**: Bilingual interface with language persistence across all operations
+
+### Admin Panel Features
+- **Bilingual Interface**: Complete French/English admin with FR/EN toggle
+- **Language Persistence**: Selected language maintained across all admin operations
+- **Image Preview**: Shows uploaded images with resolution (width x height)
+- **SEO Support**: Meta description field with character count and recommendations
+- **Fully Rounded Buttons**: All buttons use rounded-full class
+- **Color-coded Badges**: Visual indicators for active/inactive sections and language
 
 ### Color Scheme
 - Primary: #1A1A1A (charcoal black)
@@ -67,12 +83,14 @@ A modern, professional website for Bellari Concept - a construction and renovati
 
 ## Features
 - ✅ Full CMS for editing all page content
-- ✅ Image upload and management system
+- ✅ Image upload and management system with preview
 - ✅ Admin authentication (Flask-Login)
 - ✅ Mobile-responsive design
 - ✅ Modern, professional UI with smooth transitions
-- ✅ SEO-friendly meta tags
+- ✅ SEO-friendly meta tags with recommendations
 - ✅ Section-based content management
+- ✅ Bilingual admin panel (French/English)
+- ✅ Fully rounded buttons (rounded-full)
 
 ## Admin Access
 - URL: `/admin/login`
@@ -85,8 +103,9 @@ The `/admin/init-db` route is protected and disabled by default for security.
 
 ## Environment Variables
 - `DATABASE_URL` - PostgreSQL connection string (auto-configured)
-- `SECRET_KEY` - Flask secret key (set for persistent sessions)
+- `SESSION_SECRET` - Flask secret key (set for persistent sessions)
 - `ADMIN_INIT_ALLOWED` - Enable/disable database initialization endpoint (default: false)
 
 ## User Preferences
-None specified yet.
+- Prefer fully rounded buttons (rounded-full) for all UI elements
+- Admin panel must be bilingual with reliable language persistence
