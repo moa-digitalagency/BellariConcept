@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, send_from_directory, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -15,6 +15,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 app.config['ADMIN_INIT_ALLOWED'] = os.getenv('ADMIN_INIT_ALLOWED', 'false').lower() == 'true'
+app.config['LANGUAGES'] = ['fr', 'en']
+app.config['DEFAULT_LANGUAGE'] = 'fr'
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 
@@ -24,6 +26,9 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'admin_login'
+
+def get_language():
+    return session.get('language', app.config['DEFAULT_LANGUAGE'])
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -45,6 +50,7 @@ class Section(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     page_id = db.Column(db.Integer, db.ForeignKey('page.id'), nullable=False)
     section_type = db.Column(db.String(50), nullable=False)
+    language_code = db.Column(db.String(5), default='fr', nullable=False)
     order_index = db.Column(db.Integer, default=0)
     heading = db.Column(db.String(300))
     subheading = db.Column(db.String(300))
@@ -80,50 +86,61 @@ def load_user(user_id):
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+@app.route('/set_language/<lang>')
+def set_language(lang):
+    if lang in app.config['LANGUAGES']:
+        session['language'] = lang
+    return redirect(request.referrer or url_for('index'))
+
 @app.route('/')
 def index():
+    lang = get_language()
     page = Page.query.filter_by(slug='home', is_active=True).first()
     if page:
-        sections = Section.query.filter_by(page_id=page.id, is_active=True).order_by(Section.order_index).all()
+        sections = Section.query.filter_by(page_id=page.id, language_code=lang, is_active=True).order_by(Section.order_index).all()
     else:
         sections = []
-    return render_template('index.html', page=page, sections=sections)
+    return render_template('index.html', page=page, sections=sections, lang=lang)
 
 @app.route('/about')
 def about():
+    lang = get_language()
     page = Page.query.filter_by(slug='about', is_active=True).first()
     if page:
-        sections = Section.query.filter_by(page_id=page.id, is_active=True).order_by(Section.order_index).all()
+        sections = Section.query.filter_by(page_id=page.id, language_code=lang, is_active=True).order_by(Section.order_index).all()
     else:
         sections = []
-    return render_template('about.html', page=page, sections=sections)
+    return render_template('about.html', page=page, sections=sections, lang=lang)
 
 @app.route('/services')
 def services():
+    lang = get_language()
     page = Page.query.filter_by(slug='services', is_active=True).first()
     if page:
-        sections = Section.query.filter_by(page_id=page.id, is_active=True).order_by(Section.order_index).all()
+        sections = Section.query.filter_by(page_id=page.id, language_code=lang, is_active=True).order_by(Section.order_index).all()
     else:
         sections = []
-    return render_template('services.html', page=page, sections=sections)
+    return render_template('services.html', page=page, sections=sections, lang=lang)
 
 @app.route('/portfolio')
 def portfolio():
+    lang = get_language()
     page = Page.query.filter_by(slug='portfolio', is_active=True).first()
     if page:
-        sections = Section.query.filter_by(page_id=page.id, is_active=True).order_by(Section.order_index).all()
+        sections = Section.query.filter_by(page_id=page.id, language_code=lang, is_active=True).order_by(Section.order_index).all()
     else:
         sections = []
-    return render_template('portfolio.html', page=page, sections=sections)
+    return render_template('portfolio.html', page=page, sections=sections, lang=lang)
 
 @app.route('/contact')
 def contact():
+    lang = get_language()
     page = Page.query.filter_by(slug='contact', is_active=True).first()
     if page:
-        sections = Section.query.filter_by(page_id=page.id, is_active=True).order_by(Section.order_index).all()
+        sections = Section.query.filter_by(page_id=page.id, language_code=lang, is_active=True).order_by(Section.order_index).all()
     else:
         sections = []
-    return render_template('contact.html', page=page, sections=sections)
+    return render_template('contact.html', page=page, sections=sections, lang=lang)
 
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
