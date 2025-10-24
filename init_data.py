@@ -57,18 +57,22 @@ def init_database():
                     },
                     {
                         'page_id': home_page.id,
-                        'section_type': 'intro',
+                        'section_type': 'expertise',
                         'language_code': 'fr',
-                        'heading': 'Créer des Espaces Intemporels',
-                        'content': 'Chez Bellari Concept, nous fusionnons design sophistiqué et fonctionnalité pratique pour créer des intérieurs qui inspirent et durent. Notre équipe de designers experts donne vie à votre vision avec une attention méticuleuse aux détails et un engagement inébranlable envers l\'excellence.',
+                        'heading': 'Nous vous aidons à réaliser les projets de vos rêves',
+                        'subheading': 'Excellence et expertise au service de vos ambitions',
+                        'content': 'Avec Bellari Concept, chaque projet est un gage de qualité. Notre équipe spécialisée offre une maîtrise technique inégalée, allant de la construction à l\'entretien de piscines. Nous mettons l\'excellence au cœur de tout ce que nous faisons, transformant vos visions en réalités durables et esthétiquement plaisantes.',
+                        'image_url': '/static/images/modern_construction__e4781d44.jpg',
                         'order_index': 1
                     },
                     {
                         'page_id': home_page.id,
-                        'section_type': 'intro',
+                        'section_type': 'expertise',
                         'language_code': 'en',
-                        'heading': 'Creating Timeless Spaces',
-                        'content': 'At Bellari Concept, we blend sophisticated design with practical functionality to create interiors that inspire and endure. Our team of expert designers brings your vision to life with meticulous attention to detail and an unwavering commitment to excellence.',
+                        'heading': 'We help you realize your dream projects',
+                        'subheading': 'Excellence and expertise at the service of your ambitions',
+                        'content': 'With Bellari Concept, each project is a guarantee of quality. Our specialized team offers unparalleled technical mastery, from construction to pool maintenance. We put excellence at the heart of everything we do, transforming your visions into lasting and aesthetically pleasing realities.',
+                        'image_url': '/static/images/modern_construction__e4781d44.jpg',
                         'order_index': 1
                     },
                     {
