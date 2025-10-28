@@ -79,6 +79,24 @@ fi
 if [ -f .env ]; then
     source .env
     echo "✓ Environment variables loaded"
+    
+    # Validate DATABASE_URL format
+    if [ -z "$DATABASE_URL" ]; then
+        echo "❌ DATABASE_URL is empty in .env file"
+        echo "Please run: ./fix_env.sh to fix your .env file"
+        exit 1
+    fi
+    
+    if [[ ! "$DATABASE_URL" =~ ^postgresql:// ]]; then
+        echo "❌ DATABASE_URL has incorrect format in .env file"
+        echo "Expected format: postgresql://user:password@host:port/database"
+        echo "Current value: $DATABASE_URL"
+        echo ""
+        echo "Please run: ./fix_env.sh to fix your .env file"
+        exit 1
+    fi
+    
+    echo "✓ DATABASE_URL format validated"
 else
     echo "❌ .env file not found"
     exit 1
