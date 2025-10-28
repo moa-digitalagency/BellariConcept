@@ -3,6 +3,10 @@ from werkzeug.security import generate_password_hash
 
 def init_database():
     with app.app_context():
+        print("Creating database tables...")
+        db.create_all()
+        print("Tables created successfully!")
+        
         print("Creating admin user...")
         if not User.query.first():
             admin = User(
