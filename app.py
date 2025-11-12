@@ -654,6 +654,65 @@ def get_setting(key, default=''):
     setting = SiteSettings.query.filter_by(key=key).first()
     return setting.value if setting else default
 
+@app.route('/sitemap.xml')
+def sitemap():
+    from flask import Response
+    from urllib.parse import urljoin
+    
+    base_url = request.url_root.rstrip('/')
+    
+    pages_xml = []
+    pages_xml.append('<?xml version="1.0" encoding="UTF-8"?>')
+    pages_xml.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
+    
+    pages = Page.query.filter_by(is_active=True).all()
+    
+    for page in pages:
+        if page.slug == 'home':
+            loc = base_url + '/'
+        else:
+            loc = base_url + '/' + page.slug
+        
+        lastmod = page.updated_at.strftime('%Y-%m-%d') if page.updated_at else datetime.utcnow().strftime('%Y-%m-%d')
+        
+        priority = '1.0' if page.slug == 'home' else '0.8'
+        
+        pages_xml.append('  <url>')
+        pages_xml.append(f'    <loc>{loc}</loc>')
+        pages_xml.append(f'    <lastmod>{lastmod}</lastmod>')
+        pages_xml.append('    <changefreq>weekly</changefreq>')
+        pages_xml.append(f'    <priority>{priority}</priority>')
+        pages_xml.append('  </url>')
+    
+    pages_xml.append('</urlset>')
+    
+    sitemap_xml = '\n'.join(pages_xml)
+    
+    response = Response(sitemap_xml, mimetype='application/xml')
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    return response
+
+@app.route('/robots.txt')
+def robots():
+    from flask import Response
+    
+    base_url = request.url_root.rstrip('/')
+    
+    robots_txt = f"""User-agent: *
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /admin/*
+
+# Sitemap
+Sitemap: {base_url}/sitemap.xml
+"""
+    
+    response = Response(robots_txt, mimetype='text/plain')
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    return response
+
 app.jinja_env.globals.update(get_setting=get_setting)
 
 with app.app_context():

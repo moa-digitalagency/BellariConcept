@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}{{ page.title if page else 'Bellari Concept - Construction & Rénovation Marrakech' }}{% endblock %}
-{% block meta_description %}{{ page.meta_description if page else 'Votre partenaire de choix à Marrakech pour tous vos projets de construction et de rénovation' }}{% endblock %}
+{% block meta_description %}{{ page.meta_description if page else ('Votre partenaire de choix à Marrakech pour tous vos projets de construction et de rénovation' if lang == 'fr' else 'Your trusted partner in Marrakech for all your construction and renovation projects') }}{% endblock %}
 
 {% block content %}
 {% for section in sections %}

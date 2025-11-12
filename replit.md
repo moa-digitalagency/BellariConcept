@@ -4,6 +4,15 @@
 A modern, professional website for Bellari Concept - a construction and renovation company based in Marrakech, Morocco. This project features full multilingual support (French/English) with real company content, professional images, and a complete Content Management System.
 
 ## Recent Changes
+- **November 12, 2025**: SEO Optimization & Search Engine Features
+  - ✅ **Dynamic Sitemap**: Auto-generated /sitemap.xml from database pages with proper lastmod and priority
+  - ✅ **Robots.txt**: Dynamic /robots.txt with sitemap reference and admin area protection
+  - ✅ **Enhanced Meta Tags**: Complete SEO meta tags (description, keywords, robots, canonical, author)
+  - ✅ **Open Graph Protocol**: Full OG tags for social media sharing (Facebook, LinkedIn, etc.)
+  - ✅ **Twitter Cards**: Optimized Twitter Card meta tags for rich previews
+  - ✅ **Schema.org Markup**: LocalBusiness JSON-LD with all services, contact info, and business hours
+  - ✅ **Bilingual SEO**: Language-aware meta tags and structured data (fr_FR/en_US)
+
 - **October 24, 2025**: New Expertise Section & Deployment Tools
   - ✅ **Expertise Section**: Added dynamic styled section between hero and services (fully editable from admin)
   - ✅ **Bilingual Content**: Expertise section available in French and English with admin management
@@ -76,6 +85,21 @@ A modern, professional website for Bellari Concept - a construction and renovati
 - **Fully Rounded Buttons**: All buttons use rounded-full class
 - **Color-coded Badges**: Visual indicators for active/inactive sections and language
 - **Section Management**: Create, edit, delete sections including the new expertise section type
+
+### SEO Features
+- **Dynamic Sitemap**: `/sitemap.xml` auto-generated from active pages with lastmod dates and priority
+- **Robots.txt**: `/robots.txt` dynamically generated with sitemap reference and admin area protection
+- **Meta Tags**: Complete SEO meta tags (description, keywords, robots, canonical, author)
+- **Open Graph**: Full OG protocol tags for social media sharing (Facebook, LinkedIn, etc.)
+- **Twitter Cards**: Optimized Twitter Card meta tags for rich link previews
+- **Schema.org**: LocalBusiness JSON-LD structured data with:
+  - Business name, description, contact info (phone, email)
+  - Physical address and geo-coordinates (Marrakech, Morocco)
+  - Business hours (Mon-Fri 8AM-6PM, Sat 9AM-1PM)
+  - Complete service catalog (6 services with descriptions)
+  - Price range and service area
+- **Bilingual SEO**: Language-aware meta tags and structured data (fr_FR/en_US locale)
+- **Image SEO**: Proper Open Graph images with dimensions and alt text
 
 ### Color Scheme
 - Primary: #1A1A1A (charcoal black)

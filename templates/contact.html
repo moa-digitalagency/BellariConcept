@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}{{ page.title if page else 'Contact - Bellari Concept' }}{% endblock %}
-{% block meta_description %}{{ page.meta_description if page else 'Contactez-nous pour vos projets de construction à Marrakech' }}{% endblock %}
+{% block meta_description %}{{ page.meta_description if page else ('Contactez-nous pour vos projets de construction à Marrakech' if lang == 'fr' else 'Contact us for your construction projects in Marrakech') }}{% endblock %}
 
 {% block content %}
 <!-- Hero Section -->

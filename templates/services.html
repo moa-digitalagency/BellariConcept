@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}{{ page.title if page else 'Nos Services - Bellari Concept' }}{% endblock %}
-{% block meta_description %}{{ page.meta_description if page else 'Services de construction et rénovation à Marrakech' }}{% endblock %}
+{% block meta_description %}{{ page.meta_description if page else ('Services de construction et rénovation à Marrakech' if lang == 'fr' else 'Construction and renovation services in Marrakech') }}{% endblock %}
 
 {% block content %}
 <!-- Hero Section avec Image de Fond -->

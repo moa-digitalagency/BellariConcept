@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}{{ page.title if page else 'Portfolio - Bellari Concept' }}{% endblock %}
-{% block meta_description %}{{ page.meta_description if page else 'Découvrez nos projets de construction et rénovation à Marrakech' }}{% endblock %}
+{% block meta_description %}{{ page.meta_description if page else ('Découvrez nos projets de construction et rénovation à Marrakech' if lang == 'fr' else 'Discover our construction and renovation projects in Marrakech') }}{% endblock %}
 
 {% block content %}
 <!-- Hero Section -->
