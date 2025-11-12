@@ -1,4 +1,4 @@
-modules = ["web", "python-3.11", "bash", "postgresql-16"]
+modules = ["web", "python-3.11", "bash"]
 [agent]
 expertMode = true
 
@@ -33,6 +33,10 @@ outputType = "webview"
 [[ports]]
 localPort = 5000
 externalPort = 80
+
+[[ports]]
+localPort = 36287
+externalPort = 3000
 
 [deployment]
 deploymentTarget = "autoscale"
