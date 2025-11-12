@@ -656,5 +656,9 @@ def get_setting(key, default=''):
 
 app.jinja_env.globals.update(get_setting=get_setting)
 
+with app.app_context():
+    from auto_init import ensure_database_initialized
+    ensure_database_initialized()
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
