@@ -196,15 +196,27 @@ def ensure_database_initialized():
                     db.session.commit()
                 
                 if not User.query.first():
-                    admin = User(
-                        username='admin',
-                        password_hash=generate_password_hash('admin123')
-                    )
-                    db.session.add(admin)
-                    db.session.commit()
+                    admin_username = os.getenv('ADMIN_USERNAME')
+                    admin_password = os.getenv('ADMIN_PASSWORD')
+                    
+                    if admin_username and admin_password:
+                        if len(admin_password) < 8:
+                            print("⚠️  ADMIN_PASSWORD must be at least 8 characters!")
+                            print("❌ Skipping admin user creation for security reasons")
+                        else:
+                            admin = User(
+                                username=admin_username,
+                                password_hash=generate_password_hash(admin_password)
+                            )
+                            db.session.add(admin)
+                            db.session.commit()
+                            print(f"✅ Admin user created: {admin_username}")
+                    else:
+                        print("ℹ️  No admin credentials in environment variables")
+                        print("ℹ️  Set ADMIN_USERNAME and ADMIN_PASSWORD to create an admin user")
+                        print("ℹ️  You can create an admin user later via the admin interface or manually")
                 
                 print("✅ Database auto-initialized successfully!")
-                print("⚠️  Default admin credentials: admin/admin123 - CHANGE IMMEDIATELY!")
                 return True
             else:
                 return False

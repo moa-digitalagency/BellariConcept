@@ -28,9 +28,19 @@ SESSION_SECRET=votre_secret_key_ici
 # Database URL
 DATABASE_URL=postgresql://user:password@localhost/bellari_db
 
+# Admin Credentials (OBLIGATOIRE pour créer le premier admin)
+ADMIN_USERNAME=votre_admin_username
+ADMIN_PASSWORD=votre_mot_de_passe_fort_minimum_8_caracteres
+
 # Pour permettre l'init manuelle (optionnel, déconseillé en prod)
 ADMIN_INIT_ALLOWED=false
 ```
+
+**🔐 SÉCURITÉ IMPORTANTE:**
+- Le mot de passe admin DOIT faire au moins 8 caractères
+- Utilisez un mot de passe fort et unique
+- Ne partagez jamais ces credentials
+- Ces variables sont utilisées UNIQUEMENT lors de la première initialisation
 
 ## 🚀 Installation sur VPS
 
@@ -85,9 +95,10 @@ Au premier démarrage, l'application va :
   - **Hero Section** (slider principal)
   - **Section "Notre Promesse"** (expertise)
   - Sections features, why_us, cta
-- ✅ Créer un compte admin par défaut (admin/admin123)
+- ✅ Créer un compte admin SEULEMENT si ADMIN_USERNAME et ADMIN_PASSWORD sont définis
 
-**Aucune action manuelle requise !**
+**🔐 IMPORTANT - Création du compte admin:**
+L'admin est créé uniquement si vous avez défini `ADMIN_USERNAME` et `ADMIN_PASSWORD` dans vos variables d'environnement. Si ces variables ne sont pas définies, vous devrez créer un admin manuellement après le déploiement.
 
 Pour vérification manuelle (optionnel) :
 ```bash
@@ -149,25 +160,51 @@ curl -I http://localhost:8000/static/images/modern_construction__e4781d44.jpg
 
 ### 4. Tester le Panel Admin
 - [ ] Aller sur `/admin/login`
-- [ ] Se connecter avec admin/admin123
-- [ ] **CHANGER LE MOT DE PASSE IMMÉDIATEMENT !**
-- [ ] Vérifier que toutes les pages et sections sont présentes
+- [ ] Se connecter avec les credentials définis dans ADMIN_USERNAME et ADMIN_PASSWORD
+  - ⚠️ Si vous n'avez PAS défini ces variables, vous devez d'abord créer un admin manuellement (voir section "Sécurité Post-Installation")
+- [ ] Vérifier que toutes les pages et sections sont présentes dans le panel admin
 
 ## 🔒 Sécurité Post-Installation
 
-### 1. Changer le Mot de Passe Admin
+### 1. Créer un Admin Manuellement (si nécessaire)
+Si vous n'avez pas défini ADMIN_USERNAME et ADMIN_PASSWORD avant le déploiement :
 ```python
 # Via Python shell
 uv run python
 >>> from app import app, db, User
 >>> from werkzeug.security import generate_password_hash
 >>> with app.app_context():
-...     admin = User.query.filter_by(username='admin').first()
-...     admin.password_hash = generate_password_hash('NOUVEAU_MOT_DE_PASSE_FORT')
+...     admin = User(
+...         username='votre_username',
+...         password_hash=generate_password_hash('VOTRE_MOT_DE_PASSE_FORT')
+...     )
+...     db.session.add(admin)
 ...     db.session.commit()
+...     print("Admin créé avec succès!")
 ```
 
-### 2. Désactiver l'Init Manuelle
+### 2. Changer le Mot de Passe Admin (si créé via ENV)
+```python
+# Via Python shell
+uv run python
+>>> from app import app, db, User
+>>> from werkzeug.security import generate_password_hash
+>>> with app.app_context():
+...     admin = User.query.filter_by(username='votre_username').first()
+...     admin.password_hash = generate_password_hash('NOUVEAU_MOT_DE_PASSE_FORT')
+...     db.session.commit()
+...     print("Mot de passe changé avec succès!")
+```
+
+### 3. Supprimer les Variables d'Admin (après création)
+Une fois l'admin créé, retirez ces variables de `.env` pour plus de sécurité :
+```bash
+# Commentez ou supprimez ces lignes après le premier déploiement
+# ADMIN_USERNAME=...
+# ADMIN_PASSWORD=...
+```
+
+### 4. Désactiver l'Init Manuelle
 Dans `.env` :
 ```bash
 ADMIN_INIT_ALLOWED=false
