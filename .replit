@@ -1,4 +1,4 @@
-modules = ["web", "python-3.11", "bash", "postgresql-16"]
+modules = ["web", "python-3.11", "bash"]
 [agent]
 expertMode = true
 
@@ -16,10 +16,10 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Server"
+args = "Start application"
 
 [[workflows.workflow]]
-name = "Server"
+name = "Start application"
 author = "agent"
 
 [[workflows.workflow.tasks]]
