@@ -698,14 +698,67 @@ def robots():
     
     base_url = request.url_root.rstrip('/')
     
-    robots_txt = f"""User-agent: *
+    robots_txt = f"""# Robots.txt for Bellari Concept
+
+# Allow all search engines
+User-agent: *
 Allow: /
+Allow: /about
+Allow: /services
+Allow: /portfolio
+Allow: /contact
 
 # Disallow admin and private areas
 Disallow: /admin/
 Disallow: /admin/*
+Disallow: /set_language/
+Disallow: /static/uploads/
 
-# Sitemap
+# Allow AI search engines and assistants
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Anthropic-AI
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: Cohere-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+# Block bad bots and scrapers
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+# Sitemap location
 Sitemap: {base_url}/sitemap.xml
 """
     
