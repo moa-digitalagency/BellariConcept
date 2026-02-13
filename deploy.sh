@@ -147,37 +147,21 @@ except Exception as e:
 EOF
 
 echo ""
-echo "[7/8] Initializing database schema..."
-python3 << EOF
-from app import app, db
-import os
-
-with app.app_context():
-    try:
-        db.create_all()
-        print("✓ Database tables created successfully")
-    except Exception as e:
-        print(f"❌ Error creating database tables: {e}")
-        import sys
-        sys.exit(1)
-EOF
-
-echo ""
-echo "Do you want to initialize the database with default data? (y/n)"
-read -p "This will create admin user and sample content: " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-    python3 init_data.py
-    echo "✓ Database initialized with default data"
+echo "[7/8] Initializing database schema and content..."
+if python3 init_db.py; then
+    echo "✓ Database initialized successfully"
     echo ""
     echo "╔════════════════════════════════════════╗"
-    echo "║   ADMIN CREDENTIALS (CHANGE ASAP!)     ║"
+    echo "║   ADMIN CREDENTIALS (IF CREATED)       ║"
     echo "╠════════════════════════════════════════╣"
     echo "║ Username: admin                        ║"
     echo "║ Password: admin123                     ║"
     echo "║ URL: /admin/login                      ║"
     echo "╚════════════════════════════════════════╝"
     echo ""
+else
+    echo "❌ Error initializing database"
+    exit 1
 fi
 
 echo ""

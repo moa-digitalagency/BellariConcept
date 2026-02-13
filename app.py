@@ -887,8 +887,14 @@ Sitemap: {base_url}/sitemap.xml
 app.jinja_env.globals.update(get_setting=get_setting)
 
 with app.app_context():
-    from auto_init import ensure_database_initialized
-    ensure_database_initialized()
+    try:
+        from init_db import check_and_migrate_schema, init_pwa_settings, init_content
+        # Run robust initialization on startup
+        check_and_migrate_schema()
+        init_pwa_settings()
+        init_content()
+    except Exception as e:
+        print(f"Startup initialization error: {e}")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
