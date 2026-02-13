@@ -40,6 +40,39 @@
             <input type="hidden" name="site_logo" id="site_logo" value="{{ settings.get('site_logo', '') }}">
         </div>
 
+        <!-- Favicon Section -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-4">Site Favicon</h2>
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Current Favicon</label>
+                {% if settings.get('site_favicon') %}
+                    <div class="mb-4">
+                        <img src="{{ settings.get('site_favicon', '/static/logo.png') }}" alt="Site Favicon" class="h-12 w-12 object-contain rounded border">
+                    </div>
+                {% else %}
+                    <div class="mb-4">
+                        <img src="/static/logo.png" alt="Default Favicon" class="h-12 w-12 object-contain rounded border">
+                        <p class="text-sm text-gray-500 mt-2">Using default logo as favicon</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Upload New Favicon</label>
+                <input type="file" id="favicon-upload" accept="image/x-icon,image/png,image/gif" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-50 file:text-yellow-700 hover:file:bg-yellow-100">
+                <p class="text-xs text-gray-500 mt-1">Recommended: ICO or PNG format, 32x32 or 16x16 pixels</p>
+            </div>
+
+            <div class="hidden mb-4" id="favicon-preview-container">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Preview</label>
+                <img id="favicon-preview" src="" alt="Favicon Preview" class="h-12 w-12 object-contain rounded border">
+            </div>
+
+            <button type="button" id="upload-favicon-btn" class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-full disabled:opacity-50" disabled>Upload Favicon</button>
+            <input type="hidden" name="site_favicon" id="site_favicon" value="{{ settings.get('site_favicon', '') }}">
+        </div>
+
         <!-- Site Names -->
         <div class="bg-white rounded-lg shadow-md p-6">
             <h2 class="text-xl font-semibold mb-4">Site Names</h2>
@@ -286,6 +319,53 @@ document.getElementById('upload-logo-btn').addEventListener('click', async funct
     } finally {
         this.disabled = false;
         this.textContent = 'Upload Logo';
+    }
+});
+
+document.getElementById('favicon-upload').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('favicon-preview').src = e.target.result;
+            document.getElementById('favicon-preview-container').classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+        document.getElementById('upload-favicon-btn').disabled = false;
+    }
+});
+
+document.getElementById('upload-favicon-btn').addEventListener('click', async function() {
+    const fileInput = document.getElementById('favicon-upload');
+    const file = fileInput.files[0];
+
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    this.disabled = true;
+    this.textContent = 'Uploading...';
+
+    try {
+        const response = await fetch('{{ url_for("admin_upload_favicon") }}', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            document.getElementById('site_favicon').value = data.favicon_url;
+            alert('Favicon uploaded successfully! Click "Save Settings" to apply changes.');
+        } else {
+            alert('Error: ' + data.error);
+        }
+    } catch (error) {
+        alert('Upload failed: ' + error);
+    } finally {
+        this.disabled = false;
+        this.textContent = 'Upload Favicon';
     }
 });
 </script>

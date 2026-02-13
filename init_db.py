@@ -16,7 +16,8 @@ def init_pwa_settings():
             'pwa_theme_color': '#ffffff',
             'pwa_background_color': '#ffffff',
             'pwa_description': 'Bellari Concept - Luxury Interior Design',
-            'pwa_start_url': '/'
+            'pwa_start_url': '/',
+            'site_favicon': '/static/logo.png'
         }
 
         changes_made = False
