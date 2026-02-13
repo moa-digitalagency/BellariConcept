@@ -1,12 +1,20 @@
+#  * Nom de l'application : Bellari Concept
+#  * Description : Main Flask application file and route definitions
+#  * Produit de : MOA Digital Agency, www.myoneart.com
+#  * Fait par : Aisance KALONJI, www.aisancekalonji.com
+#  * Auditer par : La CyberConfiance, www.cyberconfiance.com
+
 import os
+import secrets
+from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, send_from_directory, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
-from datetime import datetime
 from PIL import Image as PILImage
-import secrets
+from flask_wtf.csrf import CSRFProtect
+from flask_talisman import Talisman
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("SESSION_SECRET")
@@ -22,14 +30,34 @@ app.config['ADMIN_INIT_ALLOWED'] = os.getenv('ADMIN_INIT_ALLOWED', 'false').lowe
 app.config['LANGUAGES'] = ['fr', 'en']
 app.config['DEFAULT_LANGUAGE'] = 'fr'
 
+# Secure Cookie Configuration
+app.config.update(
+    SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE='Lax',
+)
+
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
+# Initialize Extensions
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'admin_login'
+
+csrf = CSRFProtect(app)
+
+csp = {
+    'default-src': '\'self\'',
+    'style-src': ['\'self\'', '\'unsafe-inline\'', 'https://fonts.googleapis.com'],
+    'script-src': ['\'self\'', '\'unsafe-inline\'', 'https://cdn.tailwindcss.com'],
+    'font-src': ['\'self\'', 'https://fonts.gstatic.com'],
+    'img-src': ['\'self\'', 'data:', 'https:'],
+    'connect-src': '\'self\''
+}
+talisman = Talisman(app, content_security_policy=csp)
 
 def get_language():
     return session.get('language', app.config['DEFAULT_LANGUAGE'])
@@ -450,13 +478,22 @@ def init_db():
     with app.app_context():
         db.create_all()
         
+        # Security: Create admin from env vars if missing
         if not User.query.first():
-            flash('WARNING: Using default admin credentials. CHANGE PASSWORD IMMEDIATELY!', 'error')
-            admin = User(
-                username='admin',
-                password_hash=generate_password_hash('admin123')
-            )
-            db.session.add(admin)
+            admin_username = os.getenv('ADMIN_USERNAME')
+            admin_password = os.getenv('ADMIN_PASSWORD')
+            if admin_username and admin_password:
+                if len(admin_password) >= 8:
+                    admin = User(
+                        username=admin_username,
+                        password_hash=generate_password_hash(admin_password)
+                    )
+                    db.session.add(admin)
+                    flash(f'Admin user {admin_username} created successfully.', 'success')
+                else:
+                    flash('ADMIN_PASSWORD must be at least 8 characters.', 'error')
+            else:
+                flash('No admin user found. Set ADMIN_USERNAME and ADMIN_PASSWORD environment variables to create one securely.', 'warning')
         
         if not Page.query.first():
             pages_data = [

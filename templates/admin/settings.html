@@ -1,3 +1,10 @@
+<!--
+ * Nom de l'application : Bellari Concept
+ * Description : Admin Settings Page
+ * Produit de : MOA Digital Agency, www.myoneart.com
+ * Fait par : Aisance KALONJI, www.aisancekalonji.com
+ * Auditer par : La CyberConfiance, www.cyberconfiance.com
+-->
 {% extends "admin/base.html" %}
 
 {% block title %}Site Settings - Admin{% endblock %}
@@ -7,6 +14,7 @@
     <h1 class="text-3xl font-bold mb-8">Site Settings</h1>
 
     <form method="POST" action="{{ url_for('admin_settings') }}" class="space-y-8">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <!-- Logo Section -->
         <div class="bg-white rounded-lg shadow-md p-6">
             <h2 class="text-xl font-semibold mb-4">Site Logo</h2>
@@ -252,9 +260,12 @@ document.getElementById('upload-pwa-icon-btn').addEventListener('click', async f
     this.disabled = true;
     this.textContent = 'Uploading...';
 
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
     try {
         const response = await fetch('{{ url_for("admin_upload_pwa_icon") }}', {
             method: 'POST',
+            headers: { 'X-CSRFToken': csrfToken },
             body: formData
         });
 
@@ -299,9 +310,12 @@ document.getElementById('upload-logo-btn').addEventListener('click', async funct
     this.disabled = true;
     this.textContent = 'Uploading...';
     
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
     try {
         const response = await fetch('{{ url_for("admin_upload_logo") }}', {
             method: 'POST',
+            headers: { 'X-CSRFToken': csrfToken },
             body: formData
         });
         
@@ -347,9 +361,12 @@ document.getElementById('upload-favicon-btn').addEventListener('click', async fu
     this.disabled = true;
     this.textContent = 'Uploading...';
 
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
     try {
         const response = await fetch('{{ url_for("admin_upload_favicon") }}', {
             method: 'POST',
+            headers: { 'X-CSRFToken': csrfToken },
             body: formData
         });
 
