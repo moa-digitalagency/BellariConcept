@@ -12,6 +12,10 @@
     <meta name="author" content="Bellari Concept">
     <link rel="canonical" href="{% block canonical %}{{ request.url }}{% endblock %}">
     
+    <!-- Favicon -->
+    <link rel="icon" href="{{ site_settings.get('site_favicon', '/static/logo.png') }}">
+    <link rel="shortcut icon" href="{{ site_settings.get('site_favicon', '/static/logo.png') }}">
+
     <!-- PWA Manifest & Meta -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="{{ site_settings.get('pwa_theme_color', '#ffffff') }}">

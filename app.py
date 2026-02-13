@@ -589,6 +589,7 @@ def admin_settings():
     if request.method == 'POST':
         settings_to_update = [
             ('site_logo', request.form.get('site_logo')),
+            ('site_favicon', request.form.get('site_favicon')),
             ('site_name_fr', request.form.get('site_name_fr')),
             ('site_name_en', request.form.get('site_name_en')),
             ('default_meta_keywords', request.form.get('default_meta_keywords')),
@@ -683,6 +684,39 @@ def admin_upload_pwa_icon():
         return jsonify({
             'success': True,
             'icon_url': f'/static/{filename}'
+        })
+
+    return jsonify({'error': 'Invalid file type'}), 400
+
+@app.route('/admin/upload-favicon', methods=['POST'])
+@login_required
+def admin_upload_favicon():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file provided'}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No file selected'}), 400
+
+    if file and allowed_file(file.filename):
+        # Determine extension
+        ext = file.filename.rsplit('.', 1)[1].lower()
+        filename = f'favicon.{ext}'
+        filepath = os.path.join('static', filename)
+        file.save(filepath)
+
+        setting = SiteSettings.query.filter_by(key='site_favicon').first()
+        if setting:
+            setting.value = f'/static/{filename}'
+        else:
+            setting = SiteSettings(key='site_favicon', value=f'/static/{filename}')
+            db.session.add(setting)
+
+        db.session.commit()
+
+        return jsonify({
+            'success': True,
+            'favicon_url': f'/static/{filename}'
         })
 
     return jsonify({'error': 'Invalid file type'}), 400

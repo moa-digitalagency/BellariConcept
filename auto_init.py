@@ -1,5 +1,4 @@
 import os
-from app import app, db, User, Page, Section, SiteSettings
 from werkzeug.security import generate_password_hash
 
 def ensure_database_initialized():
@@ -7,6 +6,7 @@ def ensure_database_initialized():
     Auto-initializes the database if it's empty.
     This ensures the site works even on fresh VPS deployments.
     """
+    from app import app, db, User, Page, Section, SiteSettings
     with app.app_context():
         try:
             db.create_all()
