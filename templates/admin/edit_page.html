@@ -1,3 +1,10 @@
+<!--
+ * Nom de l'application : Bellari Concept
+ * Description : Edit Page Template
+ * Produit de : MOA Digital Agency, www.myoneart.com
+ * Fait par : Aisance KALONJI, www.aisancekalonji.com
+ * Auditer par : La CyberConfiance, www.cyberconfiance.com
+-->
 {% extends "admin/base.html" %}
 
 {% block title %}{% if lang == 'fr' %}Modifier{% else %}Edit{% endif %} {{ page.title }}{% endblock %}
@@ -40,6 +47,7 @@
 <div class="bg-white rounded-lg shadow p-6 mb-8">
     <h3 class="text-xl font-bold text-primary mb-6">{% if lang == 'fr' %}Paramètres de la Page & SEO{% else %}Page Settings & SEO{% endif %}</h3>
     <form method="POST" action="/admin/page/{{ page.id }}/update" class="space-y-4">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <input type="hidden" name="lang" value="{{ lang }}">
         <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2">
@@ -89,6 +97,7 @@
         <h4 class="font-bold text-lg mb-4 text-blue-900">{% if lang == 'fr' %}Nouvelle section (créer FR et EN){% else %}New Section (create FR and EN){% endif %}</h4>
         <p class="text-sm text-blue-700 mb-4">{% if lang == 'fr' %}Cette action créera deux sections: une en français et une en anglais{% else %}This will create two sections: one in French and one in English{% endif %}</p>
         <form method="POST" action="/admin/section/create_both" class="space-y-4">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             <input type="hidden" name="page_id" value="{{ page.id }}">
             <input type="hidden" name="lang" value="{{ lang }}">
             
@@ -185,6 +194,7 @@
                     
                     {% if section %}
                     <form method="POST" action="/admin/section/{{ section.id }}/update" class="space-y-3">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                         <input type="hidden" name="lang" value="{{ lang }}">
                         
                         <div>
@@ -232,12 +242,14 @@
                         </div>
                     </form>
                     <form id="delete_form_{{ section.id }}" method="POST" action="/admin/section/{{ section.id }}/delete" class="hidden">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                         <input type="hidden" name="lang" value="{{ lang }}">
                     </form>
                     {% else %}
                     <div class="text-center py-8 text-gray-500">
                         <p class="mb-4">{% if lang == 'fr' %}Section non créée pour cette langue{% else %}Section not created for this language{% endif %}</p>
                         <form method="POST" action="/admin/section/create" class="space-y-3">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                             <input type="hidden" name="page_id" value="{{ page.id }}">
                             <input type="hidden" name="lang" value="{{ lang }}">
                             <input type="hidden" name="section_type" value="{{ section_type }}">
@@ -369,8 +381,13 @@ function quickUploadImage() {
     progressDiv.classList.remove('hidden');
     progressBar.style.width = '30%';
     
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
     fetch('/admin/upload', {
         method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken
+        },
         body: formData
     })
     .then(response => response.json())

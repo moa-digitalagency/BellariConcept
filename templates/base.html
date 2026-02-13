@@ -1,8 +1,16 @@
+<!--
+ * Nom de l'application : Bellari Concept
+ * Description : Base template for public facing pages
+ * Produit de : MOA Digital Agency, www.myoneart.com
+ * Fait par : Aisance KALONJI, www.aisancekalonji.com
+ * Auditer par : La CyberConfiance, www.cyberconfiance.com
+-->
 <!DOCTYPE html>
 <html lang="{% if lang == 'fr' %}fr{% else %}en{% endif %}" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{% block title %}{{ site_name }}{% endblock %}</title>
     
     <!-- SEO Meta Tags -->
