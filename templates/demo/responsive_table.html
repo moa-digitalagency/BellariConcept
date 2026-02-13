@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+
+{% block title %}Responsive Data Table - Card Stack Demo{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 section-spacing">
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Project Overview</h1>
+        <p class="text-gray-600">A responsive data table that transforms into a card stack on mobile devices. Resize your browser to see the effect.</p>
+    </div>
+
+    <!-- Responsive Table Component -->
+    <div class="overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left text-gray-500">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 border-b">
+                <tr>
+                    <th scope="col" class="px-6 py-3">Project Name</th>
+                    <th scope="col" class="px-6 py-3">Client</th>
+                    <th scope="col" class="px-6 py-3">Status</th>
+                    <th scope="col" class="px-6 py-3">Budget</th>
+                    <th scope="col" class="px-6 py-3">Deadline</th>
+                    <th scope="col" class="px-6 py-3">Team Lead</th>
+                    <th scope="col" class="px-6 py-3 text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for project in projects %}
+                <tr class="bg-white border-b hover:bg-gray-50 transition-colors">
+                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap" data-label="Project Name">
+                        {{ project.name }}
+                    </td>
+                    <td class="px-6 py-4" data-label="Client">
+                        {{ project.client }}
+                    </td>
+                    <td class="px-6 py-4" data-label="Status">
+                        <span class="px-2 py-1 font-semibold leading-tight text-{{ project.status_color }}-700 bg-{{ project.status_color }}-100 rounded-full">
+                            {{ project.status }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4" data-label="Budget">
+                        {{ project.budget }}
+                    </td>
+                    <td class="px-6 py-4" data-label="Deadline">
+                        {{ project.deadline }}
+                    </td>
+                     <td class="px-6 py-4" data-label="Team Lead">
+                        <div class="flex items-center gap-2 justify-end md:justify-start">
+                             <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold text-gray-600">
+                                {{ project.team_lead_initials }}
+                            </div>
+                            <span>{{ project.team_lead }}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-right" data-label="Actions">
+                        <a href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Explanation Section -->
+    <div class="mt-12 bg-gray-50 p-6 rounded-lg border border-gray-200">
+        <h2 class="text-xl font-semibold mb-4">How it Works</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+            <div>
+                <h3 class="font-medium text-gray-900 mb-2">Desktop View (> 768px)</h3>
+                <ul class="list-disc list-inside text-gray-600 space-y-1">
+                    <li>Standard HTML <code>&lt;table&gt;</code> structure</li>
+                    <li><code>thead</code> is visible</li>
+                    <li>Rows display horizontally</li>
+                    <li>Zebra striping and hover effects active</li>
+                </ul>
+            </div>
+            <div>
+                 <h3 class="font-medium text-gray-900 mb-2">Mobile View (< 768px)</h3>
+                <ul class="list-disc list-inside text-gray-600 space-y-1">
+                    <li><code>thead</code> is hidden via CSS</li>
+                    <li>Each <code>tr</code> becomes a card (block display, shadow, margin)</li>
+                    <li>Each <code>td</code> becomes a flex container</li>
+                    <li><code>::before</code> pseudo-element displays the column header using <code>attr(data-label)</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="mt-6">
+            <h3 class="font-medium text-gray-900 mb-2">Key CSS Logic</h3>
+            <pre class="bg-gray-800 text-gray-100 p-4 rounded text-sm overflow-x-auto"><code>@media (max-width: 768px) {
+  /* Reset table layout */
+  table, thead, tbody, th, td, tr {
+    display: block;
+    width: 100%;
+  }
+
+  /* Hide headers visually */
+  thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  /* Card style for rows */
+  tr {
+    margin-bottom: 1.5rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Cell style */
+  td {
+    border: none;
+    border-bottom: 1px solid #f1f5f9;
+    position: relative;
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: right;
+  }
+
+  /* Label style via pseudo-element */
+  td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    margin-right: auto;
+    text-align: left;
+  }
+}</code></pre>
+        </div>
+    </div>
+</div>
+
+<style>
+    @media (max-width: 768px) {
+        /* Force table to not be like tables anymore */
+        table, thead, tbody, th, td, tr {
+            display: block;
+            width: 100%;
+        }
+
+        /* Hide table headers (but not display: none;, for accessibility) */
+        thead tr {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+
+        tr {
+            margin-bottom: 1.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+
+        td {
+            /* Behave like a "row" */
+            border: none;
+            border-bottom: 1px solid #f1f5f9;
+            position: relative;
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: right;
+            min-height: 3.5rem; /* Ensure enough height for touch targets */
+        }
+
+        td:last-child {
+            border-bottom: 0;
+            background-color: #f8fafc; /* Slightly different background for actions */
+        }
+
+        td::before {
+            /* Now like a table header */
+            content: attr(data-label);
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            text-align: left;
+            margin-right: 1rem;
+            flex-shrink: 0; /* Don't shrink label */
+        }
+    }
+</style>
+{% endblock %}

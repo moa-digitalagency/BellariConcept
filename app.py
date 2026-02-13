@@ -57,7 +57,7 @@ csp = {
     'img-src': ['\'self\'', 'data:', 'https:'],
     'connect-src': '\'self\''
 }
-talisman = Talisman(app, content_security_policy=csp)
+talisman = Talisman(app, content_security_policy=csp, force_https=os.environ.get('FORCE_HTTPS', 'True').lower() == 'true')
 
 def get_language():
     return session.get('language', app.config['DEFAULT_LANGUAGE'])
@@ -920,6 +920,62 @@ Sitemap: {base_url}/sitemap.xml
     response = Response(robots_txt, mimetype='text/plain')
     response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
     return response
+
+@app.route('/demo/responsive-table')
+def demo_responsive_table():
+    projects = [
+        {
+            "name": "E-Commerce Platform",
+            "client": "RetailCorp Inc.",
+            "status": "In Progress",
+            "status_color": "blue",
+            "budget": "$45,000",
+            "deadline": "2023-12-15",
+            "team_lead": "Sarah Connor",
+            "team_lead_initials": "SC"
+        },
+        {
+            "name": "Mobile App Redesign",
+            "client": "StartUp Flow",
+            "status": "Completed",
+            "status_color": "green",
+            "budget": "$22,500",
+            "deadline": "2023-10-30",
+            "team_lead": "John Smith",
+            "team_lead_initials": "JS"
+        },
+        {
+            "name": "Marketing Dashboard",
+            "client": "Growth Hacking Ltd",
+            "status": "Pending",
+            "status_color": "yellow",
+            "budget": "$18,000",
+            "deadline": "2024-01-20",
+            "team_lead": "Emily Blunt",
+            "team_lead_initials": "EB"
+        },
+        {
+            "name": "Internal API Migration",
+            "client": "TechGiant Solutions",
+            "status": "Review",
+            "status_color": "purple",
+            "budget": "$35,000",
+            "deadline": "2023-11-05",
+            "team_lead": "Michael Chang",
+            "team_lead_initials": "MC"
+        },
+        {
+            "name": "Corporate Website",
+            "client": "Law Firm Associates",
+            "status": "In Progress",
+            "status_color": "blue",
+            "budget": "$12,000",
+            "deadline": "2023-12-01",
+            "team_lead": "David Miller",
+            "team_lead_initials": "DM"
+        }
+    ]
+    return render_template('demo/responsive_table.html', projects=projects, lang=get_language())
 
 app.jinja_env.globals.update(get_setting=get_setting)
 
