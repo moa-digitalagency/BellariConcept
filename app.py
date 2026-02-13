@@ -596,7 +596,13 @@ def admin_settings():
             ('google_analytics_id', request.form.get('google_analytics_id')),
             ('facebook_url', request.form.get('facebook_url')),
             ('instagram_url', request.form.get('instagram_url')),
-            ('linkedin_url', request.form.get('linkedin_url'))
+            ('linkedin_url', request.form.get('linkedin_url')),
+            ('pwa_enabled', 'true' if request.form.get('pwa_enabled') else 'false'),
+            ('pwa_display_mode', request.form.get('pwa_display_mode')),
+            ('pwa_app_name', request.form.get('pwa_app_name')),
+            ('pwa_icon_url', request.form.get('pwa_icon_url')),
+            ('pwa_theme_color', request.form.get('pwa_theme_color')),
+            ('pwa_background_color', request.form.get('pwa_background_color'))
         ]
         
         for key, value in settings_to_update:
@@ -650,9 +656,87 @@ def admin_upload_logo():
     
     return jsonify({'error': 'Invalid file type'}), 400
 
+@app.route('/admin/upload-pwa-icon', methods=['POST'])
+@login_required
+def admin_upload_pwa_icon():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file provided'}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No file selected'}), 400
+
+    if file and allowed_file(file.filename):
+        filename = 'pwa-icon.' + file.filename.rsplit('.', 1)[1].lower()
+        filepath = os.path.join('static', filename)
+        file.save(filepath)
+
+        setting = SiteSettings.query.filter_by(key='pwa_icon_url').first()
+        if setting:
+            setting.value = f'/static/{filename}'
+        else:
+            setting = SiteSettings(key='pwa_icon_url', value=f'/static/{filename}')
+            db.session.add(setting)
+
+        db.session.commit()
+
+        return jsonify({
+            'success': True,
+            'icon_url': f'/static/{filename}'
+        })
+
+    return jsonify({'error': 'Invalid file type'}), 400
+
 def get_setting(key, default=''):
     setting = SiteSettings.query.filter_by(key=key).first()
     return setting.value if setting else default
+
+@app.route('/manifest.json')
+def manifest():
+    settings_dict = {}
+    for setting in SiteSettings.query.all():
+        settings_dict[setting.key] = setting.value
+
+    pwa_enabled = settings_dict.get('pwa_enabled', 'false') == 'true'
+
+    if not pwa_enabled:
+        return jsonify({}), 404
+
+    display_mode = settings_dict.get('pwa_display_mode', 'default')
+
+    if display_mode == 'custom':
+        name = settings_dict.get('pwa_app_name', 'Bellari Concept')
+        short_name = settings_dict.get('pwa_short_name', 'Bellari')
+        icon_url = settings_dict.get('pwa_icon_url', '/static/logo.png')
+    else:
+        lang = get_language()
+        name = settings_dict.get(f'site_name_{lang}', 'Bellari Concept')
+        short_name = name[:12]
+        icon_url = settings_dict.get('site_logo', '/static/logo.png')
+
+    manifest_data = {
+        "name": name,
+        "short_name": short_name,
+        "start_url": settings_dict.get('pwa_start_url', '/'),
+        "display": "standalone",
+        "background_color": settings_dict.get('pwa_background_color', '#ffffff'),
+        "theme_color": settings_dict.get('pwa_theme_color', '#ffffff'),
+        "description": settings_dict.get('pwa_description', ''),
+        "icons": [
+            {
+                "src": icon_url,
+                "sizes": "192x192",
+                "type": "image/png"
+            },
+            {
+                "src": icon_url,
+                "sizes": "512x512",
+                "type": "image/png"
+            }
+        ]
+    }
+
+    return jsonify(manifest_data)
 
 @app.route('/sitemap.xml')
 def sitemap():
