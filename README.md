@@ -56,10 +56,10 @@ Le cœur du système est un **CMS bilingue (FR/EN)** permettant une gestion fine
 
 La documentation détaillée se trouve dans le dossier [`docs/`](./docs/).
 
-*   👉 **[Bible des Fonctionnalités](./docs/features_full_list.md)** : Liste exhaustive de toutes les features.
-*   👉 **[Architecture Technique](./docs/technical_architecture.md)** : Structure du code, schéma BDD, sécurité.
-*   👉 **[Guide de Déploiement](./docs/deployment_guide.md)** : Installation, variables d'env, mise en prod.
-*   👉 **[Manuel Utilisateur](./docs/user_manual.md)** : Guide pour les éditeurs de contenu.
+*   👉 **[Bible des Fonctionnalités](./docs/Bellari_Concept_features_full_list.md)** : Liste exhaustive de toutes les features.
+*   👉 **[Architecture Technique](./docs/Bellari_Concept_technical_architecture.md)** : Structure du code, schéma BDD, sécurité.
+*   👉 **[Guide de Déploiement](./docs/Bellari_Concept_deployment_guide.md)** : Installation, variables d'env, mise en prod.
+*   👉 **[Manuel Utilisateur](./docs/Bellari_Concept_user_manual.md)** : Guide pour les éditeurs de contenu.
 
 ---
 
