@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}451 - {% if lang == 'fr' %}Censuré{% else %}Censored{% endif %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-900 text-white flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 font-mono">
+    <div class="max-w-3xl w-full space-y-8 text-center relative">
+
+        <!-- Watermark -->
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-7xl md:text-9xl font-bold text-red-600 opacity-10 rotate-[-15deg] pointer-events-none whitespace-nowrap select-none">
+            CLASSIFIED
+        </div>
+
+        <!-- Lottie Animation -->
+        <div class="w-48 h-48 mx-auto mb-8 relative z-10">
+            <lottie-player
+                src="https://assets10.lottiefiles.com/packages/lf20_fp7svyno.json"
+                background="transparent"
+                speed="1"
+                style="width: 100%; height: 100%;"
+                loop
+                autoplay>
+            </lottie-player>
+            <!-- Suggested local file: 451-burning-book.json -->
+        </div>
+
+        <div class="relative z-10">
+            <h1 class="text-4xl font-bold text-red-500 tracking-widest uppercase mb-2">
+                {% if lang == 'fr' %}Erreur 451{% else %}Error 451{% endif %}
+            </h1>
+            <h2 class="text-2xl font-semibold mb-6">
+                {% if lang == 'fr' %}Indisponible pour raisons légales{% else %}Unavailable For Legal Reasons{% endif %}
+            </h2>
+
+            <div class="bg-black bg-opacity-50 p-6 border border-red-900 rounded shadow-2xl mx-auto max-w-xl text-left font-mono text-sm md:text-base">
+                <p class="mb-4 text-gray-300">
+                    <span class="text-red-500 font-bold">&gt;</span>
+                    {% if lang == 'fr' %}
+                        Comme dans le roman "Fahrenheit 451" de Ray Bradbury, certaines informations sont parfois... brûlantes. Cette page existe peut-être, mais la loi ou une autorité supérieure nous interdit de vous la montrer.
+                    {% else %}
+                        Like in Ray Bradbury's novel "Fahrenheit 451", some information is just too... hot. This page might exist, but the law or a higher authority forbids us from showing it to you.
+                    {% endif %}
+                </p>
+                <p class="mb-4 text-gray-300">
+                    <span class="text-red-500 font-bold">&gt;</span>
+                    {% if lang == 'fr' %}
+                        Censure ? Blocage géographique ? Ou simplement une vérité qui dérange ? Ce contenu a été classifié.
+                    {% else %}
+                        Censorship? Geographic blocking? Or simply an inconvenient truth? This content has been classified.
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="mt-8">
+                <a href="/" class="inline-block px-8 py-3 border border-red-500 text-red-500 font-bold rounded hover:bg-red-600 hover:text-white transition-colors duration-300 uppercase tracking-widest">
+                    {% if lang == 'fr' %}Retourner en zone sûre{% else %}Return to Safe Zone{% endif %}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+{% endblock %}

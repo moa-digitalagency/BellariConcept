@@ -7,7 +7,7 @@
 import os
 import secrets
 from datetime import datetime
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, send_from_directory, session
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, send_from_directory, session, abort
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -976,6 +976,22 @@ def demo_responsive_table():
         }
     ]
     return render_template('demo/responsive_table.html', projects=projects, lang=get_language())
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('errors/404.html', lang=get_language()), 404
+
+@app.errorhandler(451)
+def unavailable_for_legal_reasons(e):
+    return render_template('errors/451.html', lang=get_language()), 451
+
+@app.errorhandler(400)
+def bad_request(e):
+    return render_template('errors/400.html', lang=get_language()), 400
+
+@app.errorhandler(403)
+def forbidden(e):
+    return render_template('errors/403.html', lang=get_language()), 403
 
 app.jinja_env.globals.update(get_setting=get_setting)
 

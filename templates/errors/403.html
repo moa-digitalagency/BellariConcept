@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}403 - {% if lang == 'fr' %}Accès Interdit{% else %}Forbidden{% endif %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-white flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 text-center">
+
+        <!-- Lottie Animation -->
+        <div class="w-64 h-64 mx-auto mb-8">
+            <lottie-player
+                src="https://assets1.lottiefiles.com/packages/lf20_pwohazbb.json"
+                background="transparent"
+                speed="1"
+                style="width: 100%; height: 100%;"
+                loop
+                autoplay>
+            </lottie-player>
+            <!-- Suggested local file: 403-forbidden.json -->
+        </div>
+
+        <div>
+            <h1 class="mt-6 text-4xl font-extrabold text-primary sm:text-5xl uppercase tracking-widest">
+                {% if lang == 'fr' %}Interdit{% else %}Forbidden{% endif %}
+            </h1>
+            <h2 class="mt-2 text-2xl text-red-600 font-bold">
+                {% if lang == 'fr' %}Accès Refusé (403){% else %}Access Denied (403){% endif %}
+            </h2>
+            <p class="mt-4 text-lg text-gray-500">
+                {% if lang == 'fr' %}
+                    Halte là ! Vous n'avez pas les accréditations nécessaires pour entrer ici. Cette zone est réservée.
+                {% else %}
+                    Stop right there! You don't have the necessary clearance to enter here. This area is restricted.
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="border-t border-gray-200 pt-8 mt-8">
+            <p class="text-sm text-gray-400 mb-6">
+                {% if lang == 'fr' %}Si vous pensez qu'il s'agit d'une erreur, veuillez contacter l'administrateur.{% else %}If you believe this is a mistake, please contact the administrator.{% endif %}
+            </p>
+            <a href="/" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary hover:bg-opacity-90 shadow-lg transform hover:scale-105 transition-all">
+                {% if lang == 'fr' %}Retour à la civilisation{% else %}Back to civilization{% endif %}
+            </a>
+        </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+{% endblock %}
