@@ -108,7 +108,9 @@ def init_pwa_settings():
             'pwa_background_color': '#ffffff',
             'pwa_description': 'Bellari Concept - Luxury Interior Design',
             'pwa_start_url': '/',
-            'site_favicon': '/static/logo.png'
+            'site_favicon': '/static/logo.png',
+            'whatsapp_number': '243860493345',
+            'consultation_url': 'https://tidycal.com/moamyoneart/consultation-gratuite-15-min'
         }
 
         changes_made = False

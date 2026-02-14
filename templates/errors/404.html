@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}404 - {% if lang == 'fr' %}Page Non Trouvée{% else %}Page Not Found{% endif %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-secondary flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl w-full space-y-8 text-center">
+        <!-- Lottie Animation -->
+        <div class="w-64 h-64 mx-auto mb-8">
+            <lottie-player
+                src="https://assets2.lottiefiles.com/packages/lf20_kcsr6fcp.json"
+                background="transparent"
+                speed="1"
+                style="width: 100%; height: 100%;"
+                loop
+                autoplay>
+            </lottie-player>
+            <!-- Suggested local file: 404-astronaut.json -->
+        </div>
+
+        <div>
+            <h1 class="mt-6 text-4xl font-extrabold text-primary sm:text-5xl">
+                {% if lang == 'fr' %}
+                    Oups ! Vous semblez perdu dans l'espace.
+                {% else %}
+                    Oops! You seem lost in space.
+                {% endif %}
+            </h1>
+            <p class="mt-2 text-lg text-textDark">
+                {% if lang == 'fr' %}
+                    La page que vous cherchez a peut-être été déplacée ou n'existe plus.
+                {% else %}
+                    The page you are looking for might have been moved or no longer exists.
+                {% endif %}
+            </p>
+        </div>
+
+        <!-- Retention Tunnel -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 text-left">
+
+            <!-- Pillar 1: The Guide -->
+            <div class="bg-white p-6 rounded-lg shadow-lg border border-subtle hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <div class="text-accent text-3xl mb-4">
+                    🧭
+                </div>
+                <h3 class="text-xl font-bold text-primary mb-2">
+                    {% if lang == 'fr' %}Retrouver son chemin{% else %}Find your way{% endif %}
+                </h3>
+                <p class="text-sm text-gray-600 mb-6 h-10">
+                    {% if lang == 'fr' %}Revenez vers nos fonctionnalités phares et continuez votre visite.{% else %}Return to our core features and continue your visit.{% endif %}
+                </p>
+                <a href="/" class="block w-full py-3 px-4 text-center rounded-md shadow-sm text-sm font-bold text-white bg-primary hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors uppercase tracking-wider">
+                    {% if lang == 'fr' %}Retour à l'accueil{% else %}Back to Home{% endif %}
+                </a>
+            </div>
+
+            <!-- Pillar 2: The Concierge (Support) -->
+            <div class="bg-white p-6 rounded-lg shadow-lg border border-subtle hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <div class="text-green-500 text-3xl mb-4">
+                    💬
+                </div>
+                <h3 class="text-xl font-bold text-primary mb-2">
+                    {% if lang == 'fr' %}Besoin d'aide immédiate ?{% else %}Need immediate help?{% endif %}
+                </h3>
+                <p class="text-sm text-gray-600 mb-6 h-10">
+                    {% if lang == 'fr' %}Notre équipe est disponible sur WhatsApp pour vous guider.{% else %}Our team is available on WhatsApp to guide you.{% endif %}
+                </p>
+                <a href="https://wa.me/{{ site_settings.get('whatsapp_number', '243860493345') }}" target="_blank" class="block w-full py-3 px-4 text-center rounded-md shadow-sm text-sm font-bold text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors uppercase tracking-wider">
+                    {% if lang == 'fr' %}WhatsApp Support{% else %}WhatsApp Support{% endif %}
+                </a>
+            </div>
+
+            <!-- Pillar 3: The Lead Magnet -->
+            <div class="bg-white p-6 rounded-lg shadow-lg border-2 border-accent hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
+                <div class="absolute top-0 right-0 bg-accent text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+                    {% if lang == 'fr' %}OFFERT{% else %}GIFT{% endif %}
+                </div>
+                <div class="text-accent text-3xl mb-4">
+                    🎁
+                </div>
+                <h3 class="text-xl font-bold text-primary mb-2">
+                    {% if lang == 'fr' %}Pour nous faire pardonner{% else %}To make it up to you{% endif %}
+                </h3>
+                <p class="text-sm text-gray-600 mb-6 h-10">
+                    {% if lang == 'fr' %}Une consultation de 30 minutes offerte avec nos experts.{% else %}A free 30-minute consultation with our experts.{% endif %}
+                </p>
+                <a href="{{ site_settings.get('consultation_url', 'https://tidycal.com/moamyoneart/consultation-gratuite-15-min') }}" target="_blank" class="block w-full py-3 px-4 text-center rounded-md shadow-sm text-sm font-bold text-white bg-accent hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent transition-colors uppercase tracking-wider">
+                    {% if lang == 'fr' %}Profiter de l'offre{% else %}Claim Offer{% endif %}
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+{% endblock %}
