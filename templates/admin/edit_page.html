@@ -10,36 +10,11 @@
 {% block title %}{% if lang == 'fr' %}Modifier{% else %}Edit{% endif %} {{ page.title }}{% endblock %}
 {% block page_title %}{% if lang == 'fr' %}Modifier{% else %}Edit{% endif %}: {{ page.title }}{% endblock %}
 
-{% block content %}
-<style>
-.image-preview {
-    max-width: 200px;
-    max-height: 150px;
-    border-radius: 8px;
-}
-.resolution-badge {
-    background: #10b981;
-    color: white;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 11px;
-    font-weight: 600;
-}
-.lang-column {
-    border: 2px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 1rem;
-}
-.lang-column.fr {
-    border-color: #3b82f6;
-    background: #eff6ff;
-}
-.lang-column.en {
-    border-color: #10b981;
-    background: #f0fdf4;
-}
-</style>
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin-edit.css') }}">
+{% endblock %}
 
+{% block content %}
 <div class="mb-6">
     <a href="/admin/pages" class="text-accent hover:text-primary font-semibold">← {% if lang == 'fr' %}Retour aux pages{% else %}Back to Pages{% endif %}</a>
 </div>
@@ -337,81 +312,17 @@
     </div>
 </div>
 
+{% endblock %}
+
+{% block extra_js %}
 <script>
-let currentTargetInput = null;
-
-function showAddSection() {
-    document.getElementById('addSectionForm').classList.remove('hidden');
-}
-
-function hideAddSection() {
-    document.getElementById('addSectionForm').classList.add('hidden');
-}
-
-function openImagePicker(inputId) {
-    currentTargetInput = inputId;
-    document.getElementById('imagePickerModal').classList.remove('hidden');
-}
-
-function closeImagePicker(event) {
-    if (!event || event.target === event.currentTarget) {
-        document.getElementById('imagePickerModal').classList.add('hidden');
-        currentTargetInput = null;
-    }
-}
-
-function selectImage(url) {
-    if (currentTargetInput) {
-        document.getElementById(currentTargetInput).value = url;
-        closeImagePicker();
-    }
-}
-
-function quickUploadImage() {
-    const fileInput = document.getElementById('quickUploadInput');
-    const file = fileInput.files[0];
-    
-    if (!file) return;
-    
-    const formData = new FormData();
-    formData.append('file', file);
-    
-    const progressDiv = document.getElementById('quickUploadProgress');
-    const progressBar = document.getElementById('quickUploadBar');
-    progressDiv.classList.remove('hidden');
-    progressBar.style.width = '30%';
-    
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-    fetch('/admin/upload', {
-        method: 'POST',
-        headers: {
-            'X-CSRFToken': csrfToken
-        },
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        progressBar.style.width = '100%';
-        if (data.success) {
-            if (currentTargetInput) {
-                document.getElementById(currentTargetInput).value = data.image.url;
-            }
-            setTimeout(() => {
-                location.reload();
-            }, 500);
-        } else {
-            alert('{% if lang == "fr" %}Erreur{% else %}Error{% endif %}: ' + (data.error || 'Upload failed'));
-            progressDiv.classList.add('hidden');
+    window.bellariAdminConfig = {
+        csrfToken: "{{ csrf_token() }}",
+        messages: {
+            error: "{% if lang == 'fr' %}Erreur{% else %}Error{% endif %}",
+            uploadError: "{% if lang == 'fr' %}Erreur d'upload{% else %}Upload error{% endif %}"
         }
-    })
-    .catch(error => {
-        alert('{% if lang == "fr" %}Erreur d\'upload{% else %}Upload error{% endif %}: ' + error);
-        progressDiv.classList.add('hidden');
-    })
-    .finally(() => {
-        fileInput.value = '';
-    });
-}
+    };
 </script>
+<script src="{{ url_for('static', filename='js/admin-edit.js') }}"></script>
 {% endblock %}

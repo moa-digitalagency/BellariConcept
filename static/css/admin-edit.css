@@ -1,0 +1,26 @@
+.image-preview {
+    max-width: 200px;
+    max-height: 150px;
+    border-radius: 8px;
+}
+.resolution-badge {
+    background: #10b981;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+}
+.lang-column {
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1rem;
+}
+.lang-column.fr {
+    border-color: #3b82f6;
+    background: #eff6ff;
+}
+.lang-column.en {
+    border-color: #10b981;
+    background: #f0fdf4;
+}
