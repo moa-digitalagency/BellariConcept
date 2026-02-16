@@ -1,128 +1,107 @@
 # Bellari Concept CMS
 
-![Python Version](https://img.shields.io/badge/python-3.11%2B-blue.svg)
-![Flask](https://img.shields.io/badge/flask-3.0-green.svg)
-![Status](https://img.shields.io/badge/status-production-success.svg)
-![License](https://img.shields.io/badge/license-Private-red.svg)
+![Version](https://img.shields.io/badge/version-2.1.0-blue.svg)
+![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)
+![Status](https://img.shields.io/badge/status-production_ready-success.svg)
+![License](https://img.shields.io/badge/license-Proprietary-red.svg)
 
-> **Une plateforme CMS moderne, sécurisée et performante conçue sur mesure pour l'agence d'architecture et de design Bellari Concept.**
+> **Un CMS d'Architecture & Design d'Intérieur de nouvelle génération.**
+> Conçu pour la performance, la sécurité et une expérience utilisateur fluide (PWA).
 
----
-
-## 📖 Table des Matières
-
-- [Aperçu du Projet](#-aperçu-du-projet)
-- [Fonctionnalités Clés](#-fonctionnalités-clés)
-- [Stack Technique](#-stack-technique)
-- [Documentation Complète](#-documentation-complète)
-- [Installation Rapide](#-installation-rapide)
-- [Structure du Projet](#-structure-du-projet)
-- [Crédits](#-crédits)
+Bellari Concept est une plateforme web sur-mesure permettant aux agences d'architecture de gérer leur vitrine digitale avec une flexibilité totale. Il combine la puissance d'un CMS headless (gestion par blocs/sections) avec la simplicité d'un site vitrine statique optimisé pour le SEO.
 
 ---
 
-## 🔭 Aperçu du Projet
+## 🚀 Fonctionnalités Clés
 
-Bellari Concept CMS est une application web monolithique développée en Python/Flask. Elle offre une expérience utilisateur fluide (SPA-like) grâce à une gestion intelligente du cache et des transitions, tout en conservant la robustesse d'un backend traditionnel.
-
-Le cœur du système est un **CMS bilingue (FR/EN)** permettant une gestion fine du contenu (texte, images, SEO) sans aucune compétence technique, le tout sécurisé par des standards industriels (CSP, CSRF, Argon2).
-
----
-
-## ✨ Fonctionnalités Clés
-
-*   **🌍 Bilinguisme Natif :** Gestion symétrique des contenus FR/EN avec bascule instantanée.
-*   **📱 Progressive Web App (PWA) :** Installable sur mobile, fonctionne hors-ligne (partiellement), manifest dynamique.
-*   **🎨 Éditeur de Contenu Visuel :** Interface d'administration intuitive pour gérer les pages et les sections.
-*   **🖼️ Médiathèque Optimisée :** Upload, redimensionnement et compression automatique des images (Pillow).
-*   **🔒 Sécurité Renforcée :** Protection CSRF globale, Content Security Policy (Talisman), Hachage Argon2.
-*   **🚀 Performance :** Assets statiques optimisés, base de données relationnelle structurée.
+*   **CMS Bilingue (FR/EN) :** Gestion de contenu par paires synchronisées. Une modification en français garde la structure en anglais intacte.
+*   **Architecture Modulaire :** Construction de pages via des blocs réutilisables ("Sections") : Hero, Services, Portfolio, Témoignages...
+*   **Progressive Web App (PWA) :** Transformable en application mobile native (iOS/Android) avec manifeste dynamique et invite d'installation intelligente.
+*   **Sécurité Enterprise-Grade :** Hachage Argon2, CSP strict, Protection CSRF, Cookies Sécurisés.
+*   **SEO Automatisé :** Génération automatique de Sitemap XML, Robots.txt, et injection de données structurées JSON-LD (LocalBusiness).
+*   **Déploiement Résilient :** Scripts d'auto-réparation de la base de données (`init_db.py`) et de vérification de santé (`verify_deployment.py`).
 
 ---
 
 ## 🛠 Stack Technique
 
-| Composant | Technologie |
-| :--- | :--- |
-| **Backend** | Python 3.11, Flask 3.0 |
-| **Base de Données** | PostgreSQL (Prod) / SQLite (Dev), SQLAlchemy |
-| **Frontend** | Jinja2, Tailwind CSS (CDN), Vanilla JS |
-| **Serveur** | Gunicorn (WSGI) |
-| **Sécurité** | Flask-Talisman (CSP), Flask-WTF (CSRF), Werkzeug (Argon2) |
+*   **Backend :** Python, Flask, SQLAlchemy.
+*   **Frontend :** Jinja2, TailwindCSS (CDN), Vanilla JS.
+*   **Base de Données :** PostgreSQL (Prod) / SQLite (Dev).
+*   **Sécurité :** Flask-Talisman, Flask-WTF, Werkzeug Security.
 
 ---
 
 ## 📚 Documentation Complète
 
-La documentation détaillée se trouve dans le dossier [`docs/`](./docs/).
+La documentation détaillée se trouve dans le dossier `docs/`.
 
-*   👉 **[Bible des Fonctionnalités](./docs/Bellari_Concept_features_full_list.md)** : Liste exhaustive de toutes les features.
-*   👉 **[Architecture Technique](./docs/Bellari_Concept_technical_architecture.md)** : Structure du code, schéma BDD, sécurité.
-*   👉 **[Guide de Déploiement](./docs/Bellari_Concept_deployment_guide.md)** : Installation, variables d'env, mise en prod.
-*   👉 **[Manuel Utilisateur](./docs/Bellari_Concept_user_manual.md)** : Guide pour les éditeurs de contenu.
+| Document | Description |
+| :--- | :--- |
+| [**Bible des Fonctionnalités**](docs/Bellari_Concept_features_full_list.md) | Référence exhaustive de toutes les features métier et techniques. |
+| [**Architecture Technique**](docs/Bellari_Concept_Architecture.md) | Diagrammes de classes, flux de données et stack. |
+| [**Guide Utilisateur (Admin)**](docs/Bellari_Concept_User_Guide.md) | Manuel pour les administrateurs du site. |
+| [**Guide d'Installation**](docs/Bellari_Concept_Installation.md) | Procédure de déploiement et configuration des variables d'environnement. |
 
----
-
-## 🚀 Installation Rapide
-
-### Prérequis
-*   Python 3.11+
-*   `pip` ou `uv`
-*   Git
-
-### 1. Cloner le projet
-```bash
-git clone https://github.com/votre-org/bellari-concept.git
-cd bellari-concept
-```
-
-### 2. Installer les dépendances
-```bash
-pip install -r requirements.txt
-```
-
-### 3. Configurer l'environnement
-Créez un fichier `.env` à la racine :
-```ini
-DATABASE_URL=sqlite:///site.db
-SESSION_SECRET=votre_cle_secrete_super_longue
-ADMIN_USERNAME=admin
-ADMIN_PASSWORD=password123
-ADMIN_INIT_ALLOWED=true
-```
-
-### 4. Initialiser la Base de Données
-```bash
-python init_db.py
-```
-
-### 5. Lancer le serveur
-```bash
-python app.py
-```
-Accédez à l'application sur `http://localhost:5000`.
+> **Note :** Les liens ci-dessus pointent vers les fichiers générés dans `docs/`. Assurez-vous de consulter la version la plus récente.
 
 ---
 
-## 📂 Structure du Projet
+## ⚡ Démarrage Rapide (Local)
 
-```
-bellari-concept/
-├── app.py                 # Point d'entrée principal
-├── init_db.py             # Script de migration et seeding
-├── docs/                  # Documentation technique et utilisateur
-├── static/                # Assets (CSS, JS, Uploads)
-├── templates/             # Vues HTML (Jinja2)
-├── requirements.txt       # Dépendances Python
-└── README.md              # Ce fichier
+1.  **Cloner le dépôt :**
+    ```bash
+    git clone https://github.com/votre-repo/bellari-concept.git
+    cd bellari-concept
+    ```
+
+2.  **Configurer l'environnement :**
+    Créez un fichier `.env` ou exportez les variables :
+    ```bash
+    export FLASK_APP=app.py
+    export FLASK_ENV=development
+    export DATABASE_URL="sqlite:///site.db"
+    export SESSION_SECRET="dev-secret-key"
+    export ADMIN_USERNAME="admin"
+    export ADMIN_PASSWORD="password12345678"
+    ```
+
+3.  **Installer les dépendances :**
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4.  **Initialiser la Base de Données :**
+    ```bash
+    python init_db.py
+    # Vérifiez que l'admin est créé
+    ```
+
+5.  **Lancer le Serveur :**
+    ```bash
+    python main.py
+    ```
+    Accédez à `http://localhost:5000`.
+
+---
+
+## 🏗 Architecture Simplifiée
+
+```mermaid
+graph TD
+    Client[Client (Browser/PWA)] -->|HTTPS| Nginx[Nginx / Gunicorn]
+    Nginx -->|WSGI| Flask[Flask App]
+    Flask -->|SQLAlchemy| DB[(PostgreSQL)]
+    Flask -->|Jinja2| Templates[HTML Templates]
+    Templates -->|CDN| Tailwind[TailwindCSS]
+    Flask -->|Logic| Admin[Admin Panel]
+    Admin -->|Upload| Uploads[Static Files]
 ```
 
 ---
 
-## © Crédits
+## 🛡 Credits
 
 *   **Produit par :** MOA Digital Agency
 *   **Développé par :** Aisance KALONJI
 *   **Audité par :** La CyberConfiance
-
-*Copyright © 2025 Bellari Concept. Tous droits réservés.*
