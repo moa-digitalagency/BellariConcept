@@ -1,149 +1,130 @@
 # Bellari Concept - Bible des Fonctionnalités
 
-Ce document recense de manière exhaustive toutes les fonctionnalités techniques et métier de l'application Bellari Concept.
+Ce document constitue la référence exhaustive des fonctionnalités techniques, métier et utilisateur de l'application Bellari Concept. Il couvre l'intégralité du cycle de vie de la donnée, de la base de données à l'interface client.
 
 ---
 
-## 1. Authentification & Sécurité
+## 1. Core CMS & Architecture de Contenu
 
-### Système de Connexion
-*   **Route :** `/admin/login` (GET/POST)
-*   **Mécanisme :**
-    *   Authentification par session via `Flask-Login`.
-    *   Vérification du mot de passe avec hachage **Argon2** (implémentation par défaut de `werkzeug.security`).
-    *   Protection contre les attaques CSRF (Cross-Site Request Forgery) sur tous les formulaires via `Flask-WTF`.
-*   **Sécurité des Cookies :**
-    *   `HttpOnly` : Empêche l'accès aux cookies via JavaScript (protection XSS).
-    *   `Secure` : Force l'envoi des cookies uniquement via HTTPS.
-    *   `SameSite=Lax` : Protection contre les requêtes inter-sites non sollicitées.
+### Gestion des Pages (`Page`)
+*   **Structure BDD :** Modèle `Page` avec `slug` (URL unique), `title`, `meta_description`, `is_active`.
+*   **Comportement :**
+    *   Routing dynamique : `/` charge le slug `home`. Toutes les autres pages sont accessibles via `/<slug>`.
+    *   **Soft Delete :** Le champ `is_active` permet de désactiver une page sans la supprimer, renvoyant une 404 aux visiteurs mais restant éditable par l'admin.
+    *   **Métadonnées SEO :** Chaque page dispose de ses propres balises `<title>` et `<meta name="description">`, éditables via le CMS.
 
-### Sécurité Globale
-*   **Content Security Policy (CSP) :**
-    *   Implémenté via `flask-talisman`.
-    *   Politique stricte : Autorise uniquement les scripts/styles locaux, Google Fonts, et le CDN Tailwind.
-    *   Blocage par défaut des scripts inline non sécurisés et des sources externes non whitelistées.
-*   **En-têtes HTTP :**
-    *   Forçage HTTPS strict en production (`Strict-Transport-Security`).
-    *   Protection contre le Clickjacking (`X-Frame-Options: SAMEORIGIN`).
+### Gestion des Sections (`Section`)
+L'architecture repose sur un système de blocs flexibles ("Sections") qui composent chaque page.
+*   **Types de Sections :** `hero`, `text`, `service`, `features`, `expertise`, `why_us`, `contact`, `cta`.
+*   **Pairing Multilingue (Logiciel) :**
+    *   Chaque section possède un `language_code` ('fr' ou 'en') et un `order_index`.
+    *   **Règle d'Or :** Pour garantir un affichage cohérent lors du changement de langue, une section FR à l'index N doit impérativement avoir une section équivalente EN à l'index N.
+    *   **Création Atomique :** L'interface admin `/admin/section/create_both` force la création simultanée des deux variantes pour maintenir la synchronicité.
+*   **Normalisation Automatique (`normalize_sections.py`) :**
+    *   Script de maintenance critique.
+    *   Parcourt toutes les pages et regroupe les sections par type et langue.
+    *   Réécrit les `order_index` de manière séquentielle (0, 1, 2...) pour s'assurer que la paire FR/EN partage strictement le même index.
+    *   Corrige les désynchronisations dues à des suppressions manuelles ou erreurs d'insertion.
 
----
-
-## 2. Système de Gestion de Contenu (CMS)
-
-### Gestion des Pages
-*   **Routes :** `/admin/pages`, `/admin/page/<id>`
-*   **Fonctionnalités :**
-    *   Liste de toutes les pages statiques et dynamiques.
-    *   Modification des métadonnées SEO par page : Titre (`<title>`) et Meta Description.
-    *   Activation/Désactivation d'une page (Soft delete : la page reste en BDD mais renvoie une 404 ou n'est plus listée).
-
-### Gestion des Sections (Le cœur du contenu)
-*   **Concept :** Une page est une agrégation de "Sections" ordonnées.
-*   **Support Multilingue (FR/EN) :**
-    *   Chaque section possède un code langue (`fr` ou `en`).
-    *   L'interface d'édition `/admin/page/<id>` regroupe visuellement les sections par paire (FR + EN) pour une édition parallèle.
-*   **Création :**
-    *   Endpoint `/admin/section/create_both` : Crée simultanément la version FR et EN d'une section avec le même index d'ordre.
-*   **Types de Sections supportés :**
-    *   `hero` : Grande bannière avec titre, sous-titre et bouton d'action.
-    *   `text` : Bloc de texte standard riche.
-    *   `service` : Carte de service avec icône/image.
-    *   `features` : Liste de points clés ou caractéristiques.
-    *   `expertise` : Bloc mettant en avant les compétences spécifiques.
-    *   `why_us` : Arguments de vente ("Pourquoi nous choisir").
-    *   `contact` : Informations de contact formatées.
-    *   `cta` : Appel à l'action (Call to Action).
-*   **Ordonnancement :**
-    *   Champ `order_index` (Entier) pour définir l'ordre d'affichage.
-    *   Outil de normalisation `/admin/normalize-sections` pour réaligner les index en cas de désynchronisation entre les langues.
-
-### Gestion des Images (Médiathèque)
-*   **Route :** `/admin/images`, `/admin/upload`
-*   **Upload :**
-    *   Support Drag & Drop.
+### Gestion des Médias (`Image`)
+*   **Upload Sécurisé :**
     *   Validation stricte des extensions (`png`, `jpg`, `jpeg`, `gif`, `webp`).
-    *   **Sécurisation du nom de fichier :** `secure_filename` + préfixe hexadécimal aléatoire (8 caractères) pour éviter les collisions et les injections.
-*   **Traitement :**
-    *   Utilisation de la librairie **Pillow** pour analyser les dimensions (largeur/hauteur) et la taille du fichier à la volée.
-*   **Suppression :**
-    *   Suppression atomique du fichier sur le disque (`os.remove`) et de l'entrée en base de données.
+    *   Renommage automatique via `secure_filename` + hash hexadécimal (8 chars) pour éviter les collisions et l'exécution de code malveillant.
+*   **Validation PIL :**
+    *   Vérification binaire du fichier via `PIL.Image` pour s'assurer qu'il s'agit bien d'une image valide, prévenant les attaques par upload de scripts déguisés.
+    *   Extraction automatique des dimensions (width/height) pour le layout.
+*   **Stockage :** Local (`static/uploads/`).
 
 ---
 
-## 3. Configuration du Site & PWA
+## 2. Authentification & Sécurité
 
-### Paramètres Généraux (`SiteSettings`)
-*   **Route :** `/admin/settings`
-*   **Stockage :** Table clé-valeur flexible en base de données.
-*   **Champs configurables :**
-    *   Identité : Nom du site (FR/EN), Logo, Favicon.
-    *   Réseaux Sociaux : URLs Facebook, Instagram, LinkedIn.
-    *   SEO Global : Mots-clés par défaut, Image OpenGraph par défaut, ID Google Analytics.
+### Protocole de Connexion
+*   **Hachage Argon2 :** Utilisation de `werkzeug.security` avec l'algorithme Argon2 pour le stockage des mots de passe (résistant aux attaques GPU/ASIC).
+*   **Session Admin :**
+    *   Protection via `Flask-Login`.
+    *   Cookie de session sécurisé : `HttpOnly` (anti-XSS), `Secure` (HTTPS only), `SameSite='Lax'` (anti-CSRF).
+*   **Initialisation Sécurisée (`init_db.py`) :**
+    *   Création du premier administrateur uniquement via variables d'environnement (`ADMIN_USERNAME`, `ADMIN_PASSWORD`).
+    *   Refus de création si le mot de passe est inférieur à 8 caractères.
 
-### Progressive Web App (PWA)
-*   **Manifest Dynamique :**
-    *   Route `/manifest.json` générée à la volée depuis les `SiteSettings`.
-    *   Permet de changer l'icône, le nom de l'app et les couleurs du thème sans redéployer le code.
-*   **Configuration PWA :**
-    *   Activation/Désactivation globale.
-    *   Mode d'affichage (Standalone, Browser, Minimal-UI).
-    *   Thème et couleur de fond personnalisables.
-
----
-
-## 4. Interface Publique (Frontend)
-
-### Rendu et Routing
-*   **Moteur de Template :** Jinja2 avec héritage (`base.html`).
-*   **Routing Dynamique :**
-    *   La page d'accueil `/` charge le contenu de la page au slug `home`.
-    *   Les autres pages sont servies via `/<slug>` (ex: `/about`, `/services`).
-*   **Injection de Contexte :**
-    *   Un `context_processor` injecte automatiquement les `SiteSettings` (logo, nom du site, liens sociaux) dans tous les templates, évitant la répétition de code.
-
-### Gestion des Langues
-*   **Sélecteur :** Bouton bascule FR/EN.
-*   **Persistance :**
-    *   Choix stocké dans la session utilisateur (`session['language']`).
-    *   Route `/set_language/<lang>` pour changer la locale et rediriger vers la page précédente (`request.referrer`).
-*   **Fallback :** Langue par défaut définie sur `fr` si aucune session n'est active.
-
-### Optimisation SEO Technique
-*   **Sitemap XML :**
-    *   Route `/sitemap.xml`.
-    *   Généré dynamiquement en listant toutes les pages actives.
-    *   Inclut la date de dernière modification (`updated_at`) et la priorité (1.0 pour Home, 0.8 pour les autres).
-*   **Robots.txt :**
-    *   Route `/robots.txt`.
-    *   Autorise les bots majeurs (Google, Bing) et les bots IA (GPTBot, ClaudeBot).
-    *   Bloque explicitement les scrapers nuisibles (Ahrefs, Semrush, MJ12bot) pour préserver la bande passante.
-    *   Indique l'emplacement du Sitemap.
+### Défense en Profondeur
+*   **CSRF Protection (`Flask-WTF`) :**
+    *   Token CSRF obligatoire pour tous les formulaires (POST).
+    *   Validation stricte côté serveur avant traitement.
+*   **Content Security Policy (CSP) :**
+    *   Implémentation stricte via `Flask-Talisman`.
+    *   Autorise : `self`, Google Fonts, Tailwind CDN.
+    *   Bloque : Scripts inline non autorisés, iframes externes, objets flash/java.
+    *   Force HTTPS en production.
+*   **En-têtes de Sécurité :**
+    *   `X-Content-Type-Options: nosniff`
+    *   `X-Frame-Options: SAMEORIGIN`
 
 ---
 
-## 5. Architecture Technique & Déploiement
+## 3. Progressive Web App (PWA)
 
-### Base de Données
-*   **ORM :** SQLAlchemy.
-*   **Modèles :**
-    *   `User` : Administrateurs.
-    *   `Page` : Structure des pages.
-    *   `Section` : Contenu riche associé aux pages.
-    *   `Image` : Métadonnées des fichiers uploadés.
-    *   `SiteSettings` : Configuration globale.
-*   **Migration Robuste (`init_db.py`) :**
-    *   Système de "Migration Manuelle" intégré au démarrage.
-    *   Vérifie l'existence des tables et, surtout, **l'existence de chaque colonne critique**.
-    *   Exécute des `ALTER TABLE ADD COLUMN` automatiquement si une colonne manque (compatible SQLite et PostgreSQL), assurant la stabilité lors des mises à jour sur VPS sans outils externes (Alembic).
+### Manifest Dynamique
+*   **Route :** `/manifest.json`
+*   **Logique :** Généré dynamiquement à partir des `SiteSettings` en base de données.
+    *   Permet à l'administrateur de changer le nom de l'app, l'icône, et les couleurs (thème/background) sans redéployer le code.
+    *   Supporte les modes d'affichage `standalone`, `browser`, `minimal-ui`.
 
-### Initialisation
-*   **Admin par défaut :**
-    *   Création automatique d'un utilisateur admin au démarrage si la table est vide.
-    *   Utilise les variables d'environnement `ADMIN_USERNAME` et `ADMIN_PASSWORD`.
-    *   Refuse la création si le mot de passe est < 8 caractères.
-*   **Contenu par défaut :**
-    *   Peuple la base avec des pages et sections exemples (Lorem Ipsum structuré) si aucune page n'existe.
+### Service Worker & Installation (`pwa.js`)
+*   **Enregistrement :** `static/sw.js` est enregistré au chargement de la page si supporté par le navigateur.
+*   **Prompts d'Installation Intelligents :**
+    *   **Android/Desktop :** Intercepte l'événement `beforeinstallprompt`, empêche la bannière native Chrome, et affiche un modal personnalisé `#pwa-install-prompt`.
+    *   **iOS :** Détecte le User-Agent (iPhone/iPad/iPod) et l'absence de mode `standalone`. Affiche un modal spécifique `#pwa-ios-prompt` avec instructions manuelles ("Share" -> "Add to Home Screen").
+    *   **Persistance :** Utilise `localStorage` pour ne pas harceler l'utilisateur iOS s'il a déjà fermé le prompt.
 
-### Stack
-*   **Serveur WSGI :** Gunicorn (Production) ou Werkzeug (Dev).
-*   **Frontend :** HTML5, Tailwind CSS (via CDN), JavaScript Vanilla (pas de framework lourd).
+---
+
+## 4. SEO Technique & Structuré
+
+### Données Structurées (JSON-LD)
+*   **Type :** `LocalBusiness`.
+*   **Injection :** Dynamique dans `<head>` de `base.html`.
+*   **Données :**
+    *   Nom, Logo, Description (adaptée à la langue FR/EN).
+    *   Coordonnées géographiques (Latitude/Longitude), Adresse, Téléphone, Email.
+    *   Heures d'ouverture (`OpeningHoursSpecification`).
+    *   Catalogue de services (`OfferCatalog`) listant Construction, Électricité, Plomberie, etc.
+
+### Méta-données Dynamiques
+*   **OpenGraph & Twitter Cards :**
+    *   Générés automatiquement pour chaque page.
+    *   Image par défaut configurable dans les `SiteSettings`.
+*   **Sitemap XML (`/sitemap.xml`) :**
+    *   Liste toutes les pages actives.
+    *   Priorité : 1.0 (Accueil) vs 0.8 (Pages internes).
+    *   Fréquence de changement : `weekly`.
+*   **Robots.txt (`/robots.txt`) :**
+    *   Allow : Bots majeurs (Google, Bing) et IA éthiques (GPTBot, ClaudeBot).
+    *   Disallow : Admin (`/admin`), uploads bruts, et scrapers agressifs (Ahrefs, Semrush, MJ12bot).
+
+---
+
+## 5. Déploiement & Maintenance
+
+### Vérification Pré-Déploiement (`verify_deployment.py`)
+Script critique à exécuter avant tout déploiement ou redémarrage.
+1.  **Vérification Fichiers :** Confirme la présence des assets statiques critiques (images du thème).
+2.  **Vérification Structure :** Valide l'existence des dossiers `static/uploads`, `templates`, etc.
+3.  **Vérification BDD :**
+    *   S'assure que la page `home` existe.
+    *   Compte les sections critiques (`hero`, `expertise`) pour garantir qu'il y en a bien 2 de chaque (FR + EN).
+4.  **Vérification Env :** Valide `DATABASE_URL` et `SESSION_SECRET`.
+
+### Migration "Resiliente" (`init_db.py`)
+Contrairement à Alembic qui nécessite un historique strict, ce système est conçu pour l'auto-réparation sur VPS.
+*   **Vérification de Schéma :** Inspecte les tables existantes.
+*   **Migration Colonne par Colonne :**
+    *   Définit un schéma cible (dictionnaire `schema_checks`).
+    *   Si une colonne manque (ex: `pwa_enabled` ajouté dans une mise à jour), exécute un `ALTER TABLE ADD COLUMN` brut.
+    *   Compatible SQLite et PostgreSQL.
+
+### Configuration Globale (`SiteSettings`)
+Table clé-valeur permettant la configuration à chaud sans redémarrage :
+*   **Champs :** `pwa_enabled`, `google_analytics_id`, `facebook_url`, etc.
+*   **Injection Contextuelle :** `inject_site_settings` rend ces valeurs disponibles dans tous les templates Jinja2 sans requête explicite dans chaque route.
