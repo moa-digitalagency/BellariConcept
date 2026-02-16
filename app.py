@@ -7,6 +7,10 @@
 import os
 import secrets
 from datetime import datetime
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, send_from_directory, session, abort
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user

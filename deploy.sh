@@ -44,8 +44,11 @@ if [ ! -f .env ]; then
     read -p "Database name [bellari_concept]: " db_name
     db_name=${db_name:-bellari_concept}
     
-    read -p "Database user: " db_user
-    read -s -p "Database password: " db_password
+    read -p "Database user [bellari]: " db_user
+    db_user=${db_user:-bellari}
+
+    read -s -p "Database password [bellari54321]: " db_password
+    db_password=${db_password:-bellari54321}
     echo ""
     
     SESSION_SECRET=$(openssl rand -hex 32)

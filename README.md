@@ -89,13 +89,13 @@ La documentation détaillée se trouve dans le dossier `docs/`.
 
 ```mermaid
 graph TD
-    Client[Client (Browser/PWA)] -->|HTTPS| Nginx[Nginx / Gunicorn]
-    Nginx -->|WSGI| Flask[Flask App]
-    Flask -->|SQLAlchemy| DB[(PostgreSQL)]
-    Flask -->|Jinja2| Templates[HTML Templates]
-    Templates -->|CDN| Tailwind[TailwindCSS]
-    Flask -->|Logic| Admin[Admin Panel]
-    Admin -->|Upload| Uploads[Static Files]
+    Client[Client (Browser/PWA)] -->|"HTTPS"| Nginx[Nginx / Gunicorn]
+    Nginx -->|"WSGI"| Flask[Flask App]
+    Flask -->|"SQLAlchemy"| DB[(PostgreSQL)]
+    Flask -->|"Jinja2"| Templates[HTML Templates]
+    Templates -->|"CDN"| Tailwind[TailwindCSS]
+    Flask -->|"Logic"| Admin[Admin Panel]
+    Admin -->|"Upload"| Uploads[Static Files]
 ```
 
 ---
