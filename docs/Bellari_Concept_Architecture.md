@@ -90,7 +90,7 @@ classDiagram
         +DateTime updated_at
     }
 
-    Page "1" -- "*" Section : contains
+    Page "1" -- "*" Section : "contains"
 ```
 
 ### Relations Clés
