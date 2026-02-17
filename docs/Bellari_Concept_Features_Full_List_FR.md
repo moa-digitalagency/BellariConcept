@@ -1,72 +1,81 @@
-![Python Version](https://img.shields.io/badge/Python-3.11%2B-blue) ![Framework](https://img.shields.io/badge/Framework-Flask%203.0-green) ![Database](https://img.shields.io/badge/Database-PostgreSQL-orange) ![Status](https://img.shields.io/badge/Status-Proprietary-red) ![License](https://img.shields.io/badge/License-MOA%20Private-red) ![Owner](https://img.shields.io/badge/Owner-MOA%20Digital%20Agency-purple)
+![Python 3.11](https://img.shields.io/badge/Python-3.11-blue?style=flat-square&logo=python) ![Flask 3.0](https://img.shields.io/badge/Framework-Flask%203.0-green?style=flat-square&logo=flask) ![PostgreSQL 15](https://img.shields.io/badge/Database-PostgreSQL%2015-336791?style=flat-square&logo=postgresql) ![Status: Stable](https://img.shields.io/badge/Status-Stable-success?style=flat-square) ![License: Proprietary](https://img.shields.io/badge/License-Proprietary-red?style=flat-square) ![Owner: MOA Digital Agency](https://img.shields.io/badge/Owner-MOA%20Digital%20Agency-orange?style=flat-square)
 
 # Bellari Concept - Liste Complète des Fonctionnalités
 
-> **DOCUMENT STRICTEMENT CONFIDENTIEL**
+> **AVERTISSEMENT LÉGAL**
 >
-> Ce document est la propriété exclusive de **MOA Digital Agency**.
+> Ce document et le code source associé sont la propriété exclusive de **MOA Digital Agency** et **Aisance KALONJI**.
+> Toute reproduction, distribution ou utilisation non autorisée est strictement interdite.
+> Usage interne uniquement.
 
-Ce document recense l'ensemble des fonctionnalités techniques et métier de la plateforme Bellari Concept.
+---
 
-## 1. Gestion de Contenu (CMS Bilingue)
+Ce document recense de manière exhaustive toutes les fonctionnalités techniques et métier implémentées dans le CMS Bellari Concept.
 
-Le cœur du système est un CMS sur-mesure permettant une gestion fine du contenu en Français et en Anglais.
+## 1. Gestion de Contenu (CMS)
+Le cœur du système repose sur une architecture flexible permettant une gestion bilingue (Français/Anglais) fluide.
 
-*   **Pages Dynamiques :** Gestion des pages principales (`Home`, `About`, `Services`, `Portfolio`, `Contact`).
-*   **Système de Sections :** Chaque page est composée de blocs modulaires.
-    *   **Hero :** Bannière principale avec image de fond, titre, sous-titre et bouton d'action (CTA).
-    *   **Intro :** Texte d'introduction riche.
-    *   **Features :** Liste de points clés ou de services rapides.
-    *   **Service :** Description détaillée d'une offre.
-    *   **Contact :** Informations de contact structurées.
-*   **Synchronisation FR/EN :**
-    *   Création simultanée des versions FR et EN d'une section.
-    *   Alignement automatique via `normalize_sections.py`.
-    *   Indicateur visuel de parité dans l'admin.
+### 1.1 Architecture des Pages et Sections
+*   **Modèle `Page` :** Gestion des pages statiques (Accueil, À Propos, Services, Portfolio, Contact) avec slugs personnalisés.
+*   **Modèle `Section` :** Chaque page est composée de blocs modulaires (`hero`, `text`, `service`, `contact`, `features`).
+*   **Synchronisation Bilingue :**
+    *   Le système de "Normalisation des Sections" (`normalize_sections.py` / Admin Route) assure que chaque section FR possède son équivalent EN avec le même `order_index`.
+    *   L'interface d'édition permet la création simultanée des contenus FR et EN.
+*   **SEO par Page :** Titres (`title`) et méta-descriptions éditables individuellement pour chaque page.
 
-## 2. Administration & Sécurité
+### 1.2 Gestion des Médias
+*   **Upload Sécurisé :** Vérification des extensions (`png`, `jpg`, `jpeg`, `gif`, `webp`) et nettoyage des noms de fichiers (`werkzeug.secure_filename`).
+*   **Optimisation :** Stockage des métadonnées (taille, dimensions) dans la base de données (`Image` model).
+*   **Visualisation :** Galerie d'images dans l'interface d'administration avec prévisualisation.
 
-Interface d'administration protégée (`/admin`) pour la gestion autonome du site.
+### 1.3 Interface d'Administration
+*   **Dashboard :** Vue d'ensemble des pages et des dernières images uploadées.
+*   **Éditeur WYSIWYG (Textarea) :** Champs de texte riches pour le contenu des sections.
+*   **Gestion des Paramètres du Site :** Configuration dynamique (Nom du site, Logos, Liens sociaux) sans redéploiement via la table `SiteSettings`.
 
-*   **Authentification Forte :**
-    *   Hachage des mots de passe via **Argon2** (standard de l'industrie).
-    *   Protection contre les attaques par force brute (via délais de réponse).
-    *   Session sécurisée (Cookies `HttpOnly`, `Secure`, `SameSite=Lax`).
-*   **Médiathèque :**
-    *   Upload d'images sécurisé (vérification des extensions).
-    *   Renommage unique des fichiers (UUID) pour éviter les collisions.
-    *   Visualisation et suppression des assets.
-*   **Paramètres du Site (SiteSettings) :**
-    *   Modification du Logo et Favicon à la volée.
-    *   Configuration des liens sociaux (Facebook, Instagram, LinkedIn).
-    *   Injection de l'ID Google Analytics.
+## 2. Sécurité & Robustesse
+La sécurité est intégrée à chaque niveau de l'application.
+
+### 2.1 Authentification & Autorisation
+*   **Hachage Argon2 :** Utilisation de `werkzeug.security` pour le hachage robuste des mots de passe administrateur.
+*   **Session Management :** Cookies sécurisés (`HttpOnly`, `Secure`, `SameSite='Lax'`).
+*   **Protection Admin :** Décorateur `@login_required` sur toutes les routes `/admin`.
+
+### 2.2 Protections Web
+*   **CSRF (Cross-Site Request Forgery) :** Protection globale via `Flask-WTF` sur tous les formulaires POST.
+*   **CSP (Content Security Policy) :** Configuration stricte via `flask-talisman` pour prévenir les attaques XSS.
+    *   Autorise uniquement les sources de confiance (Self, Google Fonts, Tailwind CDN).
+    *   Force HTTPS en production.
+*   **Gestion des Erreurs :** Pages d'erreur personnalisées (400, 403, 404, 451) avec animations Lottie pour une meilleure UX même en cas de problème.
 
 ## 3. Progressive Web App (PWA)
+Le site est entièrement compatible PWA, transformant le site web en application installable.
 
-Le site est une PWA installable, offrant une expérience proche d'une application native.
+*   **Manifeste Dynamique :** Route `/manifest.json` générée à la volée depuis la base de données (`SiteSettings`).
+*   **Configuration Admin :**
+    *   Activation/Désactivation de la PWA.
+    *   Personnalisation du nom, des couleurs (thème/background) et des icônes.
+    *   Choix du mode d'affichage (`standalone`, `fullscreen`, etc.).
+*   **Support Mobile :** `viewport` et balises `meta` optimisées pour l'expérience mobile.
 
-*   **Manifest Dynamique (`/manifest.json`) :** Généré depuis la base de données (nom, couleurs, icônes configurables dans l'admin).
-*   **Installation :** Invite d'installation sur mobile et desktop.
-*   **Mode Standalone :** L'application se lance sans barre d'URL du navigateur.
-*   **Service Worker :** Cache les assets statiques pour un chargement instantané.
+## 4. Optimisation SEO & Technique
+*   **Sitemap XML Automatique :** Route `/sitemap.xml` générant dynamiquement la liste des pages actives avec leur date de modification (`lastmod`) et priorité.
+*   **Robots.txt Dynamique :** Route `/robots.txt` configurée pour autoriser les moteurs de recherche légitimes (Google, Bing) et bloquer les bots malveillants ou inutiles (MJ12bot, Ahrefs, etc.).
+*   **Gestion des Langues :** Route `/set_language/<lang>` avec stockage en session pour une persistance du choix utilisateur.
 
-## 4. SEO & Performance Technique
+## 5. Déploiement & Maintenance
+Des scripts automatisés assurent un déploiement fiable et reproductible.
 
-L'architecture est optimisée pour le référencement naturel et la vitesse.
+*   **`deploy.sh` :**
+    *   Vérification des dépendances système (Python 3.11+, pip).
+    *   Génération automatique du fichier `.env` sécurisé (clés secrètes aléatoires).
+    *   Création et activation de l'environnement virtuel (`.venv`).
+    *   Installation des dépendances Python.
+*   **`init_db.py` (Migration Robuste) :**
+    *   Système de migration "maison" pour VPS : vérifie l'existence des tables ET des colonnes.
+    *   Ajoute automatiquement les colonnes manquantes (ALTER TABLE) sans perte de données.
+    *   Initialisation intelligente du contenu par défaut (Pages, Sections, Admin) si la base est vide.
+*   **`verify_deployment.py` :** Script de pré-vol vérifiant la connexion DB et la présence des fichiers statiques critiques.
 
-*   **SEO Technique :**
-    *   `sitemap.xml` généré dynamiquement pour toutes les pages actives.
-    *   `robots.txt` configurable (bloque les bots indésirables, autorise Google/GPTBot).
-    *   Balises Méta (Title, Description) éditables pour chaque page.
-    *   Support OpenGraph pour le partage sur les réseaux sociaux.
-*   **Performance :**
-    *   Images servies via Nginx avec cache (headers `Expires`).
-    *   CSS minifié (Tailwind via CDN).
-    *   Base de données indexée sur les slugs et IDs.
-
-## 5. Conformité & Sécurité Avancée
-
-*   **Protection CSRF :** Tous les formulaires incluent un jeton unique anti-falsification (`Flask-WTF`).
-*   **Content Security Policy (CSP) :** En-têtes stricts bloquant les scripts non autorisés (`Flask-Talisman`).
-*   **Strict Transport Security (HSTS) :** Force le navigateur à n'utiliser que HTTPS.
-*   **Sanitization :** Les entrées utilisateur sont nettoyées pour prévenir les injections SQL et XSS.
+---
+*© 2024 MOA Digital Agency. Tous droits réservés.*
