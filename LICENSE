@@ -1,24 +1,16 @@
-PROPRIETARY LICENSE
+Copyright (c) 2024 MOA Digital Agency (myoneart.com) - Auteur : Aisance KALONJI
 
-Copyright (c) 2024-Present MOA Digital Agency / Aisance KALONJI
+LICENCE PROPRIÉTAIRE ET CONFIDENTIELLE
 
-This software and its associated documentation files (the "Software") are the exclusive property of MOA Digital Agency and Aisance KALONJI.
+Ce logiciel et toute la documentation associée (le "Logiciel") sont la propriété exclusive de MOA Digital Agency.
 
-*** STRICTLY CONFIDENTIAL & PROPRIETARY ***
+1.  AUTORISATION LIMITÉE :
+    L'utilisation de ce Logiciel est strictement limitée à un usage interne, à des fins de sauvegarde et de maintenance par MOA Digital Agency et ses employés autorisés.
 
-1. GRANT OF LICENSE
-Permission is hereby granted, free of charge, to authorized personnel of MOA Digital Agency ONLY, to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, and publish the Software, SUBJECT TO THE FOLLOWING RESTRICTIONS:
+2.  INTERDICTIONS :
+    Toute copie, modification, distribution, sous-licence, vente ou transfert du Logiciel à des tiers, sous quelque forme que ce soit (code source, binaire, documentation), est strictement interdite sans l'autorisation écrite préalable de MOA Digital Agency.
 
-2. RESTRICTIONS
-- INTERNAL USE ONLY: The Software is intended solely for the internal operations, backup, and development purposes of MOA Digital Agency.
-- NO REDISTRIBUTION: You may NOT redistribute, sell, sub-license, rent, or lease the Software or any part thereof to any third party.
-- NO PUBLIC ACCESS: You may NOT make the source code available to the public in any form (e.g., public GitHub repository, open-source release).
+    Le clonage de ce dépôt ou l'utilisation de tout ou partie du code pour d'autres projets en dehors de l'agence est formellement interdit et passible de poursuites judiciaires.
 
-3. OWNERSHIP
-The Software is protected by copyright laws and international treaty provisions. MOA Digital Agency retains all title, copyright, and other proprietary rights in the Software.
-
-4. LEGAL WARNING
-Any unauthorized use, reproduction, or distribution of this Software, in whole or in part, is strictly prohibited and will be prosecuted to the fullest extent of the law.
-
-5. DISCLAIMER
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+3.  GARANTIE :
+    LE LOGICIEL EST FOURNI "TEL QUEL", SANS GARANTIE D'AUCUNE SORTE, EXPLICITE OU IMPLICITE, Y COMPRIS MAIS SANS S'Y LIMITER LES GARANTIES DE QUALITÉ MARCHANDE, D'ADÉQUATION À UN USAGE PARTICULIER ET D'ABSENCE DE CONTREFAÇON. EN AUCUN CAS LES AUTEURS OU TITULAIRES DU DROIT D'AUTEUR NE SERONT RESPONSABLES DE TOUTE RÉCLAMATION, DOMMAGE OU AUTRE RESPONSABILITÉ, QUE CE SOIT DANS UNE ACTION CONTRACTUELLE, DÉLICTUELLE OU AUTRE, DÉCOULANT DE, HORS DE OU EN CONNECTION AVEC LE LOGICIEL OU L'UTILISATION OU D'AUTRES TRANSACTIONS DANS LE LOGICIEL.
