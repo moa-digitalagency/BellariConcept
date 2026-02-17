@@ -1,28 +1,24 @@
-PROPRIETARY SOFTWARE LICENSE AGREEMENT
+PROPRIETARY LICENSE
 
-Copyright (c) 2024 MOA Digital Agency / Aisance KALONJI
+Copyright (c) 2024-Present MOA Digital Agency / Aisance KALONJI
 
-NOTICE TO USER:
+This software and its associated documentation files (the "Software") are the exclusive property of MOA Digital Agency and Aisance KALONJI.
 
-THIS SOFTWARE IS THE STRICTLY CONFIDENTIAL AND PROPRIETARY PROPERTY OF MOA DIGITAL AGENCY.
+*** STRICTLY CONFIDENTIAL & PROPRIETARY ***
 
-1.  **Grant of License:**
-    This software is licensed, not sold, to you by MOA Digital Agency for internal use only within the organization.
+1. GRANT OF LICENSE
+Permission is hereby granted, free of charge, to authorized personnel of MOA Digital Agency ONLY, to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, and publish the Software, SUBJECT TO THE FOLLOWING RESTRICTIONS:
 
-2.  **Restrictions:**
-    You may NOT:
-    - Copy, modify, merge, publish, distribute, sublicense, or sell copies of this Software.
-    - Reverse engineer, decompile, or disassemble the Software.
-    - Remove any copyright or other proprietary notices from the Software.
-    - Use this Software for any purpose outside of the internal operations of MOA Digital Agency.
+2. RESTRICTIONS
+- INTERNAL USE ONLY: The Software is intended solely for the internal operations, backup, and development purposes of MOA Digital Agency.
+- NO REDISTRIBUTION: You may NOT redistribute, sell, sub-license, rent, or lease the Software or any part thereof to any third party.
+- NO PUBLIC ACCESS: You may NOT make the source code available to the public in any form (e.g., public GitHub repository, open-source release).
 
-3.  **Confidentiality:**
-    The Software contains trade secrets and proprietary know-how that belong to MOA Digital Agency. You must maintain the confidentiality of the Software and prevent its unauthorized disclosure.
+3. OWNERSHIP
+The Software is protected by copyright laws and international treaty provisions. MOA Digital Agency retains all title, copyright, and other proprietary rights in the Software.
 
-4.  **No Warranty:**
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+4. LEGAL WARNING
+Any unauthorized use, reproduction, or distribution of this Software, in whole or in part, is strictly prohibited and will be prosecuted to the fullest extent of the law.
 
-5.  **Termination:**
-    This license is effective until terminated. Your rights under this license will terminate automatically without notice from MOA Digital Agency if you fail to comply with any term(s) of this license. Upon termination, you shall cease all use of the Software and destroy all copies, full or partial, of the Software.
-
-VIOLATION OF THIS AGREEMENT MAY RESULT IN SEVERE CIVIL AND CRIMINAL PENALTIES.
+5. DISCLAIMER
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

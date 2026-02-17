@@ -1,139 +1,116 @@
-![Python Version](https://img.shields.io/badge/Python-3.11%2B-blue) ![Framework](https://img.shields.io/badge/Framework-Flask%203.0-green) ![Database](https://img.shields.io/badge/Database-PostgreSQL-orange) ![Status](https://img.shields.io/badge/Status-Proprietary-red) ![License](https://img.shields.io/badge/License-MOA%20Private-red) ![Owner](https://img.shields.io/badge/Owner-MOA%20Digital%20Agency-purple)
+![Python 3.11](https://img.shields.io/badge/Python-3.11-blue?style=flat-square&logo=python) ![PostgreSQL 15](https://img.shields.io/badge/Database-PostgreSQL%2015-336791?style=flat-square&logo=postgresql) ![Status: Production](https://img.shields.io/badge/Status-Production-success?style=flat-square) ![License: Proprietary](https://img.shields.io/badge/License-Proprietary-red?style=flat-square) ![Owner: MOA Digital Agency](https://img.shields.io/badge/Owner-MOA%20Digital%20Agency-orange?style=flat-square)
 
 # Bellari Concept - Deployment Guide
 
-> **STRICTLY CONFIDENTIAL DOCUMENT**
+> **LEGAL NOTICE**
 >
-> This document is intended only for system administrators authorized by **MOA Digital Agency**.
-
-This guide describes the secure deployment procedure for a Linux production environment (Ubuntu/Debian).
-
-## 1. System Prerequisites
-
-*   **OS:** Ubuntu 22.04 LTS (recommended) or Debian 11+.
-*   **Runtime:** Python 3.11+.
-*   **Database:** PostgreSQL 14+ (or SQLite for restricted environments).
-*   **Web Server:** Nginx.
-*   **Access:** SSH with sudo privileges.
+> This guide and the associated scripts are the exclusive property of **MOA Digital Agency**.
+> Any external distribution is prohibited.
 
 ---
 
-## 2. Automated Deployment (`deploy.sh`)
+## 1. System Prerequisites
+The CMS is optimized for deployment on Linux VPS (Ubuntu 20.04/22.04 recommended).
 
-The project includes an orchestration script that automates the initial configuration.
+*   **OS:** Ubuntu 22.04 LTS (or equivalent)
+*   **Language:** Python 3.11 or higher
+*   **Database:** PostgreSQL 15+ (local or remote)
+*   **Web Server:** Nginx (Reverse Proxy)
 
+## 2. Automated Installation
+
+The `deploy.sh` script automates 90% of the process.
+
+### 2.1 Cloning and Launching
 ```bash
-# 1. Clone the repository (Restricted Access)
-git clone https://github.com/votre-repo/bellari-concept.git
+# 1. Clone the repository (Private access required)
+git clone <REPO_URL>
 cd bellari-concept
 
-# 2. Run the deployment script
+# 2. Make the script executable
 chmod +x deploy.sh
+
+# 3. Launch the installation
 ./deploy.sh
 ```
 
-**Script Actions:**
-1.  Verifies the Python version.
-2.  Generates the production `.env` file (prompts for DB credentials).
-3.  Creates the virtual environment (`.venv`) and installs dependencies.
-4.  Initializes the database and creates the initial Admin account.
+### 2.2 What the script does:
+1.  **Verification:** Checks the Python version and the presence of `pip`.
+2.  **Environment:** Requests PostgreSQL credentials and generates a secure `.env` file.
+3.  **Virtualenv:** Creates a virtual environment in `.venv` and activates it.
+4.  **Dependencies:** Installs packages listed in `requirements.txt`.
+5.  **Database:**
+    *   Verifies the PostgreSQL connection.
+    *   Executes `init_db.py` to create tables and migrate schema if necessary.
+    *   Creates a default administrator account if none exists.
 
----
-
-## 3. Manual Environment Variable Configuration
-
-If you cannot use the script, create the `.env` file manually:
+## 3. Manual Configuration (.env)
+If you do not wish to use the script, create a `.env` file at the root:
 
 ```ini
-# Database (PostgreSQL)
-DATABASE_URL=postgresql://user:password@localhost:5432/bellari_db
+# Database
+DATABASE_URL=postgresql://user:password@localhost:5432/bellari_concept
 
 # Flask Security
-SESSION_SECRET=your_very_long_secure_random_string
+SESSION_SECRET=your_very_long_and_random_secret_key
 FLASK_ENV=production
 FLASK_DEBUG=False
-FORCE_HTTPS=True
 
-# Initial Admin (Security)
-# Set to 'true' only for the first deployment
-ADMIN_INIT_ALLOWED=true
+# Admin Configuration (Optional for init)
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD=your_strong_password
+ADMIN_INIT_ALLOWED=true
+
+# Server
+PORT=5000
+HOST=0.0.0.0
 ```
 
----
+## 4. Starting in Production
 
-## 4. Health Check (`verify_deployment.py`)
-
-Before going live, execute the diagnostic script. It checks the integrity of static files, DB connection, and directory structure.
+For production, use Gunicorn (installed via requirements.txt).
 
 ```bash
+# Activate the environment
 source .venv/bin/activate
-python verify_deployment.py
+
+# Launch with 4 workers (adjust according to CPU)
+gunicorn --bind 0.0.0.0:5000 --workers 4 app:app
 ```
 
-**Expected Output:**
-```text
-✅ TOUTES LES VÉRIFICATIONS ONT RÉUSSI!
-🎉 Le site est prêt pour le déploiement sur VPS
-```
-
----
-
-## 5. Server Configuration (Production)
-
-### A. Gunicorn (Application Server)
-
-Create the systemd service `/etc/systemd/system/bellari.service`:
-
-```ini
-[Unit]
-Description=Gunicorn instance to serve Bellari Concept
-After=network.target
-
-[Service]
-User=www-data
-Group=www-data
-WorkingDirectory=/var/www/bellari-concept
-Environment="PATH=/var/www/bellari-concept/.venv/bin"
-ExecStart=/var/www/bellari-concept/.venv/bin/gunicorn --workers 3 --bind unix:bellari.sock -m 007 main:app
-
-[Install]
-WantedBy=multi-user.target
-```
-
-### B. Nginx (Reverse Proxy & SSL)
-
-Recommended configuration `/etc/nginx/sites-available/bellari`:
+### Nginx Configuration (Recommended)
+Create a server block to redirect traffic to port 5000.
 
 ```nginx
 server {
     listen 80;
-    server_name example.com;
+    server_name yourdomain.com;
 
     location / {
-        include proxy_params;
-        proxy_pass http://unix:/var/www/bellari-concept/bellari.sock;
-    }
-
-    location /static {
-        alias /var/www/bellari-concept/static;
-        expires 30d;
+        proxy_pass http://127.0.0.1:5000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
 ```
 
-Enable the site and secure with Certbot:
+## 5. Maintenance and Updates
+
+### DB Initialization / Migration
+The `init_db.py` script is idempotent. It can be safely rerun to:
+*   Create new tables.
+*   Add new columns (via the manual migration system).
+*   Reset PWA settings to default.
+
 ```bash
-sudo ln -s /etc/nginx/sites-available/bellari /etc/nginx/sites-enabled
-sudo certbot --nginx -d example.com
+python3 init_db.py
 ```
 
+### Logs
+*   **Gunicorn:** Defined during launch (e.g., `--access-logfile logs/access.log`).
+*   **Flask:** Logs critical errors to `logs/error.log` (if configured).
+
 ---
-
-## 6. Post-Deployment
-
-1.  Access `/admin/login`.
-2.  Log in with the credentials defined in `.env`.
-3.  **IMPORTANT:** Change the Admin password immediately.
-4.  In `.env`, set `ADMIN_INIT_ALLOWED=false` and restart the service (`sudo systemctl restart bellari`).
+*© 2024 MOA Digital Agency. All rights reserved.*

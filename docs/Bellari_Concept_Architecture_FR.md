@@ -1,146 +1,90 @@
-![Python Version](https://img.shields.io/badge/Python-3.11%2B-blue) ![Framework](https://img.shields.io/badge/Framework-Flask%203.0-green) ![Database](https://img.shields.io/badge/Database-PostgreSQL-orange) ![Status](https://img.shields.io/badge/Status-Proprietary-red) ![License](https://img.shields.io/badge/License-MOA%20Private-red) ![Owner](https://img.shields.io/badge/Owner-MOA%20Digital%20Agency-purple)
+![Python 3.11](https://img.shields.io/badge/Python-3.11-blue?style=flat-square&logo=python) ![Framework Flask](https://img.shields.io/badge/Framework-Flask%203.0-green?style=flat-square&logo=flask) ![Database PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL%2015-336791?style=flat-square&logo=postgresql) ![License: Proprietary](https://img.shields.io/badge/License-Proprietary-red?style=flat-square) ![Owner: MOA Digital Agency](https://img.shields.io/badge/Owner-MOA%20Digital%20Agency-orange?style=flat-square)
 
-# Bellari Concept - Architecture Technique
+# Bellari Concept - Architecture du Système
 
-> **DOCUMENT STRICTEMENT CONFIDENTIEL**
+> **AVERTISSEMENT LÉGAL**
 >
-> Ce logiciel est la propriété exclusive de **MOA Digital Agency**. Toute reproduction ou distribution non autorisée est strictement interdite.
+> Ce document et l'architecture décrite sont la propriété exclusive de **MOA Digital Agency** et **Aisance KALONJI**.
+> Usage interne uniquement.
 
-Ce document détaille l'architecture logicielle, la structure de la base de données et les flux de sécurité de l'application Bellari Concept.
+---
 
 ## 1. Vue d'Ensemble
+L'architecture de Bellari Concept est conçue pour être robuste, sécurisée et facilement déployable sur des environnements VPS Linux. Elle suit le modèle **MVC (Model-View-Controller)** adapté au micro-framework Flask.
 
-L'application suit une architecture monolithique robuste, optimisée pour le déploiement sur VPS avec une séparation claire entre le serveur web, le serveur d'application et la base de données.
-
+### Diagramme d'Architecture
 ```mermaid
 graph TD
-    Client["Client (Browser/PWA)"]
-    Nginx["Nginx (Reverse Proxy / SSL)"]
-    Gunicorn["Gunicorn (WSGI Server)"]
-    Flask["Flask App (Bellari Concept)"]
-    DB[("PostgreSQL (Données)")]
-    FS["File System (Images/Uploads)"]
+    Client["Client (Navigateur/PWA)"] -->|HTTPS / 443| Nginx["Nginx (Reverse Proxy)"]
+    Nginx -->|Proxy Pass| Gunicorn["Gunicorn (WSGI Server)"]
+    Gunicorn -->|Workers| Flask["Application Flask (App.py)"]
 
-    Client -->|HTTPS| Nginx
-    Nginx -->|Proxy Pass| Gunicorn
-    Nginx -->|Serve Static| FS
-    Gunicorn -->|WSGI| Flask
-    Flask -->|SQLAlchemy| DB
-    Flask -->|Read/Write| FS
+    subgraph "Backend Core"
+        Flask -->|ORM| SQLAlchemy["SQLAlchemy (ORM)"]
+        Flask -->|Auth| Security["Werkzeug Security"]
+        Flask -->|Logic| Routes["Routes / Controllers"]
+    end
+
+    subgraph "Data Storage"
+        SQLAlchemy -->|SQL| DB[("PostgreSQL Database")]
+        Flask -->|I/O| Static["Static Files (Images/Uploads)"]
+    end
+
+    subgraph "External Services"
+        Client -.->|Load Styles| CDN["TailwindCSS CDN"]
+        Client -.->|Load Fonts| Fonts["Google Fonts"]
+    end
 ```
 
----
+## 2. Stack Technique
 
-## 2. Stack Technologique
+| Composant | Technologie | Rôle |
+| :--- | :--- | :--- |
+| **Langage** | Python 3.11+ | Logique backend et scripts de maintenance. |
+| **Framework Web** | Flask 3.0 | Routage, gestion des requêtes et contexte d'application. |
+| **ORM** | SQLAlchemy | Abstraction de la base de données (PostgreSQL). |
+| **Serveur WSGI** | Gunicorn | Serveur d'application pour la production. |
+| **Base de Données** | PostgreSQL 15 | Stockage relationnel (Pages, Sections, Users). |
+| **Frontend** | Jinja2 + HTML5 | Moteur de template côté serveur. |
+| **Styling** | TailwindCSS | Framework CSS utilitaire (via CDN). |
+| **Sécurité** | Flask-WTF / Talisman | Protection CSRF et Content Security Policy (CSP). |
 
-### Backend
-*   **Langage :** Python 3.11+
-*   **Framework Web :** Flask 3.0.0
-*   **ORM :** SQLAlchemy (via `flask-sqlalchemy`)
-*   **Sécurité :**
-    *   `Werkzeug` (Hachage Argon2 pour les mots de passe)
-    *   `Flask-Login` (Gestion de session utilisateur sécurisée)
-    *   `Flask-WTF` (Protection CSRF globale)
-    *   `Flask-Talisman` (Content Security Policy & Force HTTPS)
+## 3. Structure du Projet
 
-### Frontend
-*   **Templating :** Jinja2 (Rendu côté serveur avec injection de contexte)
-*   **CSS Framework :** TailwindCSS (via CDN pour performance et itération rapide)
-*   **JavaScript :** Vanilla JS (ES6+) pour l'interactivité PWA et UI.
-
-### Infrastructure & Déploiement
-*   **Base de Données :** PostgreSQL (Production) / SQLite (Développement/Fallback)
-*   **Serveur d'Application :** Gunicorn (WSGI Production)
-*   **Serveur Web :** Nginx (Reverse Proxy, SSL Termination)
-*   **Containerisation :** Compatible Docker (optionnel), déploiement standard via `deploy.sh`.
-
----
-
-## 3. Modèle de Données (Entités)
-
-Le schéma de base de données est conçu pour offrir une flexibilité totale au CMS tout en maintenant l'intégrité des données bilingues.
-
-```mermaid
-classDiagram
-    class User {
-        +Integer id
-        +String username
-        +String password_hash
-        +DateTime created_at
-    }
-
-    class Page {
-        +Integer id
-        +String slug
-        +String title
-        +String meta_description
-        +Boolean is_active
-        +DateTime created_at
-        +DateTime updated_at
-    }
-
-    class Section {
-        +Integer id
-        +Integer page_id
-        +String section_type
-        +String language_code
-        +Integer order_index
-        +String heading
-        +String subheading
-        +Text content
-        +String button_text
-        +String button_link
-        +String image_url
-        +String background_image
-        +Boolean is_active
-    }
-
-    class Image {
-        +Integer id
-        +String filename
-        +String original_filename
-        +String alt_text
-        +Integer file_size
-        +Integer width
-        +Integer height
-        +DateTime uploaded_at
-    }
-
-    class SiteSettings {
-        +Integer id
-        +String key
-        +Text value
-        +String description
-        +DateTime updated_at
-    }
-
-    Page "1" -- "*" Section : contient
+```text
+/
+├── app.py                 # Point d'entrée principal (Routes, Config, Modèles)
+├── init_db.py             # Script de migration de schéma et de seeding
+├── deploy.sh              # Script d'automatisation du déploiement
+├── verify_deployment.py   # Vérifications pré-démarrage
+├── requirements.txt       # Dépendances Python
+├── static/                # Fichiers statiques
+│   ├── uploads/           # Images uploadées par l'admin
+│   └── js/                # Scripts JS front-end
+├── templates/             # Templates Jinja2
+│   ├── admin/             # Interface d'administration
+│   ├── errors/            # Pages d'erreur (404, 500...)
+│   └── *.html             # Pages publiques
+└── docs/                  # Documentation technique (Ce dossier)
 ```
 
-### Relations Clés
-*   **Page -> Section :** Une `Page` (ex: "Accueil") contient plusieurs `Section`s ordonnées.
-*   **Pairing FR/EN :** La synchronisation entre les contenus Français et Anglais est gérée logiquement par l'application via `order_index` et `section_type`. Le script `normalize_sections.py` assure l'intégrité de cet alignement.
+## 4. Flux de Données
+
+### 4.1 Traitement d'une Requête (Request Lifecycle)
+1.  **Entrée :** Nginx reçoit la requête HTTPS et la transmet à Gunicorn via un socket UNIX ou TCP.
+2.  **Dispatch :** Flask analyse l'URL et dirige la requête vers la fonction de vue (`@app.route`) appropriée.
+3.  **Contexte :**
+    *   `load_dotenv()` charge les variables d'environnement.
+    *   `@before_request` peut vérifier la langue ou la session.
+4.  **Logique Métier :**
+    *   Les modèles SQLAlchemy (`Page`, `Section`) sont interrogés.
+    *   La logique de sécurité (CSRF, Auth) est validée.
+5.  **Rendu :** Jinja2 génère le HTML en injectant les données (`sections`, `settings`).
+6.  **Réponse :** Le HTML est renvoyé au client avec les en-têtes de sécurité (CSP, HSTS).
+
+### 4.2 Gestion de la Base de Données
+*   **Connexion :** Gérée via `DATABASE_URL` dans le fichier `.env`.
+*   **Migration :** Contrairement à Alembic classique, `init_db.py` implémente une vérification manuelle des colonnes au démarrage pour garantir la stabilité sur les VPS sans dépendances complexes.
 
 ---
-
-## 4. Flux de Sécurité & Application
-
-### Cycle de Vie d'une Requête (Request Lifecycle)
-
-1.  **Entrée Sécurisée :** Nginx termine la connexion SSL et transmet la requête à Gunicorn.
-2.  **Middleware de Sécurité (`Talisman`) :**
-    *   Force HTTPS.
-    *   Applique les en-têtes de sécurité stricts (HSTS, X-Frame-Options).
-    *   Applique une Content Security Policy (CSP) pour prévenir les XSS.
-3.  **Validation CSRF :** `Flask-WTF` valide le token CSRF pour toutes les méthodes POST/PUT/DELETE.
-4.  **Authentification :** `Flask-Login` vérifie le cookie de session (Secure, HttpOnly, SameSite=Lax).
-5.  **Logique Métier & Rendu :**
-    *   Les vues interrogent la DB.
-    *   Le processeur de contexte (`context_processor`) injecte les configurations globales (`SiteSettings`).
-    *   Jinja2 génère le HTML final.
-
-### Initialisation Robuste (`init_db.py`)
-Le système dispose d'un mécanisme d'auto-réparation au démarrage :
-*   Vérification et création du schéma de base de données.
-*   Création sécurisée du compte Admin via variables d'environnement (`ADMIN_USERNAME`, `ADMIN_PASSWORD`).
-*   Population du contenu par défaut si la base est vide.
+*© 2024 MOA Digital Agency. Tous droits réservés.*
