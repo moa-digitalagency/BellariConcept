@@ -1,36 +1,31 @@
-# Bellari Concept
+![Python Version](https://img.shields.io/badge/Python-3.11%2B-blue) ![Framework](https://img.shields.io/badge/Framework-Flask%203.0-green) ![Database](https://img.shields.io/badge/Database-PostgreSQL-orange) ![Status](https://img.shields.io/badge/Status-Proprietary-red) ![License](https://img.shields.io/badge/License-MOA%20Private-red) ![Owner](https://img.shields.io/badge/Owner-MOA%20Digital%20Agency-purple)
 
-![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)
-![Flask](https://img.shields.io/badge/Framework-Flask%203.0-green.svg)
-![Database](https://img.shields.io/badge/Database-PostgreSQL-336791.svg)
-![License](https://img.shields.io/badge/License-Proprietary-red.svg)
+# Bellari Concept - Interior Design CMS
 
-> **PROPRIÉTÉ EXCLUSIVE DE MOA DIGITAL AGENCY LLC**
+**[🇫🇷 Version Française](./README_FR.md)**
+
+> **⚠️ STRICTLY PROPRIETARY SOFTWARE**
 >
-> **Auteur :** Aisance KALONJI (www.aisancekalonji.com)
->
-> Ce code source est **privé et confidentiel**. Toute copie, modification, distribution ou utilisation non autorisée, totale ou partielle, est strictement interdite et fera l'objet de poursuites judiciaires immédiates conformément aux lois internationales sur la propriété intellectuelle.
->
-> Voir le fichier [LICENSE.md](./LICENSE.md) pour les termes complets.
+> This software is the confidential and proprietary property of **MOA Digital Agency** / **Aisance KALONJI**.
+> Any unauthorized copying, alteration, distribution, transmission, performance, display or other use of this material is prohibited.
+> **INTERNAL USE ONLY.**
 
----
+Bellari Concept is a high-end Content Management System (CMS) designed for an interior design firm. It features a robust bilingual architecture (English/French), a dynamic section builder, and Progressive Web App (PWA) capabilities.
 
-## 🏛️ Vue d'Ensemble
+## Architecture Overview
 
-**Bellari Concept** est une solution CMS sur-mesure de haut standing dédiée aux cabinets d'architecture et de design d'intérieur. Conçue pour la performance, le référencement (SEO) et l'expérience utilisateur, elle intègre une gestion de contenu bilingue (FR/EN) et une architecture PWA (Progressive Web App).
-
-### Architecture Globale
+The system is built on a monolithic Flask architecture, optimized for security and performance.
 
 ```mermaid
 graph TD
-    User["Client (Browser/PWA)"]
+    Client["Client (Browser / PWA)"]
     Nginx["Nginx (Reverse Proxy / SSL)"]
     Gunicorn["Gunicorn (WSGI Server)"]
     Flask["Flask App (Bellari Concept)"]
-    DB[("PostgreSQL (Données)")]
-    FS["File System (Images/Uploads)"]
+    DB[("PostgreSQL (Data)")]
+    FS["File System (Static Assets)"]
 
-    User -->|HTTPS| Nginx
+    Client -->|HTTPS| Nginx
     Nginx -->|Proxy Pass| Gunicorn
     Nginx -->|Serve Static| FS
     Gunicorn -->|WSGI| Flask
@@ -38,54 +33,66 @@ graph TD
     Flask -->|Read/Write| FS
 ```
 
-## 🚀 Fonctionnalités Clés
+## Table of Contents
 
-*   **CMS Bilingue Synchrone :** Gestion de contenu FR/EN avec alignement strict des sections.
-*   **Progressive Web App (PWA) :** Installable sur mobile (iOS/Android) avec manifeste dynamique configurable.
-*   **Sécurité Avancée :** Hachage Argon2, Protection CSRF, Content Security Policy (CSP) stricte.
-*   **SEO Technique :** Sitemap XML automatique, Robots.txt dynamique, Données structurées JSON-LD.
-*   **Administration Complète :** Dashboard, Gestion des médias, Configuration du site à chaud.
+1.  [Features](#features)
+2.  [Installation](#installation)
+3.  [Documentation](#documentation)
+4.  [Legal](#legal)
 
-## 📚 Documentation Officielle
+## Features
 
-La documentation technique détaillée se trouve dans le dossier `docs/` :
+*   **Bilingual Core:** Seamless English/French content management with synchronized sections.
+*   **Dynamic Sections:** Modular page building (Hero, Service, Gallery, Contact).
+*   **Secure Admin:** Argon2 hashing, CSRF protection, and role-based access.
+*   **PWA Ready:** Installable on mobile/desktop with offline asset caching.
+*   **SEO Optimized:** Automatic Sitemap generation, OpenGraph tags, and configurable metadata.
 
-*   [📘 Bible des Fonctionnalités](docs/Bellari_Concept_Features_Full_List.md)
-*   [🏗️ Architecture Technique](docs/Bellari_Concept_Architecture.md)
-*   [🛡️ Architecture de Sécurité](docs/Bellari_Concept_Security.md)
-*   [🚀 Guide de Déploiement](docs/Bellari_Concept_Deployment.md)
-*   [💻 Guide d'Installation (Dev)](docs/Bellari_Concept_Installation.md)
-*   [📖 Guide Utilisateur (Admin)](docs/Bellari_Concept_User_Guide.md)
+## Installation
 
-## ⚡ Démarrage Rapide (Développement)
+### Prerequisites
+
+*   Python 3.11+
+*   PostgreSQL 14+ (or SQLite for dev)
+
+### Quick Start (Development)
 
 ```bash
-# 1. Cloner le dépôt (Accès restreint)
-git clone https://github.com/moa-digital/bellari-concept.git
+# 1. Clone the repository (Authorized personnel only)
+git clone <repo_url>
 cd bellari-concept
 
-# 2. Créer l'environnement virtuel
+# 2. Create virtual environment
 python3 -m venv .venv
 source .venv/bin/activate
 
-# 3. Installer les dépendances
+# 3. Install dependencies
 pip install -r requirements.txt
 
-# 4. Initialiser la Base de Données
-# (Assurez-vous d'avoir configuré le fichier .env)
+# 4. Configure Environment
+# Copy .env.example to .env and set your credentials
+cp .env.example .env
+
+# 5. Initialize Database
 python init_db.py
 
-# 5. Lancer le serveur de développement
+# 6. Run
 python main.py
 ```
 
-## 📞 Support & Contact
+## Documentation
 
-Pour toute demande technique ou commerciale concernant ce produit :
+Comprehensive documentation is available in the `docs/` directory.
 
-*   **Agence :** MOA Digital Agency LLC
-*   **Site Web :** [www.myoneart.com](https://www.myoneart.com)
-*   **Auteur :** Aisance KALONJI
+| Document | Description | Language |
+| :--- | :--- | :--- |
+| **[Technical Architecture](docs/Bellari_Concept_Architecture_EN.md)** | Stack details, security flow, data model. | EN |
+| **[Deployment Guide](docs/Bellari_Concept_Deployment_EN.md)** | Production setup (Nginx, Gunicorn, VPS). | EN |
+| **[Full Feature List](docs/Bellari_Concept_Features_Full_List_EN.md)** | Detailed breakdown of all functionalities. | EN |
+| **[User Guide](docs/Bellari_Concept_User_Guide_EN.md)** | Admin panel manual for content managers. | EN |
 
----
-*Copyright © 2025 MOA Digital Agency LLC. Tous droits réservés.*
+## Legal
+
+**Copyright (c) 2024 MOA Digital Agency.** All Rights Reserved.
+
+Use of this software is subject to the terms of the Proprietary License Agreement located in the `LICENSE` file.
