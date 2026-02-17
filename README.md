@@ -1,86 +1,91 @@
-![Python 3.11](https://img.shields.io/badge/Python-3.11-blue?style=flat-square&logo=python) ![Framework Flask](https://img.shields.io/badge/Framework-Flask%203.0-green?style=flat-square&logo=flask) ![Database PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL%2015-336791?style=flat-square&logo=postgresql) ![Status: Production](https://img.shields.io/badge/Status-Production-success?style=flat-square) ![License: Proprietary](https://img.shields.io/badge/License-Proprietary-red?style=flat-square) ![Owner: MOA Digital Agency](https://img.shields.io/badge/Owner-MOA%20Digital%20Agency-orange?style=flat-square)
+![Python 3.11](https://img.shields.io/badge/Python-3.11-blue?style=for-the-badge&logo=python)
+![Framework Flask](https://img.shields.io/badge/Framework-Flask-green?style=for-the-badge&logo=flask)
+![Database SQLAlchemy](https://img.shields.io/badge/Database-SQLAlchemy-red?style=for-the-badge&logo=postgresql)
+![Status Private](https://img.shields.io/badge/Status-Private%2FInternal-orange?style=for-the-badge)
+![License Proprietary](https://img.shields.io/badge/License-Proprietary-black?style=for-the-badge)
+![Owner MOA](https://img.shields.io/badge/Owner-MOA_Digital_Agency-purple?style=for-the-badge)
 
-# Bellari Concept - CMS Architecture & Design
+[ 🇫🇷 Français ] | [ 🇬🇧 English ](README_en.md)
 
-> **⚠️ AVERTISSEMENT JURIDIQUE STRICT**
->
-> Ce logiciel, incluant tout le code source, la documentation et les ressources graphiques, est la **PROPRIÉTÉ EXCLUSIVE** de **MOA Digital Agency** et **Aisance KALONJI**.
->
-> *   **Usage Interne Uniquement :** L'utilisation est limitée au personnel autorisé de MOA Digital Agency.
-> *   **Interdiction Totale :** Toute copie, modification, redistribution, vente ou ingénierie inverse est strictement interdite sans accord écrit préalable.
-> *   **Poursuites :** Tout contrevenant s'expose à des poursuites judiciaires immédiates.
->
-> Voir le fichier [LICENSE](./LICENSE) pour les termes complets.
+# ⚠️ AVERTISSEMENT LEGAL / LEGAL WARNING
+**PROPRIÉTÉ EXCLUSIVE DE MOA DIGITAL AGENCY (myoneart.com)**
+**AUTEUR : AISANCE KALONJI**
+
+Ce code source est **STRICTEMENT CONFIDENTIEL ET PROPRIÉTAIRE**.
+Toute reproduction, distribution ou modification non autorisée est interdite.
+Usage interne uniquement. Voir le fichier `LICENSE` pour plus de détails.
 
 ---
 
-**Bellari Concept** est une solution CMS sur-mesure de haut niveau, conçue pour gérer la présence numérique d'une firme d'architecture d'intérieur de luxe. Alliant performance technique (Flask/Gunicorn) et flexibilité éditoriale, il offre une expérience utilisateur premium et une administration sécurisée.
+# 🏗️ Bellari Concept - CMS & PWA d'Architecture Intérieure
 
-## 🏗️ Architecture du Système
+**Bellari Concept** est une solution CMS sur-mesure développée pour une agence de design d'intérieur de luxe. Il combine la puissance d'une application Flask robuste avec l'expérience utilisateur fluide d'une Progressive Web App (PWA).
 
-Le système repose sur une architecture MVC robuste déployée derrière un reverse-proxy Nginx.
+## 🌟 Vision du Produit
+Ce n'est pas un simple site vitrine, mais une plateforme complète permettant à l'agence de gérer ses projets, ses contenus bilingues et son image de marque en toute autonomie, avec une sécurité de niveau entreprise.
+
+## 🏛️ Architecture Technique
 
 ```mermaid
 graph TD
-    Client["Client (Navigateur/PWA)"] -->|HTTPS| Nginx["Nginx"]
-    Nginx -->|Proxy| Gunicorn["Gunicorn"]
-    Gunicorn -->|WSGI| App["Flask App (Bellari Concept)"]
+    Client["Client (Browser/PWA)"]
+    Nginx["Nginx (Reverse Proxy)"]
+    Gunicorn["Gunicorn (WSGI Server)"]
+    Flask["Flask Application (Core)"]
+    DB[("Database (PostgreSQL/SQLite)")]
+    Static["Static Files (Tailwind, Images)"]
 
-    subgraph "Backend Services"
-        App -->|ORM| DB[("PostgreSQL")]
-        App -->|Auth| Security["Argon2 Security"]
-        App -->|Content| CMS["CMS Logic (Pages/Sections)"]
+    Client -->|HTTPS/443| Nginx
+    Nginx -->|Proxy Pass| Gunicorn
+    Gunicorn -->|WSGI| Flask
+    Flask -->|ORM| DB
+    Flask -->|Serves| Static
+
+    subgraph "Sécurité & Services"
+        Flask -->|CSRF Protection| WTF
+        Flask -->|CSP Headers| Talisman
+        Flask -->|Auth| LoginManager
     end
 ```
 
-## 📑 Table des Matières
+## 🚀 Fonctionnalités Clés
 
-1.  [Aperçu Technique](#-stack-technique)
-2.  [Installation Rapide](#-installation--démarrage)
-3.  [Documentation Complète](#-documentation)
-4.  [Fonctionnalités Clés](#-fonctionnalités-clés)
+*   **Gestion Bilingue Native (FR/EN) :** Synchronisation intelligente des sections de contenu.
+*   **Support PWA Complet :** Manifest dynamique, icônes configurables, mode hors ligne.
+*   **CMS Puissant :** Gestion des pages, sections (Hero, Intro, Features...), et galerie d'images.
+*   **Sécurité Renforcée :** Protection CSRF globale, Content Security Policy (CSP), Cookies sécurisés, Hachage Argon2.
+*   **Optimisation SEO :** Meta tags dynamiques, Sitemap XML automatique, Robots.txt configurable.
 
-## 🛠 Stack Technique
+## 📚 Documentation Officielle
 
-*   **Backend :** Python 3.11, Flask 3.0, Werkzeug.
-*   **Base de Données :** PostgreSQL 15, SQLAlchemy ORM.
-*   **Frontend :** Jinja2 Templates, TailwindCSS (CDN), HTML5.
-*   **Sécurité :** Flask-WTF (CSRF), Talisman (CSP), Secure Cookies.
-*   **Déploiement :** Gunicorn, Nginx, Docker-ready.
+La documentation complète est disponible dans le dossier `docs/` :
 
-## 🚀 Installation & Démarrage
+*   **[ 📜 Liste Complète des Fonctionnalités ](docs/BellariConcept_features_full_list.md)** : La "Bible" du projet.
+*   **[ ⚙️ Architecture Technique ](docs/BellariConcept_Technical_Architecture.md)** : Stack, BDD, Déploiement.
+*   **[ 📖 Guide Utilisateur & Admin ](docs/BellariConcept_Admin_Guide.md)** : Manuel d'utilisation du CMS.
 
-Le projet inclut un script d'installation automatisé pour les environnements Linux/macOS.
+## 🛠️ Installation & Démarrage (Interne)
 
-```bash
-# 1. Cloner le dépôt privé
-git clone <URL_DU_DEPOT>
+### Pré-requis
+*   Python 3.11+
+*   PostgreSQL (Production) ou SQLite (Dev)
+*   Environnement virtuel (venv)
 
-# 2. Lancer le script de déploiement
-chmod +x deploy.sh
-./deploy.sh
-
-# 3. Lancer le serveur (Dev)
-source .venv/bin/activate
-python app.py
-```
-
-Pour un déploiement en production, consultez le guide dédié ci-dessous.
-
-## 📚 Documentation
-
-Une documentation exhaustive est disponible dans le dossier `docs/` :
-
-*   **[Architecture Système](./docs/Bellari_Concept_Architecture_FR.md)** : Détails des flux de données et composants.
-*   **[Liste des Fonctionnalités](./docs/Bellari_Concept_Features_Full_List_FR.md)** : "Bible" fonctionnelle du projet (CMS, PWA, SEO).
-*   **[Guide de Déploiement](./docs/Bellari_Concept_Deployment_FR.md)** : Procédures VPS, Nginx et maintenance.
-
-## ✨ Fonctionnalités Clés
-
-*   **Bilinguisme Natif :** Gestion synchronisée FR/EN des sections de contenu.
-*   **PWA Ready :** Installation mobile, fonctionnement hors-ligne partiel.
-*   **Admin Sécurisée :** Gestion des pages, upload d'images, configuration du site.
-*   **SEO Automatisé :** Génération de Sitemap.xml et Robots.txt dynamiques.
+### Configuration Rapide
+1.  Cloner le dépôt (Accès restreint).
+2.  Créer un fichier `.env` basé sur `.env.example` (ou voir `deploy.sh`).
+3.  Installer les dépendances :
+    ```bash
+    pip install -r requirements.txt
+    ```
+4.  Initialiser la base de données :
+    ```bash
+    python init_db.py
+    ```
+5.  Lancer le serveur de développement :
+    ```bash
+    python app.py
+    ```
 
 ---
-*Développé avec ❤️ et rigueur par MOA Digital Agency.*
+© 2024-2025 MOA Digital Agency (myoneart.com) - Auteur : Aisance KALONJI. Tous droits réservés.
