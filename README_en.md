@@ -1,86 +1,91 @@
-![Python 3.11](https://img.shields.io/badge/Python-3.11-blue?style=flat-square&logo=python) ![Framework Flask](https://img.shields.io/badge/Framework-Flask%203.0-green?style=flat-square&logo=flask) ![Database PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL%2015-336791?style=flat-square&logo=postgresql) ![Status: Production](https://img.shields.io/badge/Status-Production-success?style=flat-square) ![License: Proprietary](https://img.shields.io/badge/License-Proprietary-red?style=flat-square) ![Owner: MOA Digital Agency](https://img.shields.io/badge/Owner-MOA%20Digital%20Agency-orange?style=flat-square)
+![Python 3.11](https://img.shields.io/badge/Python-3.11-blue?style=for-the-badge&logo=python)
+![Framework Flask](https://img.shields.io/badge/Framework-Flask-green?style=for-the-badge&logo=flask)
+![Database SQLAlchemy](https://img.shields.io/badge/Database-SQLAlchemy-red?style=for-the-badge&logo=postgresql)
+![Status Private](https://img.shields.io/badge/Status-Private%2FInternal-orange?style=for-the-badge)
+![License Proprietary](https://img.shields.io/badge/License-Proprietary-black?style=for-the-badge)
+![Owner MOA](https://img.shields.io/badge/Owner-MOA_Digital_Agency-purple?style=for-the-badge)
 
-# Bellari Concept - CMS Architecture & Design
+[ 🇫🇷 Français ](README.md) | [ 🇬🇧 English ]
 
-> **⚠️ STRICT LEGAL WARNING**
->
-> This software, including all source code, documentation, and graphical assets, is the **EXCLUSIVE PROPERTY** of **MOA Digital Agency** and **Aisance KALONJI**.
->
-> *   **Internal Use Only:** Usage is strictly limited to authorized personnel of MOA Digital Agency.
-> *   **Total Prohibition:** Any copying, modification, redistribution, sale, or reverse engineering is strictly prohibited without prior written agreement.
-> *   **Prosecution:** Any violator will be subject to immediate legal action.
->
-> See the [LICENSE](./LICENSE) file for full terms.
+# ⚠️ LEGAL WARNING
+**EXCLUSIVE PROPERTY OF MOA DIGITAL AGENCY (myoneart.com)**
+**AUTHOR: AISANCE KALONJI**
+
+This source code is **STRICTLY CONFIDENTIAL AND PROPRIETARY**.
+Any unauthorized reproduction, distribution, or modification is prohibited.
+Internal use only. See the `LICENSE` file for details.
 
 ---
 
-**Bellari Concept** is a high-level bespoke CMS solution designed to manage the digital presence of a luxury interior design firm. Combining technical performance (Flask/Gunicorn) with editorial flexibility, it offers a premium user experience and secure administration.
+# 🏗️ Bellari Concept - CMS & Interior Design PWA
 
-## 🏗️ System Architecture
+**Bellari Concept** is a bespoke CMS solution developed for a luxury interior design agency. It combines the power of a robust Flask application with the seamless user experience of a Progressive Web App (PWA).
 
-The system relies on a robust MVC architecture deployed behind an Nginx reverse proxy.
+## 🌟 Product Vision
+This is not just a showcase site, but a complete platform allowing the agency to manage its projects, bilingual content, and brand image independently, with enterprise-level security.
+
+## 🏛️ Technical Architecture
 
 ```mermaid
 graph TD
-    Client["Client (Browser/PWA)"] -->|HTTPS| Nginx["Nginx"]
-    Nginx -->|Proxy| Gunicorn["Gunicorn"]
-    Gunicorn -->|WSGI| App["Flask App (Bellari Concept)"]
+    Client["Client (Browser/PWA)"]
+    Nginx["Nginx (Reverse Proxy)"]
+    Gunicorn["Gunicorn (WSGI Server)"]
+    Flask["Flask Application (Core)"]
+    DB[("Database (PostgreSQL/SQLite)")]
+    Static["Static Files (Tailwind, Images)"]
 
-    subgraph "Backend Services"
-        App -->|ORM| DB[("PostgreSQL")]
-        App -->|Auth| Security["Argon2 Security"]
-        App -->|Content| CMS["CMS Logic (Pages/Sections)"]
+    Client -->|HTTPS/443| Nginx
+    Nginx -->|Proxy Pass| Gunicorn
+    Gunicorn -->|WSGI| Flask
+    Flask -->|ORM| DB
+    Flask -->|Serves| Static
+
+    subgraph "Security & Services"
+        Flask -->|CSRF Protection| WTF
+        Flask -->|CSP Headers| Talisman
+        Flask -->|Auth| LoginManager
     end
 ```
 
-## 📑 Table of Contents
+## 🚀 Key Features
 
-1.  [Technical Overview](#-technical-stack)
-2.  [Quick Install](#-installation--start)
-3.  [Full Documentation](#-documentation)
-4.  [Key Features](#-key-features)
+*   **Native Bilingual Management (FR/EN):** Intelligent synchronization of content sections.
+*   **Full PWA Support:** Dynamic manifest, configurable icons, offline mode capable.
+*   **Powerful CMS:** Page and section management (Hero, Intro, Features...), and image gallery.
+*   **Enhanced Security:** Global CSRF protection, Content Security Policy (CSP), Secure Cookies, Argon2 Hashing.
+*   **SEO Optimization:** Dynamic Meta tags, Automatic XML Sitemap, Configurable Robots.txt.
 
-## 🛠 Technical Stack
+## 📚 Official Documentation
 
-*   **Backend:** Python 3.11, Flask 3.0, Werkzeug.
-*   **Database:** PostgreSQL 15, SQLAlchemy ORM.
-*   **Frontend:** Jinja2 Templates, TailwindCSS (CDN), HTML5.
-*   **Security:** Flask-WTF (CSRF), Talisman (CSP), Secure Cookies.
-*   **Deployment:** Gunicorn, Nginx, Docker-ready.
+Complete documentation is available in the `docs/` directory:
 
-## 🚀 Installation & Start
+*   **[ 📜 Full Feature List ](docs/BellariConcept_features_full_list_en.md)** : The project "Bible".
+*   **[ ⚙️ Technical Architecture ](docs/BellariConcept_Technical_Architecture_en.md)** : Stack, DB, Deployment.
+*   **[ 📖 User & Admin Guide ](docs/BellariConcept_Admin_Guide_en.md)** : CMS user manual.
 
-The project includes an automated installation script for Linux/macOS environments.
+## 🛠️ Installation & Getting Started (Internal)
 
-```bash
-# 1. Clone the private repository
-git clone <REPO_URL>
+### Prerequisites
+*   Python 3.11+
+*   PostgreSQL (Production) or SQLite (Dev)
+*   Virtual Environment (venv)
 
-# 2. Launch the deployment script
-chmod +x deploy.sh
-./deploy.sh
-
-# 3. Start the server (Dev)
-source .venv/bin/activate
-python app.py
-```
-
-For a production deployment, please consult the dedicated guide below.
-
-## 📚 Documentation
-
-Exhaustive documentation is available in the `docs/` folder:
-
-*   **[System Architecture](./docs/Bellari_Concept_Architecture_EN.md)** : Details of data flows and components.
-*   **[Full Features List](./docs/Bellari_Concept_Features_Full_List_EN.md)** : The functional "Bible" of the project (CMS, PWA, SEO).
-*   **[Deployment Guide](./docs/Bellari_Concept_Deployment_EN.md)** : VPS, Nginx, and maintenance procedures.
-
-## ✨ Key Features
-
-*   **Native Bilingual:** Synchronized FR/EN content section management.
-*   **PWA Ready:** Mobile installation, partial offline functionality.
-*   **Secure Admin:** Page management, image uploads, site configuration.
-*   **Automated SEO:** Dynamic generation of Sitemap.xml and Robots.txt.
+### Quick Setup
+1.  Clone the repository (Restricted access).
+2.  Create a `.env` file based on `.env.example` (or see `deploy.sh`).
+3.  Install dependencies:
+    ```bash
+    pip install -r requirements.txt
+    ```
+4.  Initialize the database:
+    ```bash
+    python init_db.py
+    ```
+5.  Start the development server:
+    ```bash
+    python app.py
+    ```
 
 ---
-*Developed with ❤️ and rigor by MOA Digital Agency.*
+© 2024-2025 MOA Digital Agency (myoneart.com) - Author: Aisance KALONJI. All rights reserved.
