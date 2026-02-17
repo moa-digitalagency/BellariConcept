@@ -2,9 +2,30 @@
 
 Ce document détaille l'architecture logicielle, la structure de la base de données et les flux de sécurité de l'application Bellari Concept.
 
+## 1. Vue d'Ensemble
+
+L'application suit une architecture monolithique classique, optimisée pour le déploiement sur VPS avec une séparation claire entre le serveur web, le serveur d'application et la base de données.
+
+```mermaid
+graph TD
+    User["Utilisateur (Browser/PWA)"]
+    Nginx["Nginx (Reverse Proxy / SSL)"]
+    Gunicorn["Gunicorn (WSGI Server)"]
+    Flask["Flask App (Bellari Concept)"]
+    DB[("PostgreSQL (Données)")]
+    FS["File System (Images/Uploads)"]
+
+    User -->|HTTPS| Nginx
+    Nginx -->|Proxy Pass| Gunicorn
+    Nginx -->|Serve Static| FS
+    Gunicorn -->|WSGI| Flask
+    Flask -->|SQLAlchemy| DB
+    Flask -->|Read/Write| FS
+```
+
 ---
 
-## 1. Stack Technologique
+## 2. Stack Technologique
 
 ### Backend
 *   **Langage :** Python 3.10+
@@ -32,7 +53,7 @@ Ce document détaille l'architecture logicielle, la structure de la base de donn
 
 ---
 
-## 2. Modèle de Données (Entités)
+## 3. Modèle de Données (Entités)
 
 Le schéma de base de données est conçu pour la flexibilité du CMS et la performance.
 
@@ -99,7 +120,7 @@ classDiagram
 
 ---
 
-## 3. Flux de l'Application
+## 4. Flux de l'Application
 
 ### Cycle de Vie d'une Requête (Request Lifecycle)
 
@@ -134,7 +155,7 @@ classDiagram
 
 ---
 
-## 4. Stratégie de Déploiement & Maintenance
+## 5. Stratégie de Déploiement & Maintenance
 
 ### Initialisation (`init_db.py`)
 Ce script agit comme un **système de migration autonome**.
