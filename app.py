@@ -6,6 +6,7 @@
 
 import os
 import secrets
+import time
 from datetime import datetime
 from dotenv import load_dotenv
 
@@ -41,7 +42,7 @@ app.config.update(
     SESSION_COOKIE_SAMESITE='Lax',
 )
 
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp', 'ico'}
 
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
@@ -742,8 +743,23 @@ def admin_upload_favicon():
     if file and allowed_file(file.filename):
         # Determine extension
         ext = file.filename.rsplit('.', 1)[1].lower()
-        filename = f'favicon.{ext}'
+
+        # Use timestamp to avoid caching
+        filename = f'favicon_{int(time.time())}.{ext}'
         filepath = os.path.join('static', filename)
+
+        # Check if there is an existing favicon setting to remove old file
+        current_setting = SiteSettings.query.filter_by(key='site_favicon').first()
+        if current_setting and current_setting.value and current_setting.value.startswith('/static/favicon_'):
+             # Try to delete the old file
+             old_filename = current_setting.value.replace('/static/', '')
+             old_filepath = os.path.join('static', old_filename)
+             if os.path.exists(old_filepath):
+                 try:
+                     os.remove(old_filepath)
+                 except Exception:
+                     pass # Ignore errors during deletion
+
         file.save(filepath)
 
         setting = SiteSettings.query.filter_by(key='site_favicon').first()
@@ -761,6 +777,18 @@ def admin_upload_favicon():
         })
 
     return jsonify({'error': 'Invalid file type'}), 400
+
+@app.route('/favicon.ico')
+def favicon():
+    setting = SiteSettings.query.filter_by(key='site_favicon').first()
+    if setting and setting.value:
+         # Remove leading slash for send_from_directory if present, but typically send_from_directory needs path relative to root provided
+         # If value is /static/favicon.png, we want to serve static/favicon.png
+         # But usually favicon.ico is requested at root.
+
+         filename = setting.value.split('/')[-1]
+         return send_from_directory('static', filename, mimetype='image/vnd.microsoft.icon')
+    return send_from_directory('static', 'logo.png', mimetype='image/vnd.microsoft.icon')
 
 def get_setting(key, default=''):
     setting = SiteSettings.query.filter_by(key=key).first()
@@ -1001,10 +1029,10 @@ app.jinja_env.globals.update(get_setting=get_setting)
 
 with app.app_context():
     try:
-        from init_db import check_and_migrate_schema, init_pwa_settings, init_content
+        from init_db import check_and_migrate_schema, init_settings, init_content
         # Run robust initialization on startup
         check_and_migrate_schema()
-        init_pwa_settings()
+        init_settings()
         init_content()
     except Exception as e:
         print(f"Startup initialization error: {e}")
