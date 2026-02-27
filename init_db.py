@@ -1,6 +1,8 @@
 import os
+import shutil
 from sqlalchemy import text, inspect
 from werkzeug.security import generate_password_hash
+from PIL import Image
 
 def check_and_migrate_schema():
     """
@@ -89,15 +91,28 @@ def check_and_migrate_schema():
                         except Exception as e:
                             print(f"❌ Failed to add column '{col_name}' to '{table}': {e}")
 
-def init_pwa_settings():
+def init_settings():
     """
-    Initialize PWA settings in SiteSettings table if they don't exist.
+    Initialize Site settings (including PWA and Favicon) in SiteSettings table if they don't exist.
     """
     from app import app, db, SiteSettings
 
-    print("Checking PWA settings...")
+    print("Checking Site settings...")
     with app.app_context():
-        # Default PWA settings
+        # Ensure default favicon exists
+        if not os.path.exists('static/favicon.png'):
+            if os.path.exists('static/logo.png'):
+                try:
+                    img = Image.open('static/logo.png')
+                    img = img.resize((32, 32))
+                    img.save('static/favicon.png')
+                    print("✅ Generated default favicon from logo.")
+                except Exception as e:
+                    print(f"❌ Failed to generate favicon: {e}")
+            else:
+                print("⚠️  No logo found to generate favicon.")
+
+        # Default settings
         defaults = {
             'pwa_enabled': 'false',
             'pwa_display_mode': 'default',  # 'default' or 'custom'
@@ -108,7 +123,7 @@ def init_pwa_settings():
             'pwa_background_color': '#ffffff',
             'pwa_description': 'Bellari Concept - Luxury Interior Design',
             'pwa_start_url': '/',
-            'site_favicon': '/static/logo.png',
+            'site_favicon': '/static/favicon.png',
             'whatsapp_number': '243860493345',
             'consultation_url': 'https://tidycal.com/moamyoneart/consultation-gratuite-15-min'
         }
@@ -120,14 +135,20 @@ def init_pwa_settings():
                 print(f"Adding default setting: {key} = {value}")
                 db.session.add(SiteSettings(key=key, value=value))
                 changes_made = True
+            elif key == 'site_favicon':
+                # Update legacy favicon setting if it points to logo.png
+                if setting.value == '/static/logo.png':
+                     print(f"Updating legacy favicon setting: {key} = {value}")
+                     setting.value = value
+                     changes_made = True
             else:
                 pass # Setting exists
 
         if changes_made:
             db.session.commit()
-            print("PWA settings initialized.")
+            print("Site settings initialized.")
         else:
-            print("PWA settings up to date.")
+            print("Site settings up to date.")
 
 def init_content():
     """
@@ -356,5 +377,5 @@ def init_content():
 
 if __name__ == "__main__":
     check_and_migrate_schema()
-    init_pwa_settings()
+    init_settings()
     init_content()
